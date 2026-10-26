@@ -2565,3 +2565,770 @@ The eleven other languages' descriptions still said "fading 30% a turn" after th
 `i18n_apply` keeps a stored translation whatever the English now says. Those seven keys were dropped from
 `i18n/<locale>.json` so the XML carries the English until retranslated; the parity gates pass.
 
+Built and watched 2026-10-25, steps 4 and 5: `ui/emigration-lost-tiles.js` keeps, per settlement, the improvement and
+plot each departure tore down (`commitSourcePoint` records it; a host giving up a tile to a return doesn't count).
+A return takes the oldest entry whose plot is still free, else the oldest, and the placement settles that plot when
+the game offers it, else another free plot of the settlement (the owner's rule); with Ask-me placement or in an AI
+city the game chooses, and the entry is still consumed. The Displaced tab's card gets a "Lost: 2 Farms, 1
+Woodcutter" line. A "People are coming home" notice joins the train when a settlement's people start returning and
+when the last is back; it and "People are leaving" open the screen on the Displaced tab. The call-home pop-up is
+off by default. Watched in a 120-turn lab game (seed 4242, usual set): the store filled with real types and plots
+for every AI settlement that lost people (Hwangju ten entries by turn 111, Farms, Woodcutters, a Mine, a
+Plantation), and drained on homecomings (Hwangju 4 to 2 across its four returns, Pārsa 8 to 7). Not watched: a
+human returnee landing on the old plot, the Lost line and the home notice on screen (the lab's human seat holds
+one city). The per-turn notice flood the owner described is already bounded by `notifyCooldownTurns` (6) on the
+"important" notices; the repeat was the call-home offer, now gone.
+
+## 33. Spec: the first-loss page (a tutorial moment, shipped off)
+
+**What the player sees.** The first time one of their settlements loses a population point to emigration, one
+page in the mod's dilemma frame (`showDilemma`, the frame the refugee decisions and the call-home dialog use):
+
+- Eyebrow: "Emigration". Title: "People Have Left {City}".
+- Body, four short paragraphs in the plain voice: what happened ("{N} people left {City} this turn. They tore
+  down the {Farm} they worked on the way out; the plot is yours to settle again."); where they went ("They have
+  gone to {Dest}{, a city of {Civ}}, because {reason}: {whyLine}."); what happens next ("People who stay inside
+  your civilization come home on their own once {City} has been calm for a few turns. People who crossed a
+  border can be called back from the Displaced tab, at a price and at odds."); where to look ("The Emigration
+  screen (the button in the dock, or the notice beside End Turn) shows every settlement losing people, why, and
+  what would stop it. Hover a city for the short version."). The `{reason}` and `{whyLine}` are the readout's own
+  `cause` label and `whyThereLine`, and the Farm line comes from `emigration-lost-tiles.js`.
+- Details: the readout's fix line for that settlement ("What would stop it: +3 Food or +2 Happiness here (Granary
+  gives +1 Food)"), when it has one.
+- Quote: none (the frame draws one; this page is instruction, not narrative).
+- Choices: "Open the Emigration screen" (opens on the Displaced tab) and "Got it" (dismiss; also Escape and the
+  close button). Neither choice changes game state.
+
+After that, nothing: the page never comes back in that game, whatever else happens.
+
+**Trigger.** In `feedback.js` `localDigest`, which already groups the local player's losses per pass: when the
+page is on and the save holds no `EmigrationFirstLoss_v1` flag, and an event's `subject` is `"tile"` (a real tile
+was torn down; a counter decrement is too quiet to teach from), show the page for the largest event, set the
+flag (with the turn and the settlement, for the Chronicle), and skip the "People are leaving" notice for that
+pass so the player isn't told twice. A pass with only counter decrements waits for a later tile loss. A game that
+starts at Exploration or Modern from an advanced start can lose a tile on turn 1; the page still waits for the
+player's own turn, as every dilemma does.
+
+**Off by design.** A checkbox on the Mods tab, "First-loss explainer", registered through
+`registerTunableToggle` beside "Ask me about arrivals", bound to a new tunable `firstLossPage` (default `false`).
+The Advanced settings carry the same row under Notifications. Switching it on mid-game shows the page at the next
+tile loss unless the flag is already set; switching it off never clears the flag. The sample-data preview mode
+never shows it.
+
+**The Chronicle.** One entry when the page shows ("The First to Leave", the body's first paragraph), so a player
+who dismissed it fast can read it again in Notifications.
+
+**AI.** Nothing; the page is a human-only surface.
+
+**Data.** `EmigrationFirstLoss_v1` in the save: `{turn, city}`; cleared by the usual new-game cache reset.
+
+**Tests.** The trigger: a tile-loss event with the page on and no flag shows it once and sets the flag; a
+counter-only pass doesn't; the flag set, or the page off, never shows it; the notice is skipped on the showing
+pass. The body: every placeholder filled for an internal and a cross-border loss, with and without a lost tile and
+a fix line.
+
+**Watch list.** A human seat with two cities losing a tile (the lab's one-city seat can't): the page's text and
+its two buttons, the Chronicle entry, and that it never returns.
+
+**Open question for the owner.** Whether to ship it on for new games and off for games in progress. Off
+everywhere is the ask; a first-time player gains most from it, and the flag makes "on for new games only" a
+one-line change later.
+
+## 34. Spec: enclaves as a reward (the build-up on the banner and in the Chronicle)
+
+**What the player sees today.** An enclave appears when a foreign community reaches the Established stage
+(`quarterEstablishedShare` 30% of the settlement and `quarterMinStock` 3 points), and the stance pop-up follows at
+recognition. The stages (Foothold, Established, Recognized) and the next step show only on hover: the enclave
+tooltip, City Details and the Diversity table (`enclaveStageAt`, `stageLine`, `nextLine`).
+
+**What changes.**
+
+1. *A banner tag.* `emigration-banner-pressure.js` already decorates the player's own `city-banner` controls with a
+   two-pixel bar under the name. Beside it, a short tag in the banner's font at 72%: "{Greek} community forming
+   22% / 30%" from the Foothold stage, "{Greek} community established" once the enclave stands, "{Greek} enclave
+   recognized" afterward, nothing when there is no foreign community at a tenth of the bar or more. The tag reads
+   the same `enclaveStageAt` the tooltip reads, through the per-pass memo, so it never adds an engine read of its
+   own; it repaints with the bar. Colour: the origin civ's banner colour (`civDisplayColor`), the colour the
+   Ethnicity lens uses for that people. Other civilizations' banners show nothing, as the bar does. Option
+   `bannerCommunityTag`: off, forming and up (default), established and up.
+2. *Chronicle teasers.* One line per settlement per stage, on the pass that reaches it: "Greeks are putting down
+   roots in Mutsu: one in five of the city now" at Foothold; "The Greek community in Mutsu is established; an
+   enclave has taken shape" at Established (the existing "has taken root" entry, kept); the recognition entry as
+   now. Each carries the settlement and the origin, and the Foothold line names the share in words, not a
+   percentage. Deduped by settlement, origin and stage, so a community that drops back and climbs again is told
+   again, which is right: it is news again.
+3. *A notice beside End Turn.* The Foothold line also goes to the train on the "note" channel, once per
+   settlement and origin; clicking it opens the Diversity tab. Established and recognition already have their
+   notices.
+4. *The reward itself, said out loud.* At Established the Chronicle line ends with what the enclave will pay:
+   "{Yield} to Mutsu once recognized" from the two stances' yields for that origin, read from the same tables the
+   stance pop-up offers. A player then knows why to care before the pop-up asks.
+
+**AI.** AI hosts get stages 2 and 4 in the Chronicle in the third person as they get the recognition line now;
+no banner tag (the tag is the local player's banners only).
+
+**Data.** None new; the stage read and the Chronicle dedupe keys exist. The teaser dedupe is
+`"community:" + settlement + "|" + origin + "|" + stage`.
+
+**Tests.** The tag text for each stage and for no community; the option's three settings; the Foothold line's
+share wording at 10, 22 and 29%; the dedupe on a stage reached twice with a drop between; the Established line's
+yield phrase from a stance table.
+
+**Watch list.** A human seat with a foreign community growing: the tag at Foothold and its colour, the three
+Chronicle lines in order, the train notice opening Diversity, and the tag disappearing when the community fades.
+AI hosts: the third-person lines in a lab game (the pass logs give the stage changes).
+
+**Cost.** A day for the banner tag (the decorator and its repaint are the delicate part), half a day for the
+lines and the option, the lab run after.
+
+## 35. The player-side and AI-side batch of 2026-10-25 (evening): what was built and seen
+
+Built: the readout's fix line (`emigration-prescribe.js`), the newcomer cost lines (readout, Displaced tab, arrival
+notice), Consular Protection's native Influence (+1 EX / +2 MO), the "hold your people" city strategy
+(`emigration-ai-strategy.sql`, `HasFoodLessThan 2`, Production and Happiness biases at 25), the other civilizations'
+stance notices (`emigration-ai-stance-notice.js`), and the AI's difficulty discount (`emigration-ai-difficulty.js`,
+4% a Gold-handicap level, applied to the AI's call-home charge and refund and to its refugee prices). Specs for the
+first-loss page and the enclave build-up are sections 33 and 34.
+
+Seen in an Exploration lab game (seed 4242, usual set, Prince, 54 driven turns until the human seat was out):
+
+- The fix line on real cities under pressure: "What would stop it: +14 Food or +14 Production or +3 Happiness here
+  (Hospital gives +8 Food)" at Spahān (gap 2.4), "+30 Food ... or +10 Happiness" at Wailuku (gap 8.8, 69% to the
+  bar), and nothing at Zabid (88% to the bar, a gap no amount under 60 closes). The Food and Production numbers
+  are large because the model divides yields by population to the power `popExponent`; Happiness is the number a
+  player can act on, so the line now shows the two cheapest yields, cheapest first.
+- The difficulty: `Configuration.getGame().getValue("Difficulty")` is null; the hash on
+  `Configuration.getGame().difficultyType` resolves through `GameInfo.Difficulties` (DIFFICULTY_PRINCE here, Gold
+  handicap level 0, scale 1). Deity reads level 5 in the same table, 20% off.
+- The stance notices: four Chronicle lines over 54 turns ("Abbasid closes its borders: an Anti-Immigration Stance",
+  "Đại Việt opens its borders", "drops its immigration stance", "closes its borders"), each with a "world" train
+  notice the same turn.
+- Which cards the AI slotted, sampled every 10 turns: Đại Việt held both stances at turn 23 and swapped between them
+  afterward; Persia (Abbasid) held Anti-Immigration from turn 33 on. Nobody slotted Talent Attraction or Consular
+  Protection by turn 54; whether their civics (Inspiration, Diplomatic Service) were reached by then wasn't read.
+- A yield grant doesn't reach a city's own Happiness (engine-closed.md, UI runtime), so pressure can't be routed
+  into the AI's happiness strategy; the "hold your people" strategy stands on the game's Food condition instead.
+
+Not seen: the readout and arrival-notice cost lines and the fix line on the player's own cities (the lab's human
+seat), an AI paying a discounted price at Deity, the hold-people strategy changing an AI build or card, and the two
+late cards taken by an AI (a longer Exploration run, reading each AI's unlocked civics alongside its cards).
+
+## 36. The player's side, watched on a real empire (2026-10-25, late)
+
+The lab's human seat never settles past its capital, so everything built today for the player had only been seen
+on AI civilizations. The owner's own save, WashingtonAnt130 (Antiquity turn 130, eleven cities, the usual set),
+was loaded inside a lab game with `Network.loadGame` (LOCAL_STORAGE, NORMAL, SINGLE_PLAYER, GAME_STATE,
+SERVER_TYPE_NONE), the loading curtain cleared with `UI.notifyUIReady()`, and the game driven ten turns to the age's
+end. The save file itself was left as it was (compared byte for byte afterward).
+
+Seen:
+
+- The Displaced tab with live data: nine cards (Boston 23 away in five of the player's other cities since turn 90,
+  down to Philadelphia and Yetakapewaki at 2), each with its Away, Worth, Wait and Hasten lines; the newcomer cost
+  line at the top (10 Gold and 3.7 Happiness a turn); the tab scrolls (overflow auto, 2014 of 1332 px). Capture:
+  `working_screenshots/emig-370-displaced-live.png`.
+- The readout's fix line on the player's own cities: Philadelphia (16% to the bar, pulled toward New York) "What
+  would stop it: +2 Happiness or +10 Food here (Arena gives +4 Happiness)"; Shomron (55%) "+5 Happiness or +11
+  Food". Cities under pressure with no destination that turn (White Oak 62%) get no line, as designed.
+- The player's homecomings: eight people came home over the drive (Shomron to White Oak, Pittsburgh to Shomron,
+  and on), with "People are coming home" train notices on turns 134 (three lines), 136, 137 and 138, and a "People
+  are leaving" notice on 135. The lost-tile store filled for the player's departures (Philadelphia 7, Cilakofa 2 by
+  turn 137).
+
+Changed from what was seen: the Worth line listed "+1.8 Production, +1.2 Food, +0.5 Happiness, +0.3 Gold, +0.2
+Science, +0.2 Culture", noise; it now rounds to whole numbers and keeps the three largest. And Boston's 23 people at
+one every four turns meant 91 turns to refill; each return now brings one person plus one for every
+`homecomingBatchPer` (8) still away, so Boston reads "the next 3 come home in 3 turns, and the last in about 50".
+
+Still to see: the Hasten and Call from abroad buttons clicked on the live tab and the redraw after, the Lost line
+on a card (the store was empty at the load; it fills from here), a returnee landing on the plot their people left,
+and the Talent and Consular cards taken by an AI in a long Exploration game.
+
+## 37. Six tabs, a real button, and honest characters (2026-10-25, late evening)
+
+From the owner's notes on the live tab: fewer tabs that mean something, a Hasten control that reads as a button and
+a tab that reads as a place to act, and a Communities "Character" that agrees with the bar beside it.
+
+- The dashboard has six tabs on both surfaces (the screen and the Emigration page inside Demographics): Network,
+  Cities, Displaced, Communities, Policies, Notifications. The Net Migration table rides behind "View: Diagram |
+  Table" on Network, every civilization's cause cards behind "Show: Mine | All civilizations" on Cities
+  (`emigration-tab-switches.js`); the Guide left the row. The switch had to use `replaceChild`: the game's DOM has
+  no `replaceWith` (engine-closed.md), and the first build changed the switch's state without redrawing.
+- Hasten is a gold button, the tab label carries the count ("Displaced (66)"), and a call made from the tab closes
+  the screen, waits until it is gone, raises the dialog, and reopens the tab after. Raising the dialog with the
+  screen up, or while it was still closing, lost the dialog to the display queue (watched both). The call runs
+  on that settlement's own cooldown; before, hastening one city put every card's button on the civilization-wide
+  eight-turn clock.
+- Character comes from the settlement's own people (`characterTier`): Homogeneous at 95%+, Local Majority under a
+  15% foreign community, Mixed City, Cosmopolitan Center (no origin at 60%, three at 10%+), World City (none at
+  half, four at 10%+). Washington, D.C., 100% American, read "Mixed City" before because `cosmopolitanism()` blends
+  the owner's openness and inbound flow; that score stays for the Demographics metric, the word no longer uses it.
+  Every column heading and every Mix and Character value carries its definition on hover.
+
+Watched on WashingtonAnt130 after a reload: the six labels with "Displaced (66)"; Table showing the ledger;
+"All civilizations" showing the six civ cards under "Causes: Why people move"; Washington "Homogeneous" with the
+hover texts on cells and headings; the Hasten flow end to end (screen closed, dialog up, "Bring one home for 60"
+taken, screen back on "Displaced (65)", Philadelphia 2 to 1, 351 to 291 Gold). After a reload (2026-10-26, early morning): the View and Show switches sit in the Options row beside Numbers;
+Hasten is a 134×42 gold button; hastening one from Boston (351 to 291 Gold, "Displaced (65)") put "Available again
+in 8 turns" on Boston's card alone, the other eight kept their buttons; a how-to line under the heading says what
+the tab is for. The dialog's buttons answer `action-activate`, not `click`, from the bench.
+Captures: `working_screenshots/emig-370-*.png`.
+
+## 38. What the fee buys, and one navigation for both surfaces (2026-10-26)
+
+The owner's two checks after section 37: that the tabs, pills and buttons match the Demographics screen's, and that
+the Hasten dialog says what the player is paying for ("it doesn't show what the benefit/cost is overall or to the
+settlement they're leaving or going to... WHAT ARE WE PAYING FOR?").
+
+What a paid call does, read from the code before writing a word of it: inside your own borders a returnee leaves
+a rural tile where they live now (`commitSourcePoint`) and works one at home (`arriveRural`, the torn-down plot
+first), so the civilization swaps one tile for another; the integration load their arrival booked on the host
+decays on its own either way; the free homecoming brings them anyway, in batches. So the fee buys time, and the
+ledger says so. From abroad the person is a tile gained for good, nothing of yours is given up, and the fee is paid
+whether anyone answers. `emigration-hasten-ledger.js` computes the per-person swap (home tile less the hosts'
+weighted average tile), the turns the n-th person would otherwise wait (`turnsForN`), and the lines; the card's
+Worth and Hasten lines come from the same place, and the dialog (`callHomeView` with `home`, `ledger`, `wait`)
+shows the ledger in place of the pair list, under a title naming the settlement, with "Wait for the free
+homecoming" as the way out. The pop-up raised without a settlement keeps its old shape.
+
+Navigation, from an audit of the Demographics screen's own code (view-pills.js, its base and density stylesheets,
+screen-demographics.js): it uses `fxs-tab-bar` at two levels, rounded gold pills with no label for choosing a view,
+flat uppercase filter buttons with no label for Scaled / Civ, its Options button in the frame header, and a soft
+gold in-content button ("View on map"). Emigration now matches: tab bar first (with the same attributes and a host
+with the same margins), the view pills under it, the Scaled | Civ row, the content; the Advanced button at the top
+right of the standalone screen's title; `.emig-dp-btn` in the "View on map" shape; `--dg-fs-78` and `--dg-fs-100`
+added to the screen's ladder (the pills use them); the tab items shrink at the 50rem density tier. Labels were
+dropped from the Numbers row ("Scaled | Civ", the Demographics wording) and from the view switches. The old
+`var(--x, fallback)` form on the button is gone: Coherent rejects the two-argument `var()`.
+
+Watched on WashingtonAnt130 after a reload (2026-10-26, early morning): the tab bar first with the Diagram | Table
+pills under it in the Demographics shape, Scaled | Civ unlabelled in the Network lens row, the Hasten button in the
+"View on map" shape, the Advanced button at the top right of the frame (it landed above the title line on the
+first build: client rects need a screen-to-local conversion; the rebuild uses offsetTop instead, not yet seen),
+Boston's card reading "each returnee works a Boston tile, about +2 Production, +1 Food, +1 Happiness a turn, and
+leaves a tile where they live now (about +2 Food, +1 Production, +1 Happiness a turn)" and "312 Gold or 62
+Influence brings 3 back this turn, 3 turns sooner than the free homecoming"; the dialog titled "Bring Boston's
+people home" with the schedule, the five ledger lines (Boston gains, Pittsburgh / Cornstalk's Town / White Oak give
+up, "and 2 more settlements", Overall: +1 Production a turn, 3 turns sooner) and "Wait for the free homecoming",
+which closed it with nothing spent and the screen back on the tab. Captures `working_screenshots/emig-370-nav-*.png`,
+`emig-370-hasten-ledger.png`. Not seen: a Call from abroad ledger (nobody abroad in this save), the embedded
+Demographics page after the navigation change.
+
+## 39. The reminder instead of the pop-up (2026-10-26)
+
+The owner: "Maybe the popup for hastening should instead just send you to the displaced screen where you can
+choose settlements specifically?" and then "almost more like a reminder to check that screen when the number of
+people that have moved hits above a threshold - but with some logic so as to not be annoying and so that it can
+be permanently dismissed if the player so chooses."
+
+Built as `emigration-home-notice.js`, run from the turn pass where the calm pop-up used to be. A small pop-up
+(the dilemma dialog) with three buttons: Open the Displaced tab, Not now, Don't remind me again. The owner asked
+for the dismissal on the pop-up itself, and whether the first repeat rule (+5 people or 20 turns) was enough of a
+buffer; it wasn't: this save's count went 66, 75, 83 over four turns, so +5 would have spoken every two or three
+turns. The rule now: speak when at least `homeNoticeMinAway` (5) population points are displaced from settlements
+you still hold and some home they fled has been calm for the turns the free homecoming asks (the empire-wide
+"nothing in distress" gate never came true in the eleven-city save: watched over six turns, then confirmed by a
+dry run with calm forced); again only once the count has grown by half, and by the threshold, with at least
+NOTICE_GAP (10) turns since the last; a count that stands still never repeats; Not now counts as a notice. The
+last notice is in the save (`EmigrationHomeNotice_v1`). Calm stays a gate, per settlement: while the home is
+still in trouble the people can't come back, so the reminder would only nag. Permanent dismissal is the pop-up's
+own third button, the switch that gated the old pop-up (`callHomeOfferWhenCalm`, now on by default), also on the
+tab as "Stop the reminders about displaced people" and in Options, Mods, Emigration; the threshold is an Advanced
+setting. The four option texts changed meaning, so their translations were dropped from `i18n/<locale>.json`
+before the apply (the i18n memory note), and the English ships until retranslated.
+
+Watched on WashingtonAnt130 (reload, four driven turns), as the train-notice version: the reminder recorded
+itself at turn 134 (`{turn:134, away:75}`), the turn Boston's calm ran out; the Displaced tab's "Stop the
+reminders about displaced people" link flipped the switch (`CONFIG.callHomeOfferWhenCalm` false, a forced dry run
+quiet). The pop-up version, same save, reloaded: "Your people can come home" with the three buttons came up on turn
+134 with "75 of your people are displaced..."; Not now closed it and the record stayed `{turn:134, away:75}`; turns
+135 and 136 raised no dialog (the free homecoming's own "home" notice still came on 136); a forced pop-up's "Don't
+remind me again" read `callHomeOfferWhenCalm` false afterwards and the tab showed "Reminders are off...". Capture
+`working_screenshots/emig-370-home-reminder.png`. Not seen: the Open button landing on the tab.
+
+## 40. The Displaced table, and the cards' downsides (2026-10-26)
+
+The owner: the Hasten button should sit "to the right of all the text for each civ, like in its own column", and
+the tab "is a bunch of prose but it seems like we could present the information more visually"; and the stance
+cards "should remind players of the negatives... in the game's own yields with icons, in parenthesis".
+
+The tab is a five-column grid with a heading row (`emigration-displaced-view.js`): Settlement (name, since,
+"no longer yours"); Away (the count large, where they are, "Lost: Farm ×2 (rebuilt first)"); Per returnee, a
+turn (gains / leaves / net as yield chips: the game's icon from `UI.getIconURL(key, "YIELD")` and a signed whole
+number, the three largest, red for a loss; the yield's name stands in off-engine); Free homecoming (next batch
+and when, then the cadence, all home by); Bring back now (the Hasten button, "3 for [gold] 312 or [influence] 62",
+"3 turns sooner"; the Call from abroad button with its odds). The prose lines (`worthText`, `waitText`,
+`hastenText`, `abroadText`) are the columns' hovers. Under 70rem the worth and free columns drop under Away.
+
+The cards: the Pro-Immigration Stance's description ends "(Each newcomer costs about 1.5 Gold and 0.5 Happiness a
+turn while they settle in, fading over 6 to 8 turns; more arrivals also mean more enclaves to live with.)", the
+numbers being `assimilationGold` × `assimilationLoadPerMigrant` and `assimilationHappiness` at `assimilationDecay`
+0.7; the Anti-Immigration Stance's "(You give up the Population growth and the Food/Production tiles newcomers
+would have worked, and half of your enclaves' Science/Culture/Gold yields.)", its Influence cost staying up front
+as a yield line in the game's own form ("-2 Influence per turn"), which the data test pins to the modifier. The six descriptions' translations were dropped from `i18n/<locale>.json` (new meaning), so the
+English ships until retranslated.
+
+Watched on WashingtonAnt130 (four reloads): the first draw stopped at the heading row (a price chip named
+YIELD_DIPLOMACY, which the yield-name table didn't have; a render test against a fake DOM now draws the table);
+the second piled every column vertically (the engine ignores CSS grid; flex rows now); the third laid the five
+columns across the width with the game's yield icons in the chips and the Hasten button at the far right, and a
+Hasten from the table took one from Boston (351 to 291 Gold, "Displaced (65)", the cooldown note in the action
+column); the fourth drew the large count (28 px high; a `font-family: inherit` had been taken literally) and the
+price on one line (163 × 21 px). Both stance descriptions composed in-game with the parentheticals. Capture
+`working_screenshots/emig-370-displaced-table.png`.
+
+## 41. One Settlements tab (2026-10-26)
+
+The owner: "there should be some way we can combine the information on the Cities tab and the Displacements tab.
+Also, the new combined tab should be called Settlements, since it should include both cities and towns."
+
+Done as a strip under the settlement card: the Settlements tab (kind `cityflows`, label "Settlements", or
+"Settlements (N displaced)") keeps each settlement's two pies and pressure column, and under a settlement people
+fled adds the four displaced cells (Displaced, Per returnee, Free homecoming, Bring back now), each under a small
+heading; the intro lines (newcomer cost, what the strips offer, the reminder switch) sit above the cards only
+when anyone is displaced; a settlement with people away but no movement card (a lost one) gets a card for its
+strip alone; "All civilizations" never carries strips. The Displaced tab, its section, its heading row and the
+`displaced` start kind are gone: the train click, the reminder pop-up and the screen's reopen after a call all
+land on `cityflows`. `displacedExtras(d)` hands the Settlements section its rows, pid, costs, invalidate and
+label; `renderCityFlows` places the strips (`displacedStrip`, `displacedIntro`, `displacedAfter`).
+
+Watched on WashingtonAnt130 (two reloads): five tabs, "Settlements (66 displaced)"; eleven settlement cards with
+their pies and pressure columns, nine of them with a strip under the charts (Philadelphia's: 2 displaced since turn
+108, 2 in Shomron; gains / leaves / net chips; calm in 3 more turns; Hasten, "2 for 170 or 34", "3 to 7 turns
+sooner"); the intro lines above the cards. The strip's cells first stopped at three quarters of the row (the
+engine grows `flex: 1.6 1 0` cells in proportion but not to the row's end); as shares of the row (36 / 27 / 18 %,
+the rest to the buttons) the Hasten button sits on the right edge (2764 of 2764). Capture
+`working_screenshots/emig-370-settlements.png`.
+
+## 42. The displaced column, named rows, and pies that agree (2026-10-26)
+
+The owner, on the first Settlements capture: label the rows "Settlement name gains" and "settlement name loses";
+Philadelphia's emigrants pie said "No departures yet" while its displaced strip had 2 of its people in Shomron;
+the information should interleave more naturally; the prose at the top was too wordy.
+
+The pies: a settlement card counted `recentEventsFor(me, 50)`, the fifty most recent moves the civilization took
+part in, and in an eleven-city game Philadelphia's turn-108 departure had rolled out of that window while the
+displaced model read the age's cumulative flows. The cards now fold the same flows (`D.flows()`, people and points
+split by cause), so the two agree: Philadelphia's pie reads "Within our borders 2 (100%), Why: Disaster 100%" next
+to "2 in Shomron". A move between the player's own settlements is one slice named "Within our borders".
+
+The layout: the strip under the card became the card's fourth column (`displacedCol`, an `emig-city-col` like the
+pies and the pressure), so the four columns share one row: Displaced (count, since, where, lost tiles), the
+yield rows named "Philadelphia gains" / "Shomron loses" (one per host, the three largest) / "net, each", Free
+homecoming, and the buttons with their prices at the foot. The intro is one line (the newcomer cost, the
+reminder switch); the how-to sentence is gone. Watched on WashingtonAnt130: eleven cards, four equal columns
+(644 px each), the named rows, the agreeing pie. Capture `working_screenshots/emig-370-settlements.png`.
+
+## 43. One shape for every settlement card (2026-10-26)
+
+The owner, on the four-column capture: "always having graphs present even if they're empty in order to standardize
+the formatting", the pressure or the displaced block "under the city name to more effectively use space", bars
+"until it's worth having a full pie chart", or smaller pies; "this still needs work."
+
+The card (`settlementCard`, emigration-city-flows.js) now has one shape: the name on the left of the head line and
+the emigration pressure on its right (the bar at 9rem, "16% · Low", the drivers as swatches: "Attraction 100%"),
+the reasons to stay and "Heading to" on a small line under; then three columns at 31% each: Immigrants and
+Emigrants as stacked bars (a segment per origin or destination in the civ's colour, both bars on the scale of the
+busier direction, the count at the head's right, the legend and the Why line under; an empty track and "No
+arrivals yet" / "No departures yet" when nobody moved) and Displaced (the column from
+emigration-displaced-view.js with the count at its head, or an empty track and "Nobody away"). A lost settlement
+with people away gets the same card with empty bars. The pies stay on the All civilizations cards.
+
+Watched on WashingtonAnt130: eleven cards, every head line 27 px, three 821 px columns on each card (Washington
+171 px tall, Philadelphia 445 px with its displaced column), the bars drawn (Yetakapewaki's immigrants 9 within
+our borders + 2 Shawnee as two segments, 82% / 18%). The first draw centred the displaced column's text and the
+Why lines: the single-class card rules later in the sheet outranked the new ones, so the card's rules now use two
+classes; not yet seen.
+
+## 44. The displaced row under the bars (2026-10-26)
+
+The owner, on the three-column card: "now the displaced information needs to be more horizontally provided or
+something? like underneath the two new bar charts?" So the card is the head line, two bar columns at 48% each,
+and under them `displacedRow`: four cells across (Displaced with the count at its head, since, where, lost tiles;
+the named yield rows; Free homecoming; the buttons at the right edge), or `displacedRowEmpty`, one line reading
+"Displaced  Nobody away", so every card ends the same way. The three-column card of section 43 lived for one
+reload.
+Watched on WashingtonAnt130: eleven cards; Philadelphia's card 287 px tall with two 1271 px bars and a full-width
+displaced row (cells 794 / 794 / 424 / 577 px, the Hasten button on the right edge at 2764 of 2764); two "Nobody
+away" lines on the cards with nobody displaced among the first screen; the Why lines left-aligned (the two-class
+rules took). Capture `working_screenshots/emig-370-settlements.png`.
+
+## 45. The pressure moves into the bottom row (2026-10-26)
+
+The owner: "put emigration pressure on the same line to the left of displacement and shift displacement to the
+right." The name now stands alone on its line; the bottom row of every card begins with a pressure cell (the
+heading, the bar at the cell's width with "16% · Low" beside it, the drivers as swatches, the reasons to stay and
+"Heading to" in small type under) at 27%, then the displaced cells at 20 / 23 / 12 % and the buttons in the rest;
+a settlement nobody fled has the pressure cell and "Displaced  Nobody away".
+Watched on WashingtonAnt130: Philadelphia's card 260 px tall, its bottom row's cells 715 / 529 / 609 / 318 / 399
+px with the Hasten button at the right edge (2764 of 2764); Washington's bottom row the pressure cell and the
+"Nobody away" cell. Capture `working_screenshots/emig-370-settlements.png`.
+
+## 46. The settlement dashboard (2026-10-26)
+
+The owner: "treat this more like a control dashboard where we had the Immigrant half on the left and the Emigrant
+half on the right and we could learn/manipulate what we need from this screen"; the pressure is "a black box";
+"show who is exerting emigration pressure on us and who we're exerting pressure on"; "make it fucking STUNNING".
+
+What the model already had: `rankByProsperity` scores every settlement each pass; `adjustedPull(src, dest)` is the
+gradient plus friction times permeability; `pullBreakdown` / `explainPull` / `explainPush` itemise it; `prescribe`
+names the yield and building that close a gap; emigration-explain-view.js keeps the pass per turn (`passData`,
+now `livePass()`). So no new mechanics, only new reads:
+
+- `emigration-settlement-model.js`: `pulledToward` (the three destinations with the greatest adjusted pull on
+  the settlement's people, each with the explainer's rows), `drawnFrom` (every settlement whose best destination
+  is this one, strongest four named, the count), the score's terms as shares, the prescription, the stance read,
+  the move bar. `liveSettlementModels(pid)` builds them for the player's settlements by composed name.
+- `emigration-settlement-card.js`: the card. Title line (name, "6 in · 2 out · 2 away", the score). Two halves
+  in framed panels, green-edged Attract and red-edged Keep and recover, each with its bar, then the blocks:
+  Drawing from / To draw more on the left, Pressure (gauge, drivers, reasons to stay; the hover lists the score's
+  terms and the strongest pull's terms as signed shares, and says how pressure builds and what empties it) /
+  Pulled toward / To keep them on the right. Pull rows: name, an "ours" or rival-civ tag, the signed pull in green
+  or red, the two biggest reasons, the full rows on hover. Then the displaced row. The card borrows the bar body,
+  the title, the pressure band and bar, the stay line and the drivers from emigration-city-flows.js through a
+  `deps` object, so the two files don't import each other.
+- The levers are the real ones: `prescribe`'s first option ("+2 Food here (Granary gives +2) lifts this settlement
+  above Boston" / "closes the gap to Boston"), `openBordersOpenness` (+50% pull) and `closedBordersRetention`
+  (40% fewer leave) read from CONFIG, each line saying whether the stance is slotted.
+
+Watched on WashingtonAnt130 (two reloads): eleven cards, two 1271 px halves each; Philadelphia reading "6 in ·
+2 out · 2 away · score +10.3", its Attract half "Drawing from: Nobody is drawn here yet" and "+2 Happiness here
+(Arena gives +4) lifts this settlement above New York, the strongest draw on its people. Pro-Immigration Stance
+slotted: +50% pull."; its Keep half "16% of the move bar · Low", "Pulled toward New York (ours) +2.1 Prosperity
+gap", "+2 Happiness here (Arena gives +4) closes the gap to New York."; the pressure hover "Economy +44% ·
+Population size −37% · Government & celebrations +11% · Wonders & buildings +7% · Happiness −2% / The pull
+toward New York: Prosperity gap +53% · Leaving a larger settlement −18% · Reluctance to move −16% · Distance −12%
+· Congestion −1%"; New York's "Drawing from: Pikawiiki (ours) +91.2 Prosperity gap, Shelter at home; Shomron +2.7;
+Philadelphia +2.1"; Cilakofa pulled toward Cornstalk's Town, New York and White Oak. The first draw ran the
+building note into the yield ("here(Arena") because the text loader strips a localized string's leading space;
+the space now lives in the code. Captures `working_screenshots/emig-370-settlements.png` (top) and
+`emig-370-settlements-newyork.png`.
+
+Then, the same evening: the displaced row moved into the Keep and recover half ("shouldn't the hasten part be in
+the keep and recover card?"), two cells a line; a "Newcomers living here · N" mirror on the Attract half was built and taken
+out the same hour (the owner: the arrivals bar already says it); and the wording went from draw to attract ("Attracting from", "To attract more"), with an empty block reading "None"
+as a value rather than a sentence (the owner: "Attracted: None").
+
+A wording pass followed (the owner: "Nowhere out-pulls it" is awkward, and "More yields and Happiness widen the
+lead" after it is confusing): the levers now read "+2 Happiness here (Arena: +4) would put this settlement ahead of
+New York, which pulls hardest on its people" / "Already the strongest attraction in reach." / "Pro-Immigration
+Stance: +50% pull for all your settlements." / "Anti-Immigration Stance: 40% fewer leave for other
+civilizations."; the gauge "16% of the way to a departure · Low"; the hover "What makes this settlement's score:"
+/ "What pulls people toward New York:" / "Pressure rises each turn with the strongest pull. When it fills, people
+leave. Close the gap and it drains."; the intro "Newcomers cost 10 Gold and 3.7 Happiness a turn while they settle
+in." with "Stop displaced-people reminders"; "net per person" on the yield rows.
+
+## 47. One typography for the card (2026-10-26)
+
+The owner: make the headings clearly headings and the text under them clearly contextual, throughout; "To attract
+more" is too wordy and should use the game's yield icons the way the displaced block does; the displaced block
+itself is formatted poorly.
+
+Three text roles now run through the whole card, in both halves and the displaced block: a heading (`.emig-sc-bl`,
+small caps, soft gold), a line the player acts on (`.emig-sc-line`), and context under it (`.emig-sc-dim`). The
+Why line under a bar and the stance notes are context; the legend chips are body. The levers are yield chips
+("+2 Happiness" with the game's icon, then "here · Arena: +4" in small type, then "puts it ahead of New York" /
+"closes the gap to New York"); the chip is the displaced block's, exported from emigration-displaced-view.js. The
+displaced block is stacked like the blocks above it: the heading with its count, where they are, a context line
+(since when, the tiles torn down), "Per returnee, a turn" with the named yield rows, then the free homecoming on
+the left and the buttons on the right of one line.
+
+Then the pressure reading and the halves' names (the owner: the pressure "isn't a counter that simply flips", "it's
+not a likelihood per turn", so a percent misleads; and "Keep and Recover" talks about people like stock). The gauge
+is five steps lit to the stage, with the stage's word (Negligible under 10% of the bar, Low, Moderate, High,
+Critical from 90%; the fifth stage is new, the bands are shared with the old pressure column), and the block's
+hover says what it is: "Pressure to leave builds each turn from the strongest pull on this settlement's people
+and drains when the gap closes. When it fills, a group leaves. It is 16% full now." followed by the term shares.
+The halves are "Arriving · and how to attract more" and "Leaving · how to keep them, and bring back those who
+left". Watched on WashingtonAnt130: Philadelphia "Low" with two steps lit and the hover's first line as above;
+"+2 Happiness" as a chip with "here · Arena: +4" and "puts it ahead of New York"; the displaced block's heading,
+where-line, notes, named yield rows, and the homecoming beside the Hasten button. Capture
+`working_screenshots/emig-370-settlements.png`.
+
+And the block's name: "Left · displaced people, and the way home", in the half's own heading style, inside the
+Leaving half (the owner: "use the same font as Leaving for Left for the displaced section, but keep it part of the
+same leaving card"). Two slips fixed on the way, both caught by the reload: rules written for the earlier two-cell
+row (`flex-wrap` on what is now a column) had pushed the homecoming and the Hasten button out of sight, and the
+intro's centring rule had gone with the old row rules. Measured after: the Left block 305 px tall with its five
+parts stacked, the homecoming and the button on one line, the button at the half's right edge.
+
+## 48. Four blocks: Arriving, Arrived, Leaving, Left (2026-10-26)
+
+The owner: "perhaps we actually need four cards for each settlement? Arriving, Leaving, Arrived, Left. The Arrived
+section could show the impacts of those that are there already, the enclaves, any outstanding enclave decisions";
+and the policy cards as steps: "to increase: research X civic, or place X policy card".
+
+Arrived sits under To attract more, headed like Left ("Arrived · newcomers living here, and their communities",
+the count of residents from other civilizations): the origins ("11 Han · 2 Shawnee", from the settlement's
+composition record, an unmet civilization counted without its name) and the community's standing from the city
+snapshot's enclave summary, the same lines the city readout shows (the stage, the next step, what holds it back,
+including a pending decision and its dwell), carried on the settlement row through `pressureMap` as `enclave`.
+The stance lines read the civic tree: `Culture.isNodeUnlocked` on the node that unlocks this age's card
+(`GameInfo.ProgressionTreeNodeUnlocks` by TargetType), so each says "Complete Citizenship to unlock the
+Pro-Immigration Stance: +50% pull", or "Slot the Pro-Immigration Stance…", or "…slotted".
+Watched on WashingtonAnt130: Boston's Arrived block "3 · 3 Shawnee · Shawnee community · Gains a foothold at 25%
+of Boston (now 29%) · Needs at least 3 population of its own (now 2.9)"; Philadelphia's "1 · 1 Han · Han community
+· Gains a foothold at 25% of Philadelphia (now 4%)"; Washington's "0 · None"; the stance lines "Pro-Immigration
+Stance slotted: +50% pull." and "Slot the Anti-Immigration Stance: 40% fewer leave for other civilizations." (the
+Antiquity civic Citizenship is done in this save, so the "Complete {civic}" form is unwatched). Capture
+`working_screenshots/emig-370-settlements.png`.
+
+## 49. Four panes, pies beside the text, the decision button (2026-10-26)
+
+The owner: pies again, to the right of the text in their panes; "From our own settlements" instead of "Within our
+borders"; Arrived and Left as cards of their own; an outstanding enclave decision settable from Arrived, like
+Hasten in Left; the lever to say how ("Add +2 Happiness by building: Arena"); and some way to steer internal
+migration, as older games let surplus food be sent between settlements.
+
+The card is two rows of two panes. Arriving and Leaving each have a body with the text blocks on the left and the
+pie (10.5rem, the legend and the Why line under it) on the right; nobody moved draws the dashed placeholder at
+the same size. Arrived and Left are panes with the same head style, lighter-edged. The own-civ slice is named
+for its direction (`resolveDir(d, me, inbound)`). The lever reads "Add [chip] by building: Arena (+4)" with what it
+achieves under it, and when Food is the answer adds the game's own route: a growing town sends its surplus Food
+to the cities it is connected to; that is the native lever for internal churn, and the honest one, rather than a
+food-transfer mechanism of the mod's own. `emigration-quarter-decision.js` raises the enclave decision the pass
+would offer (`candidateFromSignal`, `quarterView`, `applyQuarterChoice`, now exported from emigration-quarter.js)
+from a "Decide their stance" button in Arrived, through the same step-aside `actionButton` as Hasten.
+Watched on WashingtonAnt130: Philadelphia's four panes, two rows of 1271 px (332 and 311 px tall), a 170 px pie
+in each flow pane with the legend "From our own settlements 6 (100%)", the lever "Add +2 [Happiness] by building:
+Arena (+4) · puts it ahead of New York", Arrived "1 Han · Han community · Gains a foothold…", Left with the
+homecoming and Hasten. No settlement in this save has a stance decision waiting, so the "Decide their stance"
+button is on the watch list. Captures `working_screenshots/emig-370-settlements.png` and `-2.png`.
+
+## 50. No dialog: the calls are buttons on the card (2026-10-26)
+
+The owner, on the refreshed captures: Cilakofa's Leaving pane read "High" beside "Nobody is being pulled away",
+and the Hasten dialog was still there ("I thought we got rid of this dialogue interface... people use the main
+window as the interface for the mechanic").
+
+The contradiction was the lever's wording, not the mechanic: Cilakofa was pulled toward Cornstalk's Town at +12.8
+(the pane listed it), but `prescribe` found no single yield that closes a gap that wide and the lever fell back to
+the "nobody is pulled" sentence. It now says "The gap to Cornstalk's Town (+12.8) is too wide for one building to
+close. Unhappiness is 95% of what pushes people out." How the mechanic works, for the record: each turn the
+strongest adjusted pull on a settlement's people is added to its pressure; when the pressure reaches the bar, a
+group leaves for that destination and the pressure empties; closing the gap stops the accrual. The gauge's stage
+is how full the bar is, not a chance.
+
+The dialog is gone from the tab. The Left pane's paid return is two buttons, "Bring 3 back now for" [Gold 312]
+[Influence 62], which call `callHomeNow` at once for that settlement's people and redraw the tab in place
+(`displacedAfter` now rebuilds the section rather than reopening the screen); a price the treasury can't cover is
+greyed with the shortfall on hover; the ledger is the block's hover. The call abroad has the same two buttons with
+the odds under them. `offerCallHome` and the dialog remain for the console command and the AI; the Arrived pane's
+stance decision still steps the screen aside, since that one is a choice of stances.
+
+Watched the same morning in the WashingtonAnt130 save (turn 130, windowed lab, the save untouched): Philadelphia's
+Left pane read "2 in Shomron" with [Gold 170] [Influence 34]. Pressing Gold took the treasury from 351 to 181, the
+pane redrew in place as "None", the tab's label fell from 66 displaced to 64, and the screen stayed on the
+Settlements tab. Cilakofa's Leaving pane read "High" over the wide-gap line and its three pulls; captures
+`working_screenshots/emig-370-settlements.png` (top) and `emig-370-settlements-2.png` (Cilakofa and Pikawiiki).
+The greyed price (treasury short) and an Influence press are unwatched; this save covers both costs.
+
+## 51. Titled pies, and who lives here (2026-10-26)
+
+The owner: "we need to title the pie charts", and the Arrived pane needs "a current settlement composition pie
+chart". Each flow pie now carries a heading in the card's heading style: "Where they came from" over the Arriving
+pie, "Where they went" over the Leaving pie. The Arrived pane has the same body as the flow panes, its text on the
+left and a pie on the right titled "Who lives here": a slice per origin from the settlement's composition record,
+the owner's own people among them as "Our own people", the legend with counts and shares. Before the first pass the
+pie is the dashed placeholder, "Not counted yet". `newcomersOf` now also returns `all`, the whole composition, for
+it. Watched in the WashingtonAnt130 save: Washington "Our own people 28 (100%)", Philadelphia "16 (94%) · Han 1
+(6%)", Cilakofa half and half with the Shawnee; captures `emig-370-settlements.png` and `emig-370-settlements-2.png`.
+
+Later the same morning, three more from the owner, each watched in the same save: the scaffolding stays ("instead
+of hiding the scaffolding of this interface every time there isn't something to display, let's keep more of it
+there permanently but just not filled in"): the Arrived pane always has its Newcomers, Community and Stance
+decision blocks, the Left pane its where-line, "Per returnee, a turn", "Free homecoming" and the two price buttons,
+dashes and greyed buttons where there is nothing, and the cost line with the reminder switch stays above the cards
+with "No newcomers are settling in right now." when there are none. The tab is "Settlements" without the displaced
+count. And each settlement is one framed card, its name on a gold band across the top with the counts beside it,
+air between settlements ("it's hard to tell where each settlement begins and ends visually"); the frame rules were
+watched by injecting the same text into the open screen, the deployed stylesheet itself awaits the next reload.
+Captures refreshed: `emig-370-settlements.png`, `emig-370-settlements-2.png`.
+
+## 52. The pies by pane, and a title band that says something (2026-10-26)
+
+The owner: "the 'where they went' pie should be in Left, and there should be a 'reasons why they're leaving' pie
+in Leaving. That should also replace the colored squares under the pressure bar." And the title line's "8 in · 7
+out · 7 away · score −18.6" was "functionally meaningless".
+
+Each pane now has the pie that belongs to it. Arriving: "Where they came from". Leaving: "Why they're leaving", a
+slice per driver of the pressure (the same causes and colours the swatches used), so the swatch line under the gauge
+is gone. Arrived: "Who lives here". Left: "Where they went" with its recorded causes ("Why: War 100%") beside the
+displaced text; `leftPane` in the card moves the displaced row's content into a text column and hangs the chart on
+the right, the same body as the other panes. The title band carries two readings instead of the counts: a pill
+"Pressure to leave · High" in the gauge's colour, and "Prosperity · 10 of 11 of your settlements"
+(`rankModels` in the model, ranked when the live set is built). The counts were already in each pane's corner.
+
+Watched in the WashingtonAnt130 save after a fresh reload (so the settlement frame from section 51 is now watched
+from the deployed stylesheet too): Cilakofa's four pies read Shawnee 6 / Unhappiness 95% + Attraction 5% / half
+and half / To our own settlements 3, Why: War; Washington's band "Negligible · 5 of 11", Pikawiiki's "Low · 11 of
+11". Captures `emig-370-settlements.png`, `emig-370-settlements-2.png`.
+
+The owner then: "just remove 'prosperity' and '10 of 11 settlements' from the headers and keep 'Pressure to leave:
+low'". The band is the name and the pill; the rank and its `rankModels` are gone.
+
+## 53. The tally, the plain wait, and shorter pane labels (2026-10-26)
+
+The owner, three more: "To keep them" should "list the reasons stacked by their effect... the contribution to the
+score from each thing as a list (reminiscent of the relationship tallies)"; "3 to 11 turns sooner" under the
+price buttons was "confusing as fuck"; and the four pane subtitles were to be made direct or dropped.
+
+To keep them now opens with a tally of the settlement's prosperity score: a line per term, biggest first, signed
+and coloured (what holds people in green, what pushes them out in red), and the total "Prosperity score" under a
+rule; the terms are `explainPush`'s rows, the same ones the pressure hover listed. "What would help" follows with
+the lever and the stance step. Cilakofa's reads Population size −6.0, Happiness −5.9, Wonders & buildings +5.4,
+Economy +4.6, Government & celebrations +4.1, Unrest −1.3, Fighting −0.4, Prosperity score +0.5.
+
+The wait is said as what the fee replaces: "instead of over the next 11 turns" under the buttons (one batch:
+"instead of in 4 turns"; nothing when the free homecoming would bring them next turn anyway), and the ledger and the
+card's hasten line use the same phrase (`insteadText` replaces `soonerText`). The mechanic itself is unchanged: the
+paid call brings them home this turn, the free homecoming in batches.
+
+The subtitles are now in parentheses with the game's population icon first: "(👥 that came here this age)",
+"(👥 that left this age)", "(👥 from elsewhere, living here)" and "(👥 that went elsewhere)" (`peopleSub`, the
+icon from `UI.getIconURL("YIELD_POPULATION", "FONTICON")`, tinted green with `fxs-background-image-tint`; the YIELD
+context gives a settlement mark, the owner caught it, and the glyph's texture is white, so the tint does the colour,
+and it only holds on an element without opacity; see docs/engine-limits-from-probes.md). A tally row that would print as 0.0 is left out.
+Watched in the WashingtonAnt130 save; captures `emig-370-settlements.png`, `emig-370-settlements-2.png`.
+
+A note for the lab scripts: the Settlements cards exist only once that tab is selected (the screen opens on
+Network), so a probe should wait for `fxs-tab-bar`, not for `.emig-city-card`. And on one reload the tab bar was
+already up before the probe called `emigration.window()` at all (the screen comes back with the save), so a probe
+that calls the opener blindly can close it; check for the tab bar first and open only when it is missing.
+
+## 54. The prosperity strip (2026-10-26)
+
+The owner, on the tally under To keep them: "that kind of applies to both arriving and leaving (but not to arrived
+and left). Should we find a better way of integrating that since it applies to BOTH?" It does: the score is one
+number a settlement has, people arrive when it beats the neighbours' and leave when it falls short, so it now sits
+above both flow panes as a strip across the card, between the name band and the panes. The heading carries the
+total ("Prosperity score +0.5"); under it the terms in two groups, what pushes people out on the left in red and
+what holds them here on the right in green, each a wrapped row of "Label −6.0" items, biggest first, with a caption
+under each group. Before the first pass the strip shows a dash and the waiting words, so the frame is always there.
+Leaving's last block is "What would help" (the lever and the stance step); "To keep them" is gone.
+`prosperityStripFor(m)` is the pure split the strip and its test share.
+
+Then, the same hour: "I really find the ledger version of this more readable. Is there a way we could put this as a
+thinner 5th card that sits vertically in between?" The strip is gone; the card is three columns now, Arriving over
+Arrived on the left, the prosperity ledger standing between (a `.emig-sc-half.ledger`, 13% of the row, the term
+lines and the total as the first tally drew them), Leaving over Left on the right. The panes fill their column
+(`.emig-sc-half` lost its 48% basis; the columns carry 41.5% each, fixed shares because the engine grows
+proportional flex only part way).
+
+## 55. The ledger opened up (2026-10-26)
+
+The owner: "is that a full ledger accounting or could we get more granular... break out wonders and buildings and
+then show which ones specifically underneath?", then: Wonders, Buildings, Government and Celebrations on their own
+lines, the detail "as a dropdown if you click on the main heading (like a hidden accordion)", disasters "with their
+name and then in parenthesis turns remaining", and the title to open everything.
+
+`explainLedger` (emigration-explain.js) is the accounting the ledger draws: `explainPush`'s rows with the polity
+term split into Government, Celebrations and a happiness-stage piece that joins the Happiness row, and the built term
+split into Wonders and Buildings; the rows still sum to the score exactly. Under each row the lines its accordion
+opens to: the five yields under Economy (`productivenessParts`, each scaled by the happiness multiplier, summing to
+the row), each credited wonder and building with its points (`builtItems` on the signal, from `scoreKinds`, with a
+"Cap on what's built" line when the ceiling trimmed them), the happiness against the empire's average and the stage
+piece, the population, the government by name, whether a celebration runs, and under each situational penalty its
+share of the base score; the Disaster row names the disaster (`disasterType` on the signal) with the turns its
+distress has left at this speed's decay. Wonders, Buildings, Government and Celebrations stay even at 0.0.
+
+The card: a chevron on each row that has lines, a click opens them (the chevron turns), the title opens or closes
+every row at once. Watched in the WashingtonAnt130 save with every row open: Washington's Wonders +4.5 are Hanging
+Gardens, Byrsa and Gate of All Nations at +1.5 each, Buildings +1.5 are seven buildings less a cap of −3.9; the
+economy's five yields sum to +23.0; Pikawiiki's Disaster −26.2 reads "10 turns remaining · 137% of the base" (its
+type stamp was unset in this save, so the row kept the plain word Disaster). Long notes overflowed the thin column
+on the first draw and the space before a note's parenthesis was collapsed by the engine; the notes are shorter, the
+labels wrap, and the gap is a margin. Captures `emig-370-settlements.png`, `emig-370-settlements-2.png`.
+
+Then: "we should use the small gold + button to show the drop downs", and the lines under a row formatted like the
+rows "but just not such bright gold", never spilling over the card. Each row with lines now carries the game's own
+`fxs-minus-plus` (its `data-type` flips between plus and minus; it answers `action-activate`, and the row itself
+still answers a click); the lines share the rows' layout and size a step in, in a dimmer gold, and the ledger clips
+anything that would run past its edge. Watched with every row open on Washington and Pikawiiki: seven buttons,
+21 px square, no line past the ledger's right edge. Captures refreshed.
+
+## 56. The Communities tab folded into Settlements (2026-10-26)
+
+The owner: "the 'majority' and 'homogeneous' columns in the communities tab are really the only truly unique pieces
+of information on that tab. If we find a way to integrate them into the settlements tab's two sub pills... I think
+we could eliminate the communities tab entirely?" Right: the composition bar is the Arrived pane's "Who lives here"
+pie, and population and origins sit in that pane too.
+
+The diversity rows (`diverseCityRows`, unchanged) now ride on the Settlements section as `diversity`. Mine: each
+card's Arrived pane has a Mix block, "American majority · Homogeneous", the two words carrying the old column rules
+as hovers (`mixWords`); a dash before the rows are read. All civilizations: under every civilization's card a table
+of its settlements (`mixTable`: name, composition bar, population and origins, Mix, Character, Enclave), bars scaled
+against the largest settlement on the tab; `buildCivFlows` keeps a card for every civilization now, flows or none,
+and a civilization with rows but no card gets a bare one, so no settlement goes missing. The tab, its label, its
+section, its renderer and the embedded page's sub-tab and hub page are gone; `CONFIG.diversityRanking` off now
+empties the rows instead of hiding a tab. The working capture of the tab is deleted.
+
+Watched in the WashingtonAnt130 save: four tabs (Network, Settlements, Policies, Notifications); Washington's
+Arrived pane "American majority · Homogeneous", Cilakofa's "American majority · Mixed City" (its people are half
+Shawnee, and a 50% share still reads as the majority, as the old column had it); All civilizations: six cards,
+each with its settlements table, the American one listing all eleven with Mix, Character and the Shawnee enclaves.
+The Mix line first drew its two words on separate lines (inline spans in a block); it is a flex row now. Captures
+`emig-370-settlements.png`, `emig-370-settlements-2.png`, `emig-370-settlements-all.png`.
+
+## 57. Sort by pressure, "Your settlements", Spoil Guard (2026-10-26)
+
+The owner, three asks. (1) Sort the Settlements tab's two views by pressure: a second pill group, "By pressure" (the
+default) and "By name", beside the view pills (`chosen.sort` in emigration-tab-switches.js, the switch mount split
+into `mountPills` so two groups can share one redraw). Your settlements orders the cards by the pressure bar; All
+civilizations orders each table's rows the same way, the cards by their most pressed settlement, and the tables
+gained a "Pressure to leave" column with the stage word (every settlement's snapshot, `allCitySnapshots`, joined
+to the mix rows as `pressure`). (2) "Mine" is "Your settlements". (3) A Spoil Guard "like we have for the
+Demographics mod", working alone and with it: the Options checkbox replaces the three-way Analytics visibility
+dropdown, stored in the same slot (1 on, 2 off, 0 the pre-checkbox "follow"), and `effectivePolicy` takes the
+stricter of our guard and Demographics' published or stored guard, with the host's ceiling over both, so a player
+who guards in either mod is never spoiled by the other, and turning one guard off only shows everyone once both
+are off. Without Demographics the checkbox is the whole story.
+
+Watched in the WashingtonAnt130 save: the pills read "Your settlements | All civilizations" and "By pressure | By
+name"; By pressure puts Cilakofa (High) first, then White Oak and Shomron (Moderate), the Low ones, then the
+Negligible ones in the game's order; By name runs Boston, Cilakofa, Cornstalk's Town, New York, Philadelphia. All
+civilizations by pressure opens on the Incan card, whose Kashamarka reads Critical, then Wanuku and Ullantaytampu
+Low. The first draw had every table row at Negligible: `diverseCityRows` builds a fresh object per row and dropped
+the pressure; it carries it now. Captures `emig-370-settlements.png` (Your settlements by pressure) and
+`emig-370-settlements-all.png` (All civilizations by pressure). The Spoil Guard checkbox itself is in the game's
+Options screen, which the lab doesn't open; its policy arithmetic is covered by the governance tests.
+
+Two more from the owner the same afternoon: "the red label at the top of our window indicating that the default
+setting for the spoil guard is on that we have in the demographics mod", and the Settlements tab first, Network
+second. The pill (`policyPill` in emigration-screen.js) sits left of the Advanced button in the Demographics
+banner's shape and colours and reads "Spoil Guard on: civilizations you haven't met are hidden" (or "only your own
+civilization shows"), with the way to turn it off on hover; it is left out when the effective policy hides nothing.
+`allSections` lists the Settlements section first, so the screen opens on it, and the embedded page's sub-tabs and
+hub pages follow the same order.
+
+Then: the sort as "square filter buttons on the same level as Scaled and Civ with a vertical line separating the
+two", and "a very light red shading behind Leaving and Left and very light green behind Arriving and Arrived". The
+sort buttons (`mountSortButtons`) sit on the control row after a "|" divider in the Scaled / Civ button style; the
+panes carry a faint green or red gradient over their dark base. Watched in the save: the Settlements tab opens
+first with the Spoil Guard pill reading "Spoil Guard on: civilizations you haven't met are hidden" beside Advanced.
+
+## 58. The documentation pass, and the quote on the reminder (2026-10-26)
+
+The owner: align the Civilopedia with the current version, then the docs, with the AI section brought up to date.
+In-game: Reading the Dashboard describes the four tabs and the settlement card; Calling Your People Home is Coming
+Home, with a new On Their Own chapter (`HOMECOMING` in `data/emigration-civilopedia.xml`) and the Hasten, Call from
+Abroad and price chapters rewritten around the card's buttons and the AI's discount; Immigration Policies and
+Treatment carry Talent Attraction's per-population Science and Consular Protection's flat Influence; the lens,
+options and Scope & Visibility pages name the Spoil Guard; the notifications page describes the train notices, the
+readout's fix line and the newcomer cost; Common Questions, the overview, Attraction & Asylum (the retired asylum
+cards) and About (3.7.0, the two city strategies) follow. The Simplify dashboard option description hides the
+Network diagram only. Docs: README What's new in 3.7.0, Features, FAQ, the dashboard section, §1, §6b, §6j, §9,
+§10 and §11 (the hold-people strategy, the difficulty discount, the stance notices, the native yields the planner
+reads, abroad-only calls, six new rows in the seen table), §12 (the new modules); the CHANGELOG's Unreleased
+section is one account of 3.7.0 against 3.6.7 instead of the day-by-day one; the Workshop description's dashboard
+paragraph and two new bullets.
+
+Then the owner: "lets just put the quotes on the reminder pop-up". `homeNoticeView(away, quote)` carries a
+homecoming epigraph (`displacedQuoteFor(pid, "return", "home-notice|pid|turn")`, one per notice), drawn by the
+dilemma view's quote frame as the refugee decision's is; the Voices page says so. Unit-tested
+(`tests/home-notice.mjs`); the drawn pop-up is on the watch list.
+
+The 31 pedia and option keys whose English changed were dropped from `i18n/<locale>.json` and the locale XML
+regenerated with `i18n_apply --force`, so they read in English until translated, like the other 314 strings of
+this release (`i18n-keeps-stale-translations`). `emigration-guide.js` and its 169 `LOC_EMIG_GUIDE_*` strings have
+no importer since the Guide tab went; left for a code pass.

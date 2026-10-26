@@ -14,12 +14,14 @@ Adds detailed migration and refugee systems to Civilization VII. When a settleme
 [*][b]Borders and policy.[/b] Ten policy cards: a Pro-Immigration and an Anti-Immigration Stance in every age, each bringing its own policy slot, plus Talent Attraction and Consular Protection from the Exploration Age. Every card reads like the game's own, the yields first and one line per effect with its number. Open Borders agreements raise migration both ways.
 [*][b]Integration cost.[/b] Each migrant applies a temporary gold cost to the host civilization and delays its next Celebration. A congestion cap limits per-settlement intake.
 [*][b]Origin tracking.[/b] Settlements record where their people came from. Minorities integrate over time and diasporas may return home.
+[*][b]Coming home.[/b] People driven out of one of your settlements into another of yours come back on their own once it's calm, and settle the plot their people left. Hasten pays to bring them sooner; Call from abroad is the paid gamble for people living in another civilization's cities.
+[*][b]The AI plays too.[/b] AI civilizations take stances, decide on refugees and call their people home through the same rules, with a discount for the game's difficulty, and two city strategies have their cities build against losing people.
 [*][b]Every leader and civilization.[/b] The roster is read from your installed game, so all 38 leaders and 50 civilizations are tuned.
 [*][b]Attribution.[/b] Each move records its deciding factor (prosperity, distance, safety, open borders, allies, asylum, crisis, or war) in notifications, city readouts, and a persistent log.
 [*][b]Fully localized.[/b] The interface is in all 12 of the game's languages.
 [/list]
 [h2]Migration dashboard and map lenses[/h2]
-The dashboard opens from an optional dock button. Tabs cover the Migration Network, Net Migration, Why People Move, Settlements, Diversity, Immigration Policies, Notifications, and a Guide.
+The dashboard opens from an optional dock button or a migration notice beside End Turn. The Settlements tab is a card per settlement: who is arriving and from where, who is leaving and why, with the pressure as a gauge and what would stop it, who lives here, and who is away with the buttons that bring them home. The Network tab is the animated migration diagram with the Net Migration table behind it; Policies shows who has taken a stance; Notifications keeps the log. A Spoil Guard hides civilizations you haven't met.
 On the map, the Ethnic Composition lens paints each settlement by where its people came from, and the Prosperity lens shades each settlement's own land by how good its tiles are.
 [h2]Works with other Tower mods[/h2]
 [list]

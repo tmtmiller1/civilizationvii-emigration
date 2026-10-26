@@ -33,7 +33,35 @@ When a settlement is starving, unhappy, or under siege, people leave. When one i
 
 Documentation on GitHub: [README.md](https://github.com/tmtmiller1/civilizationvii-emigration/blob/main/README.md) · [typeset PDF](https://github.com/tmtmiller1/civilizationvii-emigration/blob/main/README.pdf), with every formula rendered.
 
-## What's new in 3.6.7
+## What's new in 3.7.0
+
+- The Settlements tab is a dashboard, and it opens first. Each of your settlements is one card with four panes:
+  Arriving (where arrivals came from, which settlements this one attracts from, what would attract more), Leaving
+  (the pressure to leave as a five-step gauge with its drivers, where people are pulled toward, what would keep them),
+  Arrived (who lives here, the settlement's Mix and Character, its foreign community's standing) and Left (who is
+  away, when they come home, the Hasten and Call from abroad buttons). A prosperity ledger between the panes lists
+  every term of the score. Sort by pressure or by name; "All civilizations" has every civilization's cause cards and
+  a table of its settlements. The Cities, Displaced, Communities, Causes, Net Migration and Guide tabs are folded
+  into it or into the Network tab; the dashboard has four tabs: Settlements, Network, Policies, Notifications.
+- People driven out of one of your settlements into another of yours come home on their own once it's calm, and
+  settle the plot their people left. The Chronicle and a notice beside End Turn say when they start and when the
+  last is back. Hasten pays to bring them sooner; Call from abroad is the paid gamble for people in another
+  civilization's cities. Both are buttons on the card, with the full ledger on hover. A small reminder with a
+  homecoming quote offers to open the tab once enough of your people are displaced and a home is calm.
+- The city readout says what would stop people leaving ("+3 Food or +2 Happiness here (Granary gives +1 Food)") and
+  what newcomers cost you a turn. A notice tells you when a civilization you've met opens or closes its borders.
+- Spoil Guard: one checkbox hides civilizations you haven't met across the Emigration screens, with a red pill on the
+  screen saying so, and it works together with the Demographics guard.
+- Talent Attraction is +1 Science per 5 Population in every settlement (per 4 in the Modern Age) through the game's
+  own yield system; Consular Protection carries +1/+2 Influence a turn the same way. Both cards name their numbers
+  the way the game does, and the AI's planner can value them.
+- The AI plays its side: a second city strategy ("hold your people") biases Production and Happiness when a
+  settlement's Food stalls, AI civilizations get the free homecoming and pay the mod's prices with a discount for the
+  game's difficulty, and they only pay to call people abroad.
+- The Civilopedia's Emigration section describes all of this as it is now: the four-tab dashboard, Coming Home, the
+  cards' current numbers, the Spoil Guard and the AI's part.
+
+## What was new in 3.6.7
 
 - Refugee rings stay on after the war or disaster ends, brightest while it's on, so the legend's ring always matches
   dots on the diagram.
@@ -179,19 +207,20 @@ Compatible with Civilization VII 1.5.0.
 - **Ethnic Composition lens (Shift+E):** tile-by-tile map of population origins, each tile a blend of the peoples living on it and shaded by how crowded it is; an enclave's tile reads as its people's own quarter
 - **Integration:** newcomers assimilate over time; war with the homeland stops it and unrest slows it
 - **Return migration:** diasporas can return to peaceful, prosperous homelands
-- **The AI plays too:** AI civilizations call their people home, choose their enclaves' stances and decide on refugees through the same rules and prices, and get an earlier "keep them happy" city strategy
-- **Call our people home:** pay Gold or Influence for a call, in a size you choose, to bring displaced people back to the settlement they fled; from your own settlements that many come, from abroad the call is paid for either way and each person asked may or may not answer
+- **The AI plays too:** AI civilizations choose their enclaves' stances, decide on refugees and call their people home from abroad through the same rules, at the player's prices less a discount for the game's difficulty; their displaced people come home on their own; and two city strategies ("keep them happy", "hold your people") have AI cities build against losing people
+- **Coming home:** people driven out of one of your settlements into another of yours come back on their own once it's calm, and settle the plot their people left; Hasten pays Gold or Influence to bring them sooner, and Call from abroad is the paid gamble for people in another civilization's cities, each person asked answering at the odds shown
 - **Cultural Enclaves:** lasting foreign communities can become real improvements with the origin civilization's identity and yields; hover an enclave's tile to see its stage and where each of its yields comes from
 - **Put down roots:** enclave communities are less likely to return home
 - **Migration Chronicle:** major movements become history entries
-- **Quotes from the displaced:** refugee and newcomer pop-ups use words from that people's refugees, exiles, and migrants; the call-home pop-ups use words of those who longed for home and came back
+- **Quotes from the displaced:** refugee and newcomer pop-ups use words from that people's refugees, exiles, and migrants; the reminder that your people can come home uses words of those who longed for home and came back
 
 ### Interface
 
-- **Migration dashboard:** flows by civilization, cause, and settlement; on the network diagram, click a city to highlight just its migrant flows, or drag a settlement out of its civilization's circle to read its flows
+- **Migration dashboard:** a card per settlement with who is arriving, leaving, living here and away, what drives the pressure and what would stop it, and a prosperity ledger; every civilization's causes and settlements; the animated network diagram, where a click on a city highlights just its migrant flows and a settlement can be dragged out of its civilization's circle
+- **Spoil Guard:** civilizations you haven't met stay hidden across the Emigration screens until you meet them; one checkbox, shared with the Demographics guard
 - **Notifications in the game's own train:** the mod's notices sit beside End Turn as the game's do, plus a persistent log
 - **Move attribution:** records the factor that decided each move
-- **City readout:** pressure mix, reasons to leave and reasons to stay, and enclave progress by settlement
+- **City readout:** pressure mix, reasons to leave and reasons to stay, what would stop people leaving, what newcomers cost, and enclave progress by settlement
 - **Prosperity lens:** tile-by-tile prosperity map, each tile scored in points from what stands on it and around it, with a hover readout that lists every term
 - **Demographics integration:** Net Migration, Emigration, and Immigration graphs and tables, with movement split into internal and external
 - **Civilopedia section:** every system, every policy card, and every quotation with a note on its speaker
@@ -200,7 +229,7 @@ Compatible with Civilization VII 1.5.0.
 
 - **Intensity presets:** Low, Medium, and High
 - **Arrival behavior by type:** refugees, migrants, and returnees can ask where to settle or settle automatically; refugees ask by default
-- **Decision pop-ups on or off:** refugee decisions, newcomer placement, call-home offers, and enclave stances each have their own switch on the Mods tab
+- **Decision pop-ups on or off:** refugee decisions, newcomer placement, displaced-people reminders, and enclave stances each have their own switch on the Mods tab
 - **Hover help on every option:** each Mods-tab option explains what it does, what each choice means, and when a change takes effect
 - **122 advanced options:** Options ▸ Mods ▸ Emigration
 - **One game-setup option:** "Emigration: AI keeps cities happy" on the game setup screen, on by default, chosen for the whole game
@@ -259,8 +288,8 @@ Compatible with Civilization VII 1.5.0.
 ### How do I see what is happening?
 
 - The notification train and the Notifications log record each move and its cause.
-- The dashboard shows flows by civilization, cause, and settlement.
-- City readouts show local pressure, reasons to leave and to stay, and enclave progress, and the dashboard shows them across every settlement.
+- The dashboard's Settlements tab shows, for every settlement, who is arriving and leaving and why, who lives there and who is away, and what would change it; the Network tab shows the flows between civilizations.
+- City readouts show local pressure, reasons to leave and to stay, what would stop people leaving, and enclave progress.
 - Hovering an enclave's tile shows its stage and the source of every yield it brings in.
 - The Civilopedia's Emigration section describes every system, policy card, and option, and lists every quotation with a note on its speaker.
 - The Prosperity lens maps prosperity by tile: wonders, the center, buildings and quarters, worked land, rivers and natural wonders score up; ruin scores down. Hover a tile to see the terms.
@@ -288,7 +317,7 @@ Useful log markers: `EMIGRATION … left … for …`, `assimilation: …`, and 
 
 ## Migration dashboard
 
-Available through an optional dock button or the Demographics interface. Tabs cover Migration Network, Net Migration, Why People Move, Settlements, Diversity, Immigration Policies, Notifications, and Guide.
+Available through an optional dock button, a migration notice beside End Turn, or the Demographics interface. Four tabs: Settlements (a card per settlement, with every civilization's causes and settlements behind "All civilizations"), Network (the animated diagram, with the Net Migration table behind "Table"), Policies, and Notifications.
 
 The dashboard reflects saved gameplay state, not cosmetic estimates: population, abandoned and settled tiles, gold, and Influence all change in game (§13).
 
@@ -356,7 +385,7 @@ Moves appear in toasts, Demographics graphs, and the dev log, for example:
 
 ### Quick reference: what counts
 
-Defaults are shown below; most are tunable in §10 and on the dashboard's **Guide** tab.
+Defaults are shown below; most are tunable in §10, and the Civilopedia's Emigration section carries the player-facing version.
 
 **What makes people leave**
 
@@ -428,7 +457,7 @@ Defaults are shown below; most are tunable in §10 and on the dashboard's **Guid
 | | | |
 |---|:---:|---|
 | Replaces base-game files | ✗ | Additive only |
-| Changes the AI | ✓ | Adds one city strategy ("keep them happy", an earlier and gentler copy of the game's own; a game-setup option, on by default); AI civilizations call people home, pick one of an enclave's two stances and decide on refugees through the mod's own rules (§11) |
+| Changes the AI | ✓ | Adds two city strategies ("keep them happy", an earlier and gentler copy of the game's own, a game-setup option on by default; "hold your people", Production and Happiness once a settlement's Food stalls); AI civilizations call people home from abroad, pick one of an enclave's two stances and decide on refugees through the mod's own rules, at a difficulty discount (§11) |
 | Moves population instantly | ✗ | Distance and transit apply |
 | Lets you place individual migrants | ✗ | You shape flows indirectly; local arrivals can be placed |
 | Lets one civ snowball unchecked | ✗ | Field-relative scoring, congestion, and anti-snowball headwinds limit runaway inflow |
@@ -671,7 +700,7 @@ Migration, retention, the refugee tilt and the enclave payout are custom UI-VM m
 Food are native `TraditionModifier`s from `data/emigration-policies-gameeffects.xml`.
 
 The cards are ten in all: the two stances in every age, **Talent Attraction** (Exploration at Inspiration, Modern at
-Modernization: +1/+2 Science plus +1.5 Science per immigrant, decaying 30% a turn, capped at +12 a turn) and
+Modernization: +1 Science per 5 Population in every settlement, per 4 in the Modern Age, through the game's own per-population yield) and
 **Consular Protection** (below). The 3.5.0 cards they replaced (Guest Right, Charter of Communities, Equal Protection,
 Watched Quarters, Oaths of Loyalty, Registration of Residents, Cultural Magnetism, Commercial Draw, Selective Asylum,
 Refugee Compact) keep their rows so a save that holds one still loads and keeps its effect, but no new game offers them.
@@ -899,19 +928,21 @@ contested names that card: a suspicion card falls hardest on the families, a pro
 
 After fighting in a settlement's borders or a siege the wait is `homecomingCalmTurnsAfterWar` (10) calm turns instead, since a frontier settlement that was hit once is likely to be hit again (watched 2026-10-25: with the short wait, Pārsa took four people back and was lost with them in it).
 
-**The Displaced tab** (`emigration-displaced.js`, `-displaced-view.js`), after My Cities on the Emigration screen, is where you see and act on all of this: one card per settlement of yours that people fled, with how many are away and where (which of your settlements, which foreign cities), since when, what a returnee is worth (the average yields of the rural tiles that settlement works, since a returnee settles a new one), when they come home on their own (calm turns still needed, turns to the next return and to the last), and the paid calls: Hasten for people in your own settlements, Call from abroad for the gamble, each with its price in Gold and Influence and, for the gamble, how many are expected to come and what that makes each person who comes cost. Each button opens the call-home dialog for that settlement's people only, and the tab redraws when it closes. A settlement you no longer hold is listed with its people staying where they are.
+**The city readout's fix line** (`emigration-prescribe.js`, `readoutPrescribe`). Under "Pulled toward" the readout says what would stop people leaving, in the model's own terms: the smallest whole amount of Food, Production or Happiness that would raise the settlement's score by the gap between it and the pull of its best destination (`bestDestination().adjusted`), and the building of the current age that gives most of that yield (`Constructible_YieldChanges`). A gap no amount under 60 of a yield closes leaves that yield out; nobody drawn away means no line. The readout also carries what newcomers cost ("Newcomers: -3 Gold, -1 Happiness a turn across your civilization while they settle in"), as do the top of the Settlements tab and the tail of the arrival notice.
 
-A civilization can pay Gold or Influence to bring its displaced people back to the settlement they fled. The dialog offers a ladder of sizes for each currency (one person, about half of what is callable, everyone, up to `callHomeMaxPointsPerAttempt` = 3), priced with the game's own Gold and Influence icons. A size the treasury cannot cover stays in the list, grayed out, with a tooltip giving the price and the balance.
+**The Settlements tab's displaced strips** (`emigration-displaced.js`, `-displaced-view.js`, placed by `-city-flows.js`): the Settlements tab is a dashboard: each settlement's card has four panes, Arriving (the arrivals pie beside the text; Attracting from, the settlements whose best destination this is, with the pull and its reasons; To attract more, "Add +2 Happiness by building: Arena", the Food link through towns, and the Pro-Immigration Stance as a step), Leaving (the departures pie; the pressure to leave as a five-step gauge with how it builds, how full it is, and the score's and the strongest pull's terms on hover; Pulled toward; To keep them), Arrived (the residents from other civilizations by origin, their enclave's stage, next step and blockers, and the button for a waiting stance decision) and Left (the displaced people with the free homecoming and the paid return as Gold / Influence buttons that act at once), read off the same ranked field the simulation decides with (`emigration-settlement-model.js`, `-settlement-card.js`, `-quarter-decision.js`) (Displaced: the count and where they are; "Boston gains" / "Pittsburgh loses" / "net, each" as the game's yield icons; the free homecoming; the buttons with their prices; the sentences below are hovers; a lost settlement gets a card of its own), with how many are away and where (which of your settlements, which foreign cities), since when, what a returnee is worth (the average yields of the rural tiles that settlement works, since a returnee settles a new one), when they come home on their own (calm turns still needed, turns to the next return and to the last), and the paid calls: Hasten for people in your own settlements, Call from abroad for the gamble, each with its price in Gold and Influence and, for the gamble, how many are expected to come and what that makes each person who comes cost. The Worth line also names the tile a returnee leaves where they live now, and the Hasten line says how many turns sooner than the free homecoming the fee brings them. Each price is a button that pays and moves the people at once, and the tab redraws in place; the ledger (`emigration-hasten-ledger.js`) is the block's hover: what the home gains, what each settlement they live in gives up, the civilization's net per person, and the turns the fee saves. Inside your borders a return swaps one rural tile for another, so the fee buys time; from abroad every person who answers is a tile gained for good and the fee is paid either way. A price the treasury can't cover is greyed with the shortfall on hover. Every pane keeps its frame when there is nothing in it, the Left pane's prices as dashes, so the card looks the same from one settlement to the next. A settlement you no longer hold is listed with its people staying where they are. Each departure that tears down a rural improvement is remembered by settlement (`emigration-lost-tiles.js`, in the save), so the card can say "Lost: 2 Farms, 1 Woodcutter", and a returnee settles the plot their people left when the game still offers it, else another free plot of the same settlement (the placement prefers the plot; with "Ask me" placement or in an AI city the game chooses). The "People are leaving" and "People are coming home" notices beside End Turn open the screen on the Settlements tab.
 
-- **From your own settlements** it is a purchase: the pop-up names the settlement people are pulled back from and the one they return to, and exactly the number paid for come.
-- **From abroad** it is a gamble: the pop-up names the foreign city and its ruler and gives the odds per person (`callHomeChanceExternal`, 18%). The call is paid for at the chosen size whether or not anyone answers; each person asked is rolled, and the call may bring nobody. An unanswered call is recorded in the Chronicle and still starts the cooldown.
+A civilization can pay Gold or Influence to bring its displaced people back to the settlement they fled. The two calls are buttons on the settlement's card in the Left pane of the Settlements tab (`emigration-displaced-view.js`): Hasten for people in another of your settlements, Call from abroad for people in another civilization's cities. Each pays and moves people at once; a price the treasury can't cover is greyed; the card names the tile a returnee works at home and the tiles they leave, the net per person and the turns the fee saves, and the price buttons' hover carries the full ledger (what the home gains, what each settlement they live in gives up, the net, the turns saved, and for a call abroad the odds and the cost per person who comes). Sizes are one person, about half of what is callable, and everyone, up to `callHomeMaxPointsPerAttempt` = 3. The old dialog with its ladder of sizes is still raised by the console's `emigration.callHome()`.
+
+- **From your own settlements** it is a purchase: exactly the number paid for come, largest group first. Inside your borders a return swaps one tile for another, so the fee buys time: the card says "instead of over the next N turns".
+- **From abroad** it is a gamble: the card gives the odds per person (`callHomeChanceExternal`, 18%). The call is paid for at the chosen size whether or not anyone answers; each person asked is rolled, and the call may bring nobody. Every person who answers is a tile gained for good. An unanswered call is recorded in the Chronicle and still starts the cooldown.
 - **Price:** `callHomeGoldPerPoint` (60) or `callHomeInfluencePerPoint` (12) for one person, climbing as n^1.5 (two people cost nearly three times one, three about five times), ×`callHomeExternalCostScale` (1.5) abroad, and ×`callHomeAgeCostStep` (3) per age past Antiquity ("Price climb per age": ×3 in Exploration, ×9 in Modern).
 - **AI civilizations call too** (`callHomeAi`, "AI civilizations call people home" in Advanced settings, on by default; `emigration-call-home-ai.js`). On its own turn, when none of its settlements is in distress, its people are away, the cooldown has run out and it can pay, an AI civilization makes the same call at the same price, odds and cooldown, sized by value: the k-th person is called only if their marginal fee is under what they are worth (the home city's net yields per head, the leader's favoured yield from the game's AI data counted twice, over two cooldowns; times the odds for a call abroad), one call spends at most a quarter of the balance, a civ in deficit keeps eight turns of reserve, and it pays in the currency that buys the larger call. From its own settlements first, from abroad only from what the internal bill leaves; the home city with the lowest prosperity is served first. At the shipped prices this means Influence calls of two or three people for an ordinary city and a Gold call of one, and almost no calls abroad unless the home city is very rich. The distress read reuses the last pass's city signals, so an AI turn doesn't read the map again. When a call takes people out of one of your cities you get a train notice and a Chronicle line naming who called. Watched 2026-10-23 from the console on a turn-101 Antiquity lab game: Persia's internal call charged 312 Gold and moved its people; Greece's external call charged 468 Gold and the dice refused all three. Watched running on its own 2026-10-23 in two Deity lab games at Antiquity seed 4242 (the usual set). First game, 100 turns: Hawaii called at turn 54 (34 Influence, two came home, a fishing boat abandoned at the host, "They Answer The Call" in the Chronicle), Goryeo at turn 71 (312 Gold, three) and again at 79 after the eight-turn cooldown (62 Influence, three, Gold being short by then). Second game, 130 turns: eight calls, all internal, Hawaii once and Persia and Goryeo every eight turns from the sixties on, each the three-point cap (those games ran before the value sizing; with it, a Deity Exploration game the same evening logged 21 calls sized 2 and 3). No external call came up on its own in either game (three abroad cost 468 Gold in Antiquity and about 1,400 in Exploration, and the AI only calls abroad with that to spare after its internal bill). The external call out of a human city was watched with seeded flow rows and the odds forced to 1: Persia paid 255 Gold for two, Heian-Kyo lost two and Pārsa gained them, the Chronicle read "Achaemenid Persia calls its people home from Heian-Kyo: 2 population points leave", and a loss notice joined the human seat's train.
 - **Who is away:** the migration ledger is an all-game tally, so everyone who has come home since, by a call or by drifting home on their own, is counted (`emigration-returned.js`, kept in the save) and taken off it. A return comes off the pair it matches; one that landed in a different home city comes off the other groups from the same host city, largest first.
 - **Who can be called:** only people whose host city and home city both still exist under the owners the ledger names; a group whose city changed hands or was razed since they fled is left out of the quote (`callHomeResolvable` in `emigration-call-home-action.js`), and a paid call that still moves nobody refunds its fee. The dice refusing an external call is not a refund case.
-- **Cadence:** `callHomeCooldownTurns` (8) per civilization, kept in the save (`EmigrationCallHomeCooldown_v1`) so a reload doesn't reset it; measured in the mod's monotonic turn, so an age change doesn't either. With `callHomeOfferWhenCalm` ("Call-home offers" on the Mods tab) the call is offered once no settlement is in distress and people are still away. Leaving them where they are (the button, the dialog's close button or Escape) is kept in the save: those people are not offered again, and a later offer lists only people displaced since. The console call `emigration.callHome()` still lists everyone.
+- **Cadence:** `callHomeCooldownTurns` (8) per civilization, kept in the save (`EmigrationCallHomeCooldown_v1`) so a reload doesn't reset it; measured in the mod's monotonic turn, so an age change doesn't either. With `callHomeOfferWhenCalm` ("Displaced-people reminders" on the Mods tab, on by default) a small pop-up (`emigration-home-notice.js`) offers to open the Settlements tab once one of the settlements they fled has been calm long enough for the free homecoming and at least `homeNoticeMinAway` (5) population points are displaced from settlements you still hold. Its buttons are Open the Settlements tab, Not now, and Don't remind me again (the switch itself). It repeats only once the count has grown by half (and by the threshold) and ten turns have passed, with Not now counting as a reminder; the last one is kept in the save as `EmigrationHomeNotice_v1`, and the tab's "Stop the reminders" link flips the same switch. Leaving people where they are from a dialog (the button, its close button or Escape) is kept in the save: those people are not offered again by the console call, and the Settlements tab lists everyone regardless. The console call `emigration.callHome()` still raises the dialog for everyone.
 
-Each dialog closes on a homecoming epigraph in the caller's own civilization's voice (`emigration-return-quotes.js`), from Sinuhe's recall to Egypt to the Ten Thousand's "The sea! The sea!", with a general pool for civilizations without their own; every line was read in its source.
+The reminder pop-up (and the console dialog) closes on a homecoming epigraph in the player's own civilization's voice (`emigration-return-quotes.js`), from Sinuhe's recall to Egypt to the Ten Thousand's "The sea! The sea!", with a general pool for civilizations without their own; every line was read in its source. One quote per notice, fixed by the player and the turn.
 
 ---
 
@@ -958,7 +989,7 @@ When Demographics is installed, Emigration registers through `globalThis.Demogra
     External).
   - **Emigration / Immigration:** gross outflow and inflow, including cause breakdowns.
   - **Refugees (Left / Arrived):** displaced people sent or received, with optional war and disaster onset markers.
-- **Dashboard sub-tabs:** Network, Causes, Settlements, Displaced, Diversity, Immigration Policies, Notifications, and Guide. Registration is a silent no-op on older Demographics versions.
+- **Dashboard sub-tabs:** Network (with Diagram | Table pills under the tab bar), Settlements (Mine | All civilizations; the Mine cards carry each settlement's Mix and Character in their Arrived pane, and under every civilization's card in All civilizations sits its settlements' mix table, which is where the old Communities tab went), Immigration Policies, and Notifications, the same four as the standalone screen. The navigation follows the Demographics screen's own: the tab bar first, rounded gold pills for a tab's second view, the flat Scaled | Civ row, then the content; on the standalone screen the Advanced settings button sits at the top right of the title line, where Demographics keeps its Options button. Registration is a silent no-op on older Demographics versions.
 - **Migration Chronicle:** persisted prose for major movements, mirrored into Notifications instead of a separate tab.
 - **Cause drill-down:** broad causes expand to named wars, disasters, or age-crisis mechanisms with emigration and death counts. Per-civ event tallies are persisted in `outByEvent` and `deathsByEvent`.
 - **Notifications:** a permanent, expandable log of fired migration notifications with cause, named event, source, destination, and count.
@@ -983,7 +1014,7 @@ Counts are shown in both raw population points and scaled people, for example *"
 
 - **Named events (`emigration-naming.js`):** disasters use base-game event names, wars reuse the war name when available, and conquest names the affected city.
 - **Per-event explanation (`emigration-feedback.js`, `emigration-causes.js`):** losses are split into specific source/cause events with accurate counts. Only the largest event may toast during a pass, but all are logged.
-- **City readout (`emigration-city-readout.js`):** shows pressure mix, current status, likely destination, integration cost, enclave progress, civ net migration, guidance, and trapped/at-risk warnings. It is built from the recomputed `citySnapshot` and works without Demographics.
+- **City readout (`emigration-city-readout.js`):** shows pressure mix, current status, likely destination, the fix line (what would stop people leaving, `emigration-prescribe.js`), what newcomers cost a turn, enclave progress, civ net migration, and trapped/at-risk warnings. It is built from the recomputed `citySnapshot` and works without Demographics.
 - **Dashboard window (`emigration-window.js`):** standalone view of the migration network, cross-civ flows, per-civ ledger, cause breakdown, policy stances, and city pressure. The same render core backs the Demographics integration.
 - **Enclaves:** when an enclave in one of your cities is established, is recognized, fades, or is built over, a notification gives the yields it adds or takes away, for example "(+3 Culture)". Enclaves in other civilizations' cities go to the Notifications log only.
 - **Advice:** each loss pop-up ends with one plain sentence in the game's terms ("Raise Roma's Happiness to stop its people leaving"). The Anti-Immigration Stance is suggested only where it helps: people chose to leave for another civilization and the card is not slotted.
@@ -996,12 +1027,12 @@ Counts are shown in both raw population points and scaled people, for example *"
 
 All settings live under **Options → Add-ons** (the game's tab for mods) in both the main menu and in-game Options. `emigration.modinfo` loads the options layer in both shell and game scope. Settings use the shared `modSettings` localStorage store and apply at boot and immediately where supported.
 
-- **Emigration:** population unit of measurement, intensity preset, the grouped sliders (movement between civilizations; refugees from conflict overall, from major-power wars and from minor-power raids), dashboard data source, timeline detail, dashboard dock button, the on/off switches for notifications, ethnic integration and return migration, the four decision pop-ups (Refugee decisions, Newcomer placement decisions, Call-home offers, Enclave stance decisions), and last, an **Advanced settings** button. Each decision switch sets the same value as its Advanced setting (`arrivalPlacement` ask/automatic, `callHomeOfferWhenCalm`, `quarterRecognition` 0/2), and the two stay in step; with a switch off the city makes that choice itself, and with Call-home offers off the call is not offered. Hovering any option shows a full explanation: what it does, what each choice or slider position means (with the limits behind Low, Medium and High), when a change takes effect, and whether it changes the simulation or only the display. The full text is English; other languages show their shorter text.
+- **Emigration:** population unit of measurement, intensity preset, the grouped sliders (movement between civilizations; refugees from conflict overall, from major-power wars and from minor-power raids), dashboard data source, timeline detail, dashboard dock button, Simplify dashboard, the Spoil Guard checkbox, the on/off switches for notifications, ethnic integration and return migration, the decision switches (Refugee decisions, Newcomer placement decisions, Displaced-people reminders, Enclave stance decisions), and last, an **Advanced settings** button. Each decision switch sets the same value as its Advanced setting (`arrivalPlacement` ask/automatic, `callHomeOfferWhenCalm`, `quarterRecognition` 0/2), and the two stay in step; with a switch off the city makes that choice itself, and with Displaced-people reminders off the notice never comes (the tab still works). Hovering any option shows a full explanation: what it does, what each choice or slider position means (with the limits behind Low, Medium and High), when a change takes effect, and whether it changes the simulation or only the display. The full text is English; other languages show their shorter text.
 - **Advanced settings window:** every individual setting from `emigration-tunables.js` (122), in collapsible sections: Pacing, Scope, Border policies, Prosperity model, War & violence, Disasters, Geography & movement, Integration costs, Balance brakes, Arrivals & departures, Cultural enclaves, Calling people home, Attrition, Notifications, Readouts & rankings, and Visuals. Sections start collapsed and the ones you open stay open. Values show their units (55%, ×1.5, 3 turns) or a word (Off, Instant); a value set between the choices by a slider is listed exactly. The window also has search, a changed-setting marker, per-setting reset and Reset all.
 
 Game-speed scaling is automatic. Internal flags (`gameSpeedTuningEnabled` on; `gameSpeedScalePopulation` off) exist for rollback and QA rather than player tuning.
 
-Simulation scope and visibility are separate. By default, every alive major civilization is simulated from turn one so migration topology does not depend on exploration. Scope can be reduced to met civilizations for performance. Dashboard and lens visibility follow a separate analytics policy: All / Met-only / Own-civ / Disabled, host-authoritative in multiplayer and met-only by default.
+Simulation scope and visibility are separate. By default, every alive major civilization is simulated from turn one so migration topology does not depend on exploration. Scope can be reduced to met civilizations for performance. Dashboard and lens visibility follow the Spoil Guard (`emigration-governance.js`): on by default, it hides civilizations the player hasn't met; off shows everyone. The checkbox is stored in the slot the old three-way Analytics visibility dropdown used (1 on, 2 off, 0 the pre-checkbox "follow"), and `effectivePolicy` takes the stricter of our guard and Demographics' published or stored guard under the host's ceiling, so a player who guards in either mod is never spoiled by the other.
 
 Defaults live in `emigration-config.js`. Population-scaling constants are not exposed because they must remain aligned with Demographics.
 
@@ -1019,7 +1050,7 @@ The basic environmental rules in this mod apply to AI civilizations the same way
 - A departure takes a rural tile from a Human or AI settlement; those "people" travel for a few turns; and then the Human or AI places arrivals themselves.
 - The Human & AI pay the same integration cost and feel the same congestion headwind while it absorbs newcomers.
 - Per-city caps, the siege displacement cap, crisis deaths and the anti-snowball headwind apply to both Human and AI settlements.
-- Enclaves form in both Human and AI settlements and pay their stance's yields; Human and AI diasporas both drift home to a degree when the homeland is calm.
+- Enclaves form in both Human and AI settlements and pay their stance's yields; Human and AI diasporas both drift home to a degree when the homeland is calm, and people displaced inside their own civilization come home on their own for both once the home settlement is calm (6j).
 
 The basic interface mechanics are also shared:
 - Where the Human Player gets a pop-up, an AI civilization gets the same choice presented by a rule, at the same price. 
@@ -1065,10 +1096,21 @@ displaced people decides whether to call them back, exactly as you would at the 
 - It keeps its money sensible: one call spends at most a quarter of the treasury, and a civilization running a
   deficit keeps eight turns of reserve.
 - It pays in whichever currency buys the larger call, calls people back from its own settlements first and from
-  abroad only with what that leaves, and sends them to the home city that needs people most.
+  abroad only with what that leaves, and sends them to the home city that needs people most. While the free
+  homecoming is on (the default), people inside its own borders come back by themselves, so it only pays for calls
+  abroad (`aiScopes` in `emigration-call-home-ai.js`).
+- It pays less on harder difficulties (`emigration-ai-difficulty.js`): 4% off a level of the game's Gold handicap
+  (`StandardHandicaps`, Settler 0 to Deity 5), so 20% at Deity, on the call-home charge and refund and on its
+  refugee prices. The game gives the AI more Gold on harder settings, but the mod's prices were the human's, so
+  Deity was harder on the AI than the base game is. "AI price discount per difficulty level" in Advanced settings.
 - When a call takes people out of one of your cities, you get a notice and a Chronicle line naming who called.
 
 "AI civilizations call people home" in Advanced settings switches this off.
+
+**Immigration stances (6b).** The AI slots the stances through its own planner (11.4). When a civilization you've
+met slots or drops one, you get a notice beside End Turn and a Chronicle line ("Persia closes its borders",
+`emigration-ai-stance-notice.js`); each civilization's last stance is kept in the save, so a reload doesn't announce
+them all again, and unmet civilizations stay silent.
 
 **Enclave stances (6i).** An enclave offers its host the two stances tied to its people's origin, or "let them
 be". An AI host takes the stance paying the yield its leader's own planner favours most, read from the game's AI
@@ -1085,7 +1127,7 @@ cooldown.
 
 The planner is what sits behind the AI's build and card choices in-game. As designed, it cannot currently be given a rule directly. Therefore the only method of manipulating this mechanically is by changing a standing preference in the data tables. 
 
-The emigration mod uses two such changes:
+The emigration mod uses four such changes:
 
 **An earlier "keep them happy" city strategy.** The game's own happiness strategy only kicks in once a city's
 happiness is negative, and under this mod a city starts losing people well before that. The mod adds a gentler
@@ -1093,8 +1135,18 @@ strategy that starts while net happiness is still a little above zero, so AI cit
 game data, so the switch is on the game setup screen: "Emigration: AI keeps cities happy", on by default and fixed
 for that game.
 
+**A "hold your people" city strategy.** The AI data has no condition that reads population loss, and a yield grant
+can't reach a city's own Happiness, so the nearest native signal to a settlement losing people is its Food stalling.
+`CITY_STRATEGY_EMIG_HOLD_PEOPLE` switches on at `HasFoodLessThan 2` and biases Production and Happiness at 25, the
+yields the Anti-Immigration Stance and the happiness buildings carry (`data/emigration-ai-strategy.sql`).
+
 **Food on the Pro-Immigration Stance.** The planner values a card by its native yields and can't see the migration
 pull, so the stance carries Food in every city (+2/+2/+3 by age). That's what makes the AI slot it.
+
+**Native yields on Talent Attraction and Consular Protection.** Talent Attraction pays its Science through the
+game's own per-population yield (`EFFECT_CITY_ADJUST_YIELD_PER_POPULATION`), and Consular Protection carries a flat
++1 Influence a turn in Exploration and +2 in Modern (`EFFECT_PLAYER_ADJUST_YIELD`) on top of its per-enclave
+Influence, which stays in the script. Both give the planner something it can see when it weighs the card.
 
 ### 11.5 What the game's AI natively does on its own:
 
@@ -1146,6 +1198,11 @@ All of the following comes from 30 lab games discussed previously with the usual
 | The happiness strategy | Yes: 30 games. One example taken from those seen: Antiquity, turns 40 to 70, three AI cities with net happiness between 0 and 5 queued a happiness building within five turns under On, and none did under Off on the same save |
 | The Pro-Immigration card | Yes: 30 games: Taken in every age: at +2 in Antiquity (by turn 61 and 81) and Exploration (by turn 31), at +3 in Modern (by turn 71); not at +1 |
 | A stance across an age change | Yes: 30 games. Exploration to Modern, turn 152, Dai Viet's Pro-Immigration Stance survived the crossing; the Modern card was slotted on the first turn of the age and its effects applied |
+| The difficulty discount's read | Yes (2026-10-25, Exploration lab game, Prince): the difficulty resolves through `GameInfo.Difficulties` to Gold handicap level 0, scale 1; Deity reads level 5 in the same table, 20% off. An AI paying a discounted price at Deity hasn't been seen |
+| Stance notices | Yes (2026-10-25, same game): four Chronicle lines over 54 turns (Abbasid closes its borders, Đại Việt opens, drops its stance, closes), each with a notice beside End Turn the same turn |
+| The "hold your people" strategy | Loaded (the setup option and the rows compile); an AI build or card changed by it hasn't been seen |
+| Talent Attraction and Consular Protection taken by an AI | Not yet: nobody had slotted either by turn 54 of that Exploration game; a longer run reading each AI's unlocked civics is owed |
+| The AI's free homecoming | Yes (2026-10-25, WashingtonAnt130 save driven ten turns): AI civilizations' displaced people came home on the same schedule as the player's |
 
 
 ---
@@ -1199,7 +1256,11 @@ Modules are kept small and single-purpose (≤500-line gate). `emigration.modinf
 - `ui/emigration-ethnicity-distribution.js` / `-ethnicity-tiles.js` / `-ethnicity-colour.js`: the lens's per-tile distribution, engine reads, and blended color.
 - `ui/emigration-lens-hover-panel.js` / `-plot-tooltip-suppress.js`: the shared cursor readout for both lenses and the base tooltip suppression.
 - `ui/emigration-enclave-tooltip.js` / `-enclave-tooltip-data.js` / `-enclave-yields.js`: the enclave's own tooltip and its per-source yields.
-- `ui/emigration-call-home.js` / `-call-home-action.js` / `-call-home-view.js` / `-return-quotes.js`: calling people home (rules and odds, the paid action, the dialog, the epigraphs).
+- `ui/emigration-call-home.js` / `-call-home-action.js` / `-call-home-view.js` / `-return-quotes.js`: calling people home (rules and odds, the paid action, the console dialog, the epigraphs).
+- `ui/emigration-homecoming.js` / `-returned.js` / `-lost-tiles.js` / `-home-notice.js`: the free homecoming, the count of who has come back, the tiles a departure tore down, and the reminder pop-up with its epigraph.
+- `ui/emigration-displaced.js` / `-displaced-view.js` / `-settlements-section.js` / `-tab-switches.js` / `-prescribe.js`: the Settlements tab's cards and panes, the Left pane's ledger and buttons, the view and sort switches, and the fix line.
+- `ui/emigration-call-home-ai.js` / `-ai-host.js` / `-ai-difficulty.js` / `-ai-stance-notice.js` + `data/emigration-ai-strategy.sql`: the AI's calls, its enclave and refugee rules, its difficulty discount, the stance notices, and the two city strategies.
+- `ui/emigration-governance.js`: the Spoil Guard and the policy snapshot the gather reads once per pass.
 - `ui/emigration-internal-tally.js`: the internal (within-civ) tallies behind the Net Migration table's Internal / External columns.
 - `ui/emigration-naming.js` / `-feedback.js` / `-events.js` / `-report.js` / `-log.js`: event naming, notifications, event handling, reporting, and dev logs.
 - `ui/emigration-notifications.js` / `-notifications-view.js`: persistent notification log.

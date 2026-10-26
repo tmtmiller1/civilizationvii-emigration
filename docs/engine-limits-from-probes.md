@@ -512,3 +512,31 @@ Not limits on what can be done, but reads that lie for a moment and have caused 
 | Autoplay autosaves for write probes | Autoplay resumes on load | 2026-09-13 | ledger, mod tests 8 to 10 |
 | `-autojson` automation | does not start | 2026-09-12 | memory, autojson |
 | Clear the assign-resources blocker | survives every operation | 2026-09-11 | ledger, runs 1 to 5 |
+
+## CSS grid is ignored (2026-10-26)
+
+`display:grid` with `grid-template-columns` draws nothing grid-like in the game's UI engine: the Displaced tab's
+five-column rows came out as one vertical pile per settlement with the right-aligned button beside it. Flexbox rows
+with `flex` bases do what grid was meant to (the Demographics stylesheets are flex throughout).
+
+## `font-family: inherit` is a family name (2026-10-26)
+
+The keyword is not understood: the computed style read `"inherit"` as a quoted family and the element drew at zero
+height. Leave `font-family` off to inherit, or name a face through `localeFontFamily()`.
+
+## Flex grow stops short (2026-10-26)
+
+Sibling cells with `flex: 1.6 1 0`, `flex: 1.3 1 0`, `flex: 1 1 0` and a last cell with `flex: 0 0 auto;
+margin-left: auto` grew in proportion but filled only about three quarters of a `width: 100%` row. Fixed shares
+(`flex: 0 0 36%` and so on) with the last cell `flex: 1 1 0` fill it.
+
+## Tinting an image: `fxs-background-image-tint` (2026-10-26)
+
+The engine's own property for colouring a background image (the game's city banner uses it). A probe drew the white
+population glyph `blp:fi_Yield_Population_64` eight ways: as `<img>` (white), with `fxs-background-image-tint:#7fd08a`
+inline (green), with the same property in a one-rule `<style>` class (green), through `Locale.stylize("[icon:...]")`
+and `fxs-font-icon` (white, both draw a plain `<img>`), and `blp:town_pop` / the YIELD-context
+`blp:Yield_Population_20` (a settlement mark). An element with `opacity` below 1 loses the tint and draws the texture
+white, from a stylesheet rule or inline alike; keep the opacity on the words beside it, not on the glyph.
+`UI.getIconURL("YIELD_POPULATION", "FONTICON")` is the people glyph; without a context the call gives the settlement
+mark.
