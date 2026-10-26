@@ -5,6 +5,39 @@ All notable changes to the **Emigration** mod for Civilization VII. Follows
 The Steam Workshop change note for each release is generated from the matching
 section below by `release.sh`.
 
+## [Unreleased]
+
+### Added
+- People driven out of one of your settlements into another of yours now go home on their own. Once their home
+  has been calm for 3 turns, one comes back every 4 turns and settles a new tile there. AI civilizations get the
+  same. The Chronicle tells you when they start coming home and when the last one is back. Both numbers and an
+  off switch are under "People find their own way home" in Advanced settings.
+
+- A Displaced tab on the Emigration screen, after My Cities: one card per settlement of yours that people fled,
+  saying how many are away and where, since when, what a returnee is worth (the yields of a rural tile there),
+  when they come home on their own, and what it costs to hasten them or to call people back from abroad, with
+  what each person who actually comes costs at the odds. The Hasten and Call from abroad buttons open the call for
+  that settlement's people only. A settlement you no longer hold is listed with its people staying where they are.
+
+### Changed
+- Talent Attraction now gives +1 Science per 5 Population in every settlement (per 4 in the Modern Age), through
+  the game's own yield system, so it shows in each settlement's yield breakdown with the Science icon. Immigrants
+  raise population, so the people you draw keep paying for as long as they stay. The old per-immigrant bonus that
+  faded 30% a turn is gone; nobody could tell what the fade meant. The retired Cultural Magnetism and Commercial
+  Draw cards get the same shape in Culture and Gold for saves that still hold one.
+- While people find their own way home, the call-home offer only comes up for your people abroad, and AI
+  civilizations only pay to call people back from abroad. After fighting in a settlement's borders or a siege,
+  it has to be calm for 10 turns before its people come back (3 after a disaster, famine or unrest), because a
+  frontier settlement that was hit once is likely to be hit again.
+
+### Fixed
+- The "Nothing to show yet" lines on the Emigration screen's tabs, and the small notes beside a settlement's name,
+  were invisible, and so were the Diversity tab's note and the Network tab's "Playback timeline appears after a
+  couple of turns" line: the game's font draws italic text as nothing. They're plain text now.
+- Calling people home now knows who has already come back. The count of people away never went down, so after a
+  call the offer kept listing the same people, and AI civilizations kept paying to call back people who were
+  already home. Returns are counted in the save, by a call or by drifting home, and come off the count.
+
 ## [3.6.7] - 2026-10-25
 
 ### Fixed

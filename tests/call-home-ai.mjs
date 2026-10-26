@@ -77,6 +77,7 @@ function reset() {
   CONFIG.callHomeExternalCostScale = 1.5;
   CONFIG.callHomeAgeCostStep = 3;
   CONFIG.callHomeCooldownTurns = 8;
+  CONFIG.homecomingEnabled = false; // these cover the paid internal call, which homecoming replaces
 }
 
 const LIVE = (/** @type {*} */ sig) => ({ owner: sig.owner });
@@ -241,12 +242,25 @@ function testNoNoticeForAiHost() {
   assert.equal(notices.length, 0, "an AI host gets no notice");
 }
 
+function testHomecomingLeavesInternalCallsOut() {
+  // With homecoming on, people at home come back free, so an AI doesn't pay for them; abroad is still worth a call.
+  reset();
+  CONFIG.homecomingEnabled = true;
+  const rich = [{ ...CALM[0], food: 200, production: 200, gold: 200, science: 200, culture: 200 }, CALM[1], CALM[2]];
+  assert.deepEqual(planAiCalls(ROME, seams()), [], "the internal call that would have been made isn't");
+  assert.deepEqual(planAiCalls(ROME, seams({ signals: () => rich, favour: () => "YIELD_SCIENCE" })).map((p) => p.scope),
+    [EX], "the external call still goes when it's worth it");
+  reset();
+}
+
+reset();
 testCalmRead();
 await testPassCacheHoldsNoCityObject();
 testCurrencyPick();
 testValueAndSizes();
 testPlanOrderAndSpare();
 testPairOrder();
+testHomecomingLeavesInternalCallsOut();
 testGates();
 testCallsAndNotice();
 testNoNoticeForAiHost();

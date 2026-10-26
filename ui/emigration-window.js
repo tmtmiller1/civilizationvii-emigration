@@ -18,6 +18,7 @@ import { nowMs, plog } from "/emigration/ui/emigration-log.js";
 import { getSampleData, getSnapshotInterval } from "/emigration/ui/emigration-settings.js";
 import { sampleDashboard } from "/emigration/ui/emigration-demo-data.js";
 import { scaleCityPopulation } from "/emigration/ui/emigration-population.js";
+import { displacedModel } from "/emigration/ui/emigration-displaced.js";
 import { monoTurn } from "/emigration/ui/emigration-migration-stats.js";
 import { warEvents } from "/emigration/ui/emigration-war.js";
 import { civHidden, effectivePolicy, withPolicySnapshot } from "/emigration/ui/emigration-governance.js";
@@ -687,6 +688,9 @@ function gatherFresh() {
     eventRecords: timed("eventRecords", () => ({ disasters: gatherDisasterEvents(), wars: warEvents() })),
     cities: timed("cities", () => (me != null ? ownerCitySnapshots(me) : [])),
     myCities: timed("settlements", () => gatherSettlements(me, pops)),
+    displaced: timed("displaced", () => (me != null ? displacedModel(me) : [])),
+    localPid: me,
+    invalidate: invalidateGather, // a call from the Displaced tab moved people this turn: the next gather re-reads
     diversity: timed("diversity", gatherDiversity)
   };
   plog("gather parts (ms): " + parts.join(", "));
@@ -764,6 +768,11 @@ function gatherKey() {
  * page both call this, and a re-render within the same turn should not re-scan the world.
  * @returns {*} Gathered inputs.
  */
+/** Drop the memo, so the next gather reads the world again (after a call-home moved people this turn). */
+export function invalidateGather() {
+  _gatherMemo = null;
+}
+
 export function gatherDashboard() {
   const key = gatherKey();
   if (_gatherMemo && _gatherMemo.key === key) {

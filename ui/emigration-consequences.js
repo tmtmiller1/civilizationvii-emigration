@@ -10,7 +10,6 @@ import { recordWarLoss } from "/emigration/ui/emigration-violence.js";
 import { addDistress, disasterKey, recordDisasterLoss } from "/emigration/ui/emigration-disasters.js";
 import { addAssimilationLoad } from "/emigration/ui/emigration-effects.js";
 import { addAttractionDividend } from "/emigration/ui/emigration-dividend.js";
-import { activeAttractions } from "/emigration/ui/emigration-borders.js";
 import { onRaidIntake } from "/emigration/ui/emigration-raid.js";
 
 /**
@@ -54,10 +53,7 @@ export function applyDepartureConsequences(src, cause) {
  */
 export function applyArrivalConsequences(destCity, destOwner, destPop, infected, srcOwner) {
   const load = addAssimilationLoad(destOwner, destPop);
-  // Carried dividend: turn each immigrant into a per-turn yield under any attraction card.
-  for (const yieldKey of activeAttractions(destOwner)) {
-    addAttractionDividend(destOwner, yieldKey, CONFIG.dividendPerMigrant);
-  }
+  // The attraction cards pay through the game's own per-population yield now; only a raid banks a dividend.
   // Raid: when the arrival is from the raider's target, bank its domain dividend and charge
   // the per-migrant Influence cost. onRaidIntake gates both to the target (the felt "raise yours").
   const raidYield = onRaidIntake(destOwner, srcOwner);

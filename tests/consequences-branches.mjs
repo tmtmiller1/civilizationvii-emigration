@@ -20,10 +20,6 @@ globalThis.addAssimilationLoad = (owner, pop) => {
 globalThis.addAttractionDividend = (owner, yieldKey, dividend) => {
   dividends.push({ owner, yieldKey, dividend });
 };
-globalThis.activeAttractions = (owner) => [
-  "YIELD_GOLD",
-  "YIELD_CULTURE"
-];
 globalThis.onRaidIntake = (destOwner, srcOwner) => {
   raidIntakes.push({ destOwner, srcOwner });
   return srcOwner === 1 ? "YIELD_INFLUENCE" : null;
@@ -194,7 +190,6 @@ delete globalThis.addDistress;
 delete globalThis.disasterKey;
 delete globalThis.addAssimilationLoad;
 delete globalThis.addAttractionDividend;
-delete globalThis.activeAttractions;
 delete globalThis.onRaidIntake;
 
 console.log("consequences-branches harness passed");

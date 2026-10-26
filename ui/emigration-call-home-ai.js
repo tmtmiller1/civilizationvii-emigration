@@ -214,7 +214,7 @@ export function planAiCalls(pid, d) {
   };
   /** @type {PlannedCall[]} */
   const plan = [];
-  for (const scope of [CALL_HOME_SCOPE.INTERNAL, CALL_HOME_SCOPE.EXTERNAL]) {
+  for (const scope of aiScopes()) {
     if (cooldown(pid, scope) > 0) continue;
     const step = plannedCall(pid, scope, left, d);
     if (!step) continue;
@@ -223,6 +223,15 @@ export function planAiCalls(pid, d) {
     else left.influence -= step.cost;
   }
   return plan;
+}
+
+/**
+ * The call variants an AI pays for: people at home come back on their own while homecoming is on, so it only
+ * pays to call people abroad then.
+ * @returns {string[]} CALL_HOME_SCOPE values.
+ */
+function aiScopes() {
+  return CONFIG.homecomingEnabled ? [CALL_HOME_SCOPE.EXTERNAL] : [CALL_HOME_SCOPE.INTERNAL, CALL_HOME_SCOPE.EXTERNAL];
 }
 
 /**

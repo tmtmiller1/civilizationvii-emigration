@@ -168,6 +168,10 @@
  * @property {number} callHomeCooldownTurns Turns before the same civilization may call again.
  * @property {boolean} callHomeOfferWhenCalm Offer the call once nowhere is distressed and people are away.
  * @property {boolean} callHomeAi AI civilizations make the call on their own turn, at the player's price and odds.
+ * @property {boolean} homecomingEnabled People displaced inside their own civ go home on their own once it is calm.
+ * @property {number} homecomingCalmTurns Calm turns in a row a home settlement needs before people come back.
+ * @property {number} homecomingCalmTurnsAfterWar The same after fighting in its borders or a siege.
+ * @property {number} homecomingEveryTurns Turns between returns to the same home settlement.
  * @property {number} antiDrainWeight Penalty on cross-civ outflow from a civ below the drain threshold (0 = off).
  * @property {number} antiDrainThreshold Share of the world-average civ population below which outflow is braked.
  * @property {number} antiDrainExponent Steepness of the drain brake below the threshold.

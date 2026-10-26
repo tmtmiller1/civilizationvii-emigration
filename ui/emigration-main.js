@@ -41,6 +41,7 @@ import { installEmigrationDock } from "/emigration/ui/emigration-dock-decorator.
 import { offerCallHome, callHomeNow, callHomeCooldownLeft, callHomeResolvable } from "/emigration/ui/emigration-call-home-action.js";
 import { ownerCitySnapshots } from "/emigration/ui/emigration-city-readout-data.js";
 import { aiCallHomeOnTurn } from "/emigration/ui/emigration-call-home-ai.js";
+import { homecomingOnTurn } from "/emigration/ui/emigration-homecoming.js";
 import { CALL_HOME_SCOPE, CALL_HOME_CURRENCY, callHomeQuote } from "/emigration/ui/emigration-call-home.js";
 import { installEmigrationCityPanel } from "/emigration/ui/emigration-city-panel.js";
 import { sweepEmptyRuralDistricts, sweepOnceGameStarts } from "/emigration/ui/emigration-plot-cleanup.js";
@@ -288,6 +289,8 @@ function onTurnActivated(data) {
     // Every civ pays its per-turn migration costs on its own turn (assimilation
     // load decay + migrant-holding). grantYield works cross-civ.
     chargePerTurnCosts(who, local);
+    // People displaced inside a civilization go home on their own once their settlement is calm, on that civ's turn.
+    homecomingOnTurn(who);
     // An AI civilization calls its displaced people home on its own turn (a human owner is skipped inside).
     aiCallHomeOnTurn(who);
     if (who !== local) return;
@@ -365,7 +368,7 @@ function offerCallHomeWhenCalm(pid) {
     if (!CONFIG.callHomeEnabled || !CONFIG.callHomeOfferWhenCalm) return;
     if (typeof pid !== "number" || pid < 0) return;
     if (!isCalm(pid)) return;
-    for (const scope of [CALL_HOME_SCOPE.INTERNAL, CALL_HOME_SCOPE.EXTERNAL]) {
+    for (const scope of offerScopes()) {
       const quote = callHomeQuote(pid, scope, CALL_HOME_CURRENCY.GOLD, undefined,
         { resolvable: callHomeResolvable(pid) });
       if (quote.points > 0 && offerCallHome(pid, scope)) return;
@@ -373,6 +376,15 @@ function offerCallHomeWhenCalm(pid) {
   } catch (e) {
     dlog("call home when calm threw " + e);
   }
+}
+
+/**
+ * The call-home variants worth offering: people at home come back on their own while homecoming is on, so only
+ * the call abroad is offered then.
+ * @returns {string[]} CALL_HOME_SCOPE values.
+ */
+function offerScopes() {
+  return CONFIG.homecomingEnabled ? [CALL_HOME_SCOPE.EXTERNAL] : [CALL_HOME_SCOPE.INTERNAL, CALL_HOME_SCOPE.EXTERNAL];
 }
 
 /**

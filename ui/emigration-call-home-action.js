@@ -409,8 +409,9 @@ function reportCall(pid, result) {
  * leaving these ones adds them to that record.
  * @param {number} pid @param {string} scope A CALL_HOME_SCOPE.
  * @param {{includeDeclined?:boolean, flows?:*[], show?:(view:*, onChoice:(id:string)=>void)=>void,
- *   move?:(pair:*)=>boolean, resolvable?:(pair:*)=>boolean}} [opts] List everyone, declined or not (the console
- *   call); test seams for the flow rows, the dialog, the mover and the city check.
+ *   move?:(pair:*)=>boolean, resolvable?:(pair:*)=>boolean, after?:()=>void}} [opts] List everyone, declined or
+ *   not (the console call); test seams for the flow rows, the dialog, the mover and the city check; `after` runs
+ *   once the player has chosen (the Displaced tab redraws).
  * @returns {boolean} Whether it opened.
  */
 export function offerCallHome(pid, scope, opts) {
@@ -433,6 +434,7 @@ export function offerCallHome(pid, scope, opts) {
       callHomeNow(pid, scope, pick.currency, { want: pick.want, declined, flows: o.flows, move: o.move, resolvable });
     }
     else declineCallHome(pid, scope, shown);
+    if (typeof o.after === "function") o.after();
   });
   return true;
 }

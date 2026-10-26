@@ -266,6 +266,10 @@ export const CONFIG = {
   callHomeCooldownTurns: 8, // turns before the same civilization may call again
   callHomeOfferWhenCalm: true, // offer the call once no settlement is under distress and people are still away
   callHomeAi: true, // AI civilizations call their own people home on their turn, at the same price, odds and cooldown
+  homecomingEnabled: true, // people displaced inside their own civ go home on their own once home is calm
+  homecomingCalmTurns: 3, // calm turns in a row a home settlement needs before its people start coming back
+  homecomingCalmTurnsAfterWar: 10, // the same after fighting in its borders or a siege (a frontier city gets hit again)
+  homecomingEveryTurns: 4, // turns between returns to the same home settlement
 
   // refugee dilemmas (rare narrative decisions)
   // Once in a while a great wave of refugees reaches your lands and you pause for a short decision

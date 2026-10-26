@@ -53,15 +53,6 @@ const POLICY_TYPES = Object.freeze({
  */
 export const SUSPECT_OPENNESS = 0.75;
 
-// Attraction cards: each turns the civ's immigration into a carried dividend in one yield. Data-driven
-// so activeAttractions is just a filter; a new attraction card is one row here.
-/** @type {ReadonlyArray<{family:keyof typeof POLICY_TYPES, yield:string}>} */
-const ATTRACTIONS = Object.freeze([
-  { family: "talent", yield: "YIELD_SCIENCE" },
-  { family: "legacyCultpull", yield: "YIELD_CULTURE" },
-  { family: "legacyTradepull", yield: "YIELD_GOLD" }
-]);
-
 /** Cached type-hash per tradition type string (a hash is stable for the whole game). @type {Map<string, *>} */
 const _hash = new Map();
 
@@ -151,7 +142,6 @@ function hasPolicy(pid, types) {
  * @property {boolean} closed Whether an Anti-Immigration Stance is slotted.
  * @property {boolean} asylum Whether refugees are drawn to this civ (a Pro-Immigration Stance, or a retired
  *   asylum card).
- * @property {string[]} attractions Yield keys the slotted Attraction cards accrue.
  * @property {string|null} protect The card giving the protective treatment (the Pro-Immigration Stance, or a
  *   retired protective card), or null.
  * @property {string|null} suspect The card giving the suspicion treatment (the Anti-Immigration Stance, or a
@@ -205,7 +195,6 @@ function policyState(pid) {
     open: openType != null,
     closed: closedType != null,
     asylum: openType != null || hasPolicy(pid, POLICY_TYPES.legacyAsylum),
-    attractions: ATTRACTIONS.filter((a) => hasPolicy(pid, POLICY_TYPES[a.family])).map((a) => a.yield),
     protect: openType || activeType(pid, POLICY_TYPES.legacyProtect),
     suspect: closedType || legacySuspect,
     legacySuspect: closedType == null && legacySuspect != null,
@@ -296,16 +285,6 @@ export function emigrationRetention(pid) {
   return 1;
 }
 
-/**
- * The yields a civ's slotted Attraction cards grant per immigrant. Talent Attraction → YIELD_SCIENCE;
- * the retired Cultural Magnetism and Commercial Draw still pay YIELD_CULTURE and YIELD_GOLD in a save
- * that holds them. Empty when none are slotted, so the carried dividend is a no-op (fail-safe).
- * @param {number} pid
- * @returns {string[]} Yield keys to accrue a dividend in.
- */
-export function activeAttractions(pid) {
-  return policyState(pid).attractions;
-}
 
 /**
  * Whether war and disaster refugees are drawn to this civ first: a Pro-Immigration Stance, or a retired

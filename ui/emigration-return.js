@@ -21,6 +21,7 @@ import { registerCacheReset, resetCachesOnNewGame, currentGameId } from "/emigra
 import { quarterAt } from "/emigration/ui/emigration-quarter-state.js";
 import { consumeOneForReturn, queueRefugees } from "/emigration/ui/emigration-refugee-pool.js";
 import { msg, msgNum } from "/emigration/ui/emigration-loc.js";
+import { recordReturn } from "/emigration/ui/emigration-returned.js";
 
 const STATE_KEY = "EmigrationReturn_v1";
 const STATE_SCHEMA_VERSION = 2;
@@ -214,6 +215,7 @@ export function moveReturnees(hostCity, homeCity, hostKey, originCiv) {
   if (!fromPool) {
     commitSourcePoint({ city: hostCity, owner: hostCity.owner }, { ok: true, fromPool: false, deferredTile });
   }
+  recordReturn(originCiv, hostCity.owner, cityName(hostCity), cityName(homeCity));
   return { ok: true, fromPool };
 }
 

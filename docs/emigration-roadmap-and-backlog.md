@@ -2472,3 +2472,96 @@ shows red rings on the Roman and Mauryan refugees in Persia. Captures: `working_
 `new MouseEvent(type, {clientX, clientY})` arrives at (0,0) in this UI engine, and `element.click()` throws; set the
 coordinates with `Object.defineProperty` on the event, and send clicks as `new Event("click")`.
 
+## 31. Homecoming: probes before building (2026-10-25)
+
+The design: internal displaced people return on their own once their home settlement is calm (one point every few
+turns), the call-home pop-up goes away in favour of a Displaced tab with a worth line, and departures record the
+tile they abandoned. These were checked in a lab game (seed 4242, usual set, Antiquity to turn 130, a per-turn
+recorder of every major civ's city distress and call-home ledger) before any of it is built.
+
+- **The call-home ledger is cumulative.** `callHomeCandidates` reads `migrationFlows()`, the all-game city-pair
+  matrix, and neither a return nor a paid call subtracts from it. The AI made five internal calls in the run, each
+  moving one point (`"returned":1`), and no civ's internal total dropped once in 130 turns. So the quote overstates
+  who is away after any return, and the offer and AI calls can repeat for people already home. Homecoming needs its
+  own count of people still away (displaced less returned), and the existing call-home should read it too.
+- **Most internal refugees can't go home.** At turn 130, 38 of the 44 internal ledger points named a home settlement
+  its civ no longer owned (razed, taken by an independent, or Tiwanaku taken by Hawai'i). Six pointed at a home still
+  held. The homes that survived had calm runs of 19 to 45 turns, so a trickle has room there; a replay of the
+  recorded distress at one point per 4 turns after 3 calm turns returned 19 points, median 24 turns to heal.
+- **A returnee can rebuild the plot it left.** In Heian-Kyo a departure abandoned plot 956, the empty district was
+  gone within seconds and the plot stayed the city's; with one pending point, `canStart(EXPAND).Plots` listed 956
+  among 15 and `sendRequest(EXPAND, {X, Y})` built on it. The game chose a Woodcutter, not the Megalith that was
+  there, so the plot comes back but not necessarily the improvement. AI cities had no empty rural districts left
+  (0 of 108), so their abandoned plots are open too.
+- **Plot yields are readable** with `GameplayMap.getYield(x, y, yield, player)`: an empty plot read 2 Food 1
+  Production, a Clay Pit 3 yields, a Megalith 6 Food 2 Culture, a Jinja 12 Culture. Departures abandoned Megaliths
+  first in Heian-Kyo, so recording the abandoned improvement and its yields is what makes a "Lost" line honest.
+- **The AI's worth number isn't the player's.** `personValue` divides the whole city's yields by population, about
+  6 to 9 yields per person per turn here, where a returnee adds one rural tile (2 to 4, more on a unique
+  improvement). The Displaced tab should show the tile, not the AI's average.
+- **One unexplained abandonment.** Of four tile abandonments in Heian-Kyo, three lowered population by one; the
+  first (a Megalith, with 12 rural improvements and 11 rural population) didn't. A second Megalith and an abandonment
+  after a counter departure both lowered it, so neither the improvement type nor a surplus explains it. Not chased.
+- **The lab can't show the player's notice load.** The human seat holds one city under Autoplay, so it had no
+  departures and no internal displacement; the train sent four "Refugee crisis abroad" notices in 130 turns. The
+  pop-up and notice flood players see needs a multi-city human seat to measure.
+
+Built and watched 2026-10-25, step 1 (the "still away" count): `ui/emigration-returned.js` counts each return that
+lands in `moveReturnees` (paid calls and drift home alike), kept in the save as `EmigrationReturned_v1`, and
+`callHomeCandidates` takes it off the flow ledger (exact pair first, the rest off the same host settlement's other
+pairs). Same seed, usual set, to turn 130: the AI made five internal calls, and each civ's net count fell by its
+calls (Persia 12 net against 15 on the ledger after three calls, Hawai'i 18 against 19, Goryeo 8 against 9). The
+save held exactly those five returns. Persia's live quote then listed one person, the rest belonging to lost homes.
+Not yet seen: the record surviving a save and load, a drift-home return from abroad being counted, and the
+player's own offer no longer repeating. Next steps keep the rebuild rule agreed with the owner: a returnee goes
+back to the plot they left when it's open, otherwise to another free plot in the same city.
+
+Built and watched 2026-10-25, step 2 (homecoming, `ui/emigration-homecoming.js`): same seed and set to turn 130,
+3 calm turns then one every 4. Fifteen people came home on their own (Goryeo 4 to Hwangju, Persia 4 to Pārsa and 5
+to Sparda, Hawai'i 1, Đại Việt 1). Every return came after 3 calm turns and none came within 4 turns of the last
+to the same home; each one shows as a drop in the civ's net count, except where a new displacement from the same
+home landed the same turn (the raw ledger rises exactly then). No AI paid for an internal call (0 calls, against 5
+in the run without homecoming). Nobody went back to a home after it was lost. The one thing to tune: Pārsa took 4
+people back between turns 95 and 103 while it kept being hit (population 1 to 3), and Persia lost it at turn 118
+with them in it, so 3 calm turns can send people back to a frontier city still in the line of fire. Not yet seen:
+the player's Chronicle lines and the Advanced settings rows (the lab's human seat holds one city), and the state
+surviving a save and load in game.
+
+Built and watched 2026-10-25, step 2b (the longer wait after fighting) and step 3 (the Displaced tab):
+`homecomingCalmTurnsAfterWar` (10) applies when the home's last trouble was fighting in its borders or a siege,
+read from `situationalBreakdown`; the kind is kept in the save. The Displaced tab (`ui/emigration-displaced.js`,
+`-displaced-view.js`) sits after My Cities. Watched in a lab game at turn 5: the tab opens from
+`openEmigrationScreen("displaced")` with its title and empty line, and a set of three sample cards rendered into the
+tab body read as designed (away, worth, wait, hasten with its button, abroad with the expected cost, a lost home's
+line). Two things found: the Hasten button floated to the far right (the text column no longer stretches), and every
+italic line was missing, since the game's font draws italic as nothing (engine-closed.md, UI runtime). That also hid
+the tabs' "Nothing to show yet" lines, the Diversity note and the timeline's pending note, all plain now. Live
+cards (a human seat with displaced people), the buttons opening the call for one settlement and the redraw after it,
+and the worth line's live tile read are still owed. Captures: `working_screenshots/emig-370-displaced-*.png`.
+
+Two lab runs earlier that evening loaded the Workshop copy of the mod instead of the local one: the owner's 3.6.7
+upload had re-registered it with the Workshop row enabled and the local row disabled. The flags were put back
+(local on, Workshop off, as before the upload), and the local modinfo now reads 3.7.0.
+
+## 32. Talent Attraction without the fade (2026-10-25)
+
+The owner found the card's "+1.5 per immigrant, fading 30% a turn" unreadable: nobody could tell whether the card
+weakened, what faded, or when. The per-immigrant part was a script pool (`emigration-dividend.js`) granted with
+`Players.grantYield`, so it never showed in a settlement's yield breakdown either. The card now pays through the
+game's own `EFFECT_CITY_ADJUST_YIELD_PER_POPULATION`, the effect the Quipu tradition uses: +1 Science per 5
+Population in every settlement in Exploration, per 4 in Modern, rural and urban alike. Immigrants raise population,
+so the brain drain is still there: every person the card draws adds to it for as long as they stay, and the planner
+values it natively. The retired Cultural Magnetism and Commercial Draw cards got the same shape in Culture and Gold
+for saves that still hold one. The dividend module now serves the raids alone; `activeAttractions` and the
+`ATTRACTIONS` table are gone from `emigration-borders.js`.
+
+Watched 2026-10-25 in an Exploration lab game at turn 1: `GameInfo.Modifiers.lookup("MOD_EMIG_TALENT_YIELD_EX")`
+resolves to a `COLLECTION_PLAYER_CITIES` / `EFFECT_CITY_ADJUST_YIELD_PER_POPULATION` modifier with YieldType,
+Amount 1, Divisor 5, Rural true, Urban true and the tooltip, the same argument set as `QUIPU_MOD_URBAN_GOLD`, and both
+descriptions compose with their icons. Not watched: the card on the Policies screen and the Science line in a
+settlement's yield breakdown once it is slotted.
+
+The eleven other languages' descriptions still said "fading 30% a turn" after the pipeline ran, because
+`i18n_apply` keeps a stored translation whatever the English now says. Those seven keys were dropped from
+`i18n/<locale>.json` so the XML carries the English until retranslated; the parity gates pass.
+

@@ -105,7 +105,7 @@ function loc(key, fallback, ...args) {
 const NETC_CSS =
     ".emig-netc-wrap{position:relative;display:flex;flex-direction:column;align-items:center;}" +
     ".emig-netc-time-note{align-self:center;margin:0.5rem 0;font-size:var(--dg-fs-85);opacity:0.6;" +
-    "font-style:italic;color:#e5d2ac;text-align:center;max-width:34rem;}" +
+    "color:#e5d2ac;text-align:center;max-width:34rem;}" + // no italic: the game's font draws it as nothing
     // The stage is a 2:1 box (padding-bottom derives its height from its width, so the canvas's
     // height:100% resolves and the dots never distort), capped by viewport height so the whole view fits
     // the panel without a scrollbar. A single-unit cap: GameFace drops a mixed-unit min().

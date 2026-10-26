@@ -12,6 +12,7 @@ import { getNumberMode, setNumberMode, NumberMode, getMinimizeAnalytics } from "
 import { appendSnapshotReminder } from "/emigration/ui/emigration-snapshot-reminder.js";
 import { renderGuide } from "/emigration/ui/emigration-guide.js";
 import { renderCityFlows, buildCivFlows } from "/emigration/ui/emigration-city-flows.js";
+import { renderDisplaced, displacedSection, DISPLACED_CSS } from "/emigration/ui/emigration-displaced-view.js";
 import { renderStances, renderDiversity, diversitySections } from "/emigration/ui/emigration-detail-views.js";
 import { renderLedger, splitInternalExternal, LEDGER_CSS } from "/emigration/ui/emigration-ledger-view.js";
 import { renderNotifications } from "/emigration/ui/emigration-notifications-view.js";
@@ -272,6 +273,7 @@ export function dashboardModel(input) {
     { title: loc("LOC_EMIG_VIEW_SEC_NET_TABLE", "Net Migration (Table)"), kind: "ledger", rows: civLedgerRows(d.civs || []) },
     { title: loc("LOC_EMIG_VIEW_SEC_WHY", "Why people move"), kind: "pies", cities: buildCivFlows(d.flows || [], d.civs || [], d.eventsByOwner) },
     { title: loc("LOC_EMIG_VIEW_SEC_SETTLEMENTS", "Settlements"), kind: "cityflows", cities: d.myCities || [] },
+    displacedSection(d),
     ...diversitySections(d),
     { title: loc("LOC_EMIG_VIEW_SEC_POLICIES", "Immigration policies"), kind: "stances", rows: stanceRows(d.civs || []) },
     { title: loc("LOC_EMIG_VIEW_SEC_NOTIFICATIONS", "Migration notifications"), kind: "notifications" },
@@ -305,7 +307,7 @@ const DASH_CSS =
   "color:#e5d2ac;font-size:var(--dg-fs-95);}" +
   ".emig-card{background:linear-gradient(180deg,rgba(20,24,34,0.55),rgba(8,10,16,0.55));border:0.0555rem solid rgba(201,162,76,0.35);border-radius:0.35rem;padding:0.6rem 0.8rem;}" +
   ".emig-card-h{font-family:" + localeFontFamily("title") + ";text-transform:uppercase;letter-spacing:0.06rem;font-size:var(--dg-fs-95);color:#f3c34c;margin-bottom:0.45rem;border-bottom:0.0555rem solid rgba(201,162,76,0.3);padding-bottom:0.25rem;}" +
-  ".emig-empty{opacity:0.5;font-style:italic;}" +
+  ".emig-empty{opacity:0.6;}" + // italic draws as nothing in the game's font (2026-10-25)
   // Per-city pressure: flexbox rows (GameFace lays out neither <table> nor grid).
   ".emig-pr{display:flex;flex-direction:column;width:100%;}" +
   ".emig-pr-row{display:flex;align-items:center;width:100%;}" +
@@ -316,6 +318,7 @@ const DASH_CSS =
   // The Net Migration Table's own rules live beside its renderer (its column weights and the group
   // header's spans have to be read together), so they are concatenated in from there.
   LEDGER_CSS +
+  DISPLACED_CSS +
   // Causes pies.
   // Cap the legend to the pie's width so it wraps under the pie instead of widening the (content-sized)
   // column, otherwise a card with long "civ count (pct%)" labels makes its column wider and pushes the
@@ -417,7 +420,7 @@ const DASH_CSS =
   ".emig-tag.pro{background:rgba(127,208,138,0.2);color:#9fe0a8;}" +
   ".emig-tag.anti{background:rgba(224,138,127,0.2);color:#e8a89f;}" +
   ".emig-tag.none{background:rgba(229,210,172,0.12);color:#cbb994;}" +
-  ".emig-flag{font-size:var(--dg-fs-95);opacity:0.7;font-style:italic;margin-left:0.4rem;}" +
+  ".emig-flag{font-size:var(--dg-fs-95);opacity:0.7;margin-left:0.4rem;}" +
   ".emig-stance-block{padding:0.7rem 0.2rem;border-top:0.0277rem solid rgba(229,210,172,0.1);}" +
   ".emig-stance-row{display:flex;justify-content:space-between;align-items:center;font-size:var(--dg-fs-140);}" +
   ".emig-stance-detail{font-size:var(--dg-fs-105);opacity:0.82;margin-top:0.3rem;}" +
@@ -459,7 +462,7 @@ function el(tag, cls, text) {
 /** @type {Record<string, (body: HTMLElement, section: *, controlsHost?: HTMLElement) => void>} */
 const SECTION_VIEWS = {
   flow: renderNetworkViz, // the "Network" tab: dots + the toggleable green/red migrant-flow overlay
-  pies: renderCityFlows, cityflows: renderCityFlows,
+  pies: renderCityFlows, cityflows: renderCityFlows, displaced: renderDisplaced,
   notifications: (/** @type {HTMLElement} */ body) => renderNotifications(body),
   guide: renderGuide
 };
@@ -494,7 +497,7 @@ function renderSectionBody(body, section, controlsHost) {
 const TAB_LABELS = {
   flow: loc("LOC_EMIG_VIEW_TAB_NETWORK", "Network"),
   ledger: loc("LOC_EMIG_VIEW_TAB_NET_TABLE", "Net Migration (Table)"), pies: loc("LOC_EMIG_VIEW_TAB_CAUSES", "Causes"),
-  stances: loc("LOC_EMIG_VIEW_TAB_POLICIES", "Policies"), cityflows: loc("LOC_EMIG_VIEW_TAB_MY_CITIES", "My Cities"),
+  stances: loc("LOC_EMIG_VIEW_TAB_POLICIES", "Policies"), cityflows: loc("LOC_EMIG_VIEW_TAB_MY_CITIES", "My Cities"), displaced: loc("LOC_EMIG_VIEW_TAB_DISPLACED", "Displaced"),
   diversity: loc("LOC_EMIG_VIEW_TAB_DIVERSITY", "Diversity"), notifications: loc("LOC_EMIG_VIEW_TAB_NOTIFICATIONS", "Notifications"), guide: loc("LOC_EMIG_VIEW_TAB_GUIDE", "Guide")
 };
 
@@ -591,11 +594,6 @@ function controlGroup(label, items, current, onSelect, cls) {
   return grp;
 }
 
-/** @param {HTMLElement} parent @param {HTMLElement|null} child */
-function appendOpt(parent, child) {
-  if (child) parent.appendChild(child);
-}
-
 function openAdvancedOptions() {
   import("/core/ui/context-manager/context-manager.js")
     .then((m) => {
@@ -670,9 +668,12 @@ export function renderDashboardTabbed(target, model, rebuild, startKind) {
       const t0 = nowMs();
       seen.active = i;
       ctrlHost.innerHTML = "";
-      appendOpt(ctrlHost, buildControlRow(wantsUnitsToggle(sections[i]),
-        () => (rebuild ? rebuild(sections[i].kind) : show(i)), true));
+      const ctrl = buildControlRow(wantsUnitsToggle(sections[i]),
+        () => (rebuild ? rebuild(sections[i].kind) : show(i)), true);
+      if (ctrl) ctrlHost.appendChild(ctrl);
       body.innerHTML = "";
+      // A tab with controls of its own (the Displaced tab's calls) redraws itself through this.
+      sections[i].rebuild = () => (rebuild ? rebuild(sections[i].kind) : show(i));
       renderSectionBody(body, sections[i]);
       plog("tab " + sections[i].kind + " shown (#" + ++seen.shows + " this render) " + Math.round(nowMs() - t0) + " ms");
     };
@@ -692,7 +693,7 @@ export function renderDashboardTabbed(target, model, rebuild, startKind) {
 // Sections the "Numbers:" units chip doesn't apply to: "flow" has its own inline Units toggle, and
 // stances / notifications / guide show no population counts to switch. (Diversity does carry counts,
 // each settlement's population beside its origin bar, so it takes the chip like the other tables.)
-const NO_UNITS_TOGGLE = new Set(["flow", "stances", "notifications", "guide"]);
+const NO_UNITS_TOGGLE = new Set(["flow", "stances", "notifications", "guide", "displaced"]);
 
 /**
  * Whether to show the in-panel "Numbers:" units chip for a section: only the count-bearing tables/pies
@@ -741,9 +742,9 @@ function appendControlRow(wrap, opts, body, section) {
     : wrap;
   if (host !== wrap) host.innerHTML = ""; // re-populate the shared row
   if (section.kind === "guide") return;
-  appendOpt(host,
-    buildControlRow(wantsUnitsToggle(section, opts), () => subtabRebuild(opts, body, section),
-      !!(opts && opts.includeOptionsButton)));
+  const ctrl = buildControlRow(wantsUnitsToggle(section, opts), () => subtabRebuild(opts, body, section),
+    !!(opts && opts.includeOptionsButton));
+  if (ctrl) host.appendChild(ctrl);
 }
 
 /**

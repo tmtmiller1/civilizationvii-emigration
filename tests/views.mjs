@@ -61,10 +61,10 @@ function testPressureRowsSortDescAndFlag() {
 
 function testDashboardModelSections() {
   const m = dashboardModel({ civs: [], byCause: {}, flows: [], cities: [] });
-  assert.equal(m.sections.length, 8); // network + flowmap merged into one toggleable "flow" section
+  assert.equal(m.sections.length, 9); // network + flowmap merged into one toggleable "flow" section
   assert.deepEqual(
     m.sections.map((s) => s.kind),
-    ["flow", "ledger", "pies", "cityflows", "diversity", "stances", "notifications", "guide"]
+    ["flow", "ledger", "pies", "cityflows", "displaced", "diversity", "stances", "notifications", "guide"]
   );
 }
 
@@ -77,7 +77,7 @@ function testDiversitySectionIsFlagGated() {
     const m = dashboardModel({ civs: [], byCause: {}, flows: [], cities: [] });
     assert.deepEqual(
       m.sections.map((s) => s.kind),
-      ["flow", "ledger", "pies", "cityflows", "stances", "notifications", "guide"]
+      ["flow", "ledger", "pies", "cityflows", "displaced", "stances", "notifications", "guide"]
     );
   } finally {
     CONFIG.diversityRanking = prev;
@@ -136,7 +136,7 @@ function testDashboardModelEmptySections() {
   // Dashboard model must take empty civs, flows, and notifications,
   // still providing all section structures (just with no rows).
   const m = dashboardModel({ civs: [], byCause: {}, flows: [], cities: [] });
-  assert.equal(m.sections.length, 8);
+  assert.equal(m.sections.length, 9);
   // Verify that each section has required properties even when empty
   for (const section of m.sections) {
     assert.equal(typeof section.kind, "string");

@@ -351,6 +351,18 @@
         <Row Tag="LOC_EMIG_T_MINORFLOOR_D"><Text>Pressure a city merely besieged by a minor power feels before any real damage. Actual damage always counts in full.</Text></Row>
         <Row Tag="LOC_EMIG_T_CALLHOME"><Text>Call people home</Text></Row>
         <Row Tag="LOC_EMIG_T_CALLHOME_D"><Text>Offers a paid call to bring displaced people back to the settlement they fled, in a size you choose. From your own settlements it is a purchase: that many come. From abroad the call is paid for either way and each person asked may or may not answer.</Text></Row>
+        <Row Tag="LOC_EMIG_T_HOMECOMING"><Text>People find their own way home</Text></Row>
+        <Row Tag="LOC_EMIG_T_HOMECOMING_D"><Text>People driven out of one of your settlements into another of yours come back on their own once their home has been calm for a few turns, one at a time, and rebuild a tile there. Every civilization gets the same. While this is on, calling people home is only offered for people abroad. Off brings back the paid call for people at home.</Text></Row>
+        <Row Tag="LOC_EMIG_T_HOMECOMING_CALM"><Text>Calm turns before people come home</Text></Row>
+        <Row Tag="LOC_EMIG_T_HOMECOMING_CALM_D"><Text>How many turns in a row a settlement has to be free of disaster, famine and unrest before the people who fled it start coming back. Any trouble starts the count again.</Text></Row>
+        <Row Tag="LOC_EMIG_T_HOMECOMING_CALMWAR"><Text>Calm turns after fighting</Text></Row>
+        <Row Tag="LOC_EMIG_T_HOMECOMING_CALMWAR_D"><Text>The same wait when the trouble was fighting in the settlement's borders or a siege. Longer, because a frontier settlement that was hit once is likely to be hit again, and people sent back too soon are lost with it.</Text></Row>
+        <Row Tag="LOC_EMIG_T_HOMECOMING_EVERY"><Text>Turns between returns</Text></Row>
+        <Row Tag="LOC_EMIG_T_HOMECOMING_EVERY_D"><Text>Once a settlement is calm, one of its people comes home this often, from whichever of your settlements holds the most of them.</Text></Row>
+        <Row Tag="LOC_EMIG_HOMECOMING_START_TITLE"><Text>The Road Home</Text></Row>
+        <Row Tag="LOC_EMIG_HOMECOMING_START"><Text>{1_Home} is safe again, and the people who fled it have started coming home.</Text></Row>
+        <Row Tag="LOC_EMIG_HOMECOMING_DONE_TITLE"><Text>Home At Last</Text></Row>
+        <Row Tag="LOC_EMIG_HOMECOMING_DONE"><Text>The last of the people who fled {1_Home} are back.</Text></Row>
         <Row Tag="LOC_EMIG_T_CALLHOME_PEACE"><Text>Offer when things are calm</Text></Row>
         <Row Tag="LOC_EMIG_T_CALLHOME_PEACE_D"><Text>Raises the call automatically once no settlement of yours is under war, siege, disaster or famine and your people are still displaced. Off leaves it to the console.</Text></Row>
         <Row Tag="LOC_EMIG_SETUP_AI_STRATEGY"><Text>Emigration: AI keeps cities happy</Text></Row>
@@ -360,7 +372,7 @@
         <Row Tag="LOC_EMIG_SETUP_AI_STRATEGY_OFF"><Text>Off</Text></Row>
         <Row Tag="LOC_EMIG_SETUP_AI_STRATEGY_OFF_DESC"><Text>The AI keeps the game's own strategies only.</Text></Row>
         <Row Tag="LOC_EMIG_T_CALLHOME_AI"><Text>AI civilizations call people home</Text></Row>
-        <Row Tag="LOC_EMIG_T_CALLHOME_AI_D"><Text>On their own turn, AI civilizations call their displaced people home once none of their settlements is in distress, paying the same price with the same odds and cooldown you get. From their own settlements first; from abroad only when they still have the Gold or Influence for it. When a call takes people out of one of your cities, you get a notice naming who called. Off leaves the AI to wait for people to drift back on their own.</Text></Row>
+        <Row Tag="LOC_EMIG_T_CALLHOME_AI_D"><Text>On their own turn, AI civilizations call their displaced people home once none of their settlements is in distress, paying the same price with the same odds and cooldown you get. From their own settlements first; from abroad only when they still have the Gold or Influence for it. When a call takes people out of one of your cities, you get a notice naming who called. Off leaves the AI to wait for people to drift back on their own. While people find their own way home, an AI only pays to call people back from abroad.</Text></Row>
         <Row Tag="LOC_EMIG_T_CALLHOME_EX"><Text>Chance each point returns from abroad</Text></Row>
         <Row Tag="LOC_EMIG_T_CALLHOME_EX_D"><Text>How likely each point living under another civilization is to answer a call. Low: they have a life there now, and a call may bring nobody.</Text></Row>
         <Row Tag="LOC_EMIG_T_CALLHOME_GOLD"><Text>Gold to call one person home</Text></Row>
@@ -630,14 +642,14 @@
         <Row Tag="LOC_EMIG_POLICY_CLOSED_BORDERS_DESC_EX"><Text>+3 [icon:YIELD_PRODUCTION] Production in every city. -3 [icon:YIELD_DIPLOMACY] Influence per turn. -60% [icon:YIELD_POPULATION] immigration, -40% emigration. Refugees settle 60% slower. Enclaves keep half their yields (a quarter at war).</Text></Row>
         <Row Tag="LOC_EMIG_POLICY_CLOSED_BORDERS_DESC_MO"><Text>+4 [icon:YIELD_PRODUCTION] Production in every city. -4 [icon:YIELD_DIPLOMACY] Influence per turn. -60% [icon:YIELD_POPULATION] immigration, -40% emigration. Refugees settle 60% slower. Enclaves keep half their yields (a quarter at war).</Text></Row>
         <Row Tag="LOC_EMIG_POLICY_TALENT_NAME"><Text>Talent Attraction</Text></Row>
-        <Row Tag="LOC_EMIG_POLICY_TALENT_DESC"><Text>+1 [icon:YIELD_SCIENCE] Science per turn, and +1.5 per immigrant, fading 30% a turn (max +12).</Text></Row>
-        <Row Tag="LOC_EMIG_POLICY_TALENT_DESC_MO"><Text>+2 [icon:YIELD_SCIENCE] Science per turn, and +1.5 per immigrant, fading 30% a turn (max +12).</Text></Row>
+        <Row Tag="LOC_EMIG_POLICY_TALENT_DESC"><Text>+1 [icon:YIELD_SCIENCE] Science per 5 [icon:YIELD_POPULATION] Population in every settlement. Immigrants count, so the people you draw keep paying for as long as they stay.</Text></Row>
+        <Row Tag="LOC_EMIG_POLICY_TALENT_DESC_MO"><Text>+1 [icon:YIELD_SCIENCE] Science per 4 [icon:YIELD_POPULATION] Population in every settlement. Immigrants count, so the people you draw keep paying for as long as they stay.</Text></Row>
         <Row Tag="LOC_EMIG_POLICY_CULTPULL_NAME"><Text>Cultural Magnetism</Text></Row>
-        <Row Tag="LOC_EMIG_POLICY_CULTPULL_DESC"><Text>[icon:YIELD_POPULATION] Gain +1 [icon:YIELD_CULTURE] Culture each turn, plus about +1.5 more per immigrant you attract, up to +12; the bonus fades if immigration stops.</Text></Row>
-        <Row Tag="LOC_EMIG_POLICY_CULTPULL_DESC_MO"><Text>[icon:YIELD_POPULATION] Gain +2 [icon:YIELD_CULTURE] Culture each turn, plus about +1.5 more per immigrant you attract, up to +12; the bonus fades if immigration stops.</Text></Row>
+        <Row Tag="LOC_EMIG_POLICY_CULTPULL_DESC"><Text>+1 [icon:YIELD_CULTURE] Culture per 5 [icon:YIELD_POPULATION] Population in every settlement.</Text></Row>
+        <Row Tag="LOC_EMIG_POLICY_CULTPULL_DESC_MO"><Text>+1 [icon:YIELD_CULTURE] Culture per 4 [icon:YIELD_POPULATION] Population in every settlement.</Text></Row>
         <Row Tag="LOC_EMIG_POLICY_TRADEPULL_NAME"><Text>Commercial Draw</Text></Row>
-        <Row Tag="LOC_EMIG_POLICY_TRADEPULL_DESC"><Text>[icon:YIELD_POPULATION] Gain +1 [icon:YIELD_GOLD] Gold each turn, plus about +1.5 more per immigrant you attract, up to +12; the bonus fades if immigration stops.</Text></Row>
-        <Row Tag="LOC_EMIG_POLICY_TRADEPULL_DESC_MO"><Text>[icon:YIELD_POPULATION] Gain +2 [icon:YIELD_GOLD] Gold each turn, plus about +1.5 more per immigrant you attract, up to +12; the bonus fades if immigration stops.</Text></Row>
+        <Row Tag="LOC_EMIG_POLICY_TRADEPULL_DESC"><Text>+1 [icon:YIELD_GOLD] Gold per 5 [icon:YIELD_POPULATION] Population in every settlement.</Text></Row>
+        <Row Tag="LOC_EMIG_POLICY_TRADEPULL_DESC_MO"><Text>+1 [icon:YIELD_GOLD] Gold per 4 [icon:YIELD_POPULATION] Population in every settlement.</Text></Row>
         <Row Tag="LOC_EMIG_POLICY_ASYLUM_EX_NAME"><Text>Selective Asylum</Text></Row>
         <Row Tag="LOC_EMIG_POLICY_ASYLUM_EX_DESC"><Text>[icon:YIELD_POPULATION] Refugees fleeing war and disaster are strongly drawn to you, the most desperate first; you earn +1 [icon:YIELD_DIPLOMACY] Influence each turn.</Text></Row>
         <Row Tag="LOC_EMIG_POLICY_ASYLUM_MO_NAME"><Text>Refugee Compact</Text></Row>
@@ -680,7 +692,7 @@
         <Row Tag="LOC_PEDIA_EMIG_BORDERS_BODY"><Text>Your immigration stance is a policy card, available in every age. The Pro-Immigration Stance raises immigration and earns Influence each turn. The Anti-Immigration Stance lowers immigration and the number of your people leaving for rivals, adds Production in every city, and costs Influence each turn.[n][n]An Open Borders agreement increases migration in both directions between the two civilizations.</Text></Row>
 
         <Row Tag="LOC_PEDIA_EMIG_ATTRACTION_TITLE"><Text>Attraction &amp; Asylum</Text></Row>
-        <Row Tag="LOC_PEDIA_EMIG_ATTRACTION_BODY"><Text>Talent Attraction, Cultural Magnetism and Commercial Draw turn immigration into yields: each newcomer adds to a Science, Culture or Gold bonus that grows while people keep arriving and fades when they stop.[n][n]The asylum policies, Selective Asylum and Refugee Compact, draw refugees fleeing war and disaster toward you, the most desperate first, and pay Influence each turn; Refugee Compact also pays Culture.</Text></Row>
+        <Row Tag="LOC_PEDIA_EMIG_ATTRACTION_BODY"><Text>Talent Attraction turns the people you draw into Science: +1 per 5 Population in every settlement (per 4 in the Modern Age), counted by the game like any other yield. Immigrants raise population, so every newcomer adds to it for as long as they stay.[n][n]The asylum policies, Selective Asylum and Refugee Compact, draw refugees fleeing war and disaster toward you, the most desperate first, and pay Influence each turn; Refugee Compact also pays Culture.</Text></Row>
         <Row Tag="LOC_PEDIA_EMIG_RAIDS_TITLE"><Text>Talent Raids</Text></Row>
         <Row Tag="LOC_PEDIA_EMIG_RAIDS_BODY"><Text>From the diplomacy screen you can aim a Talent Raid, Cultural Offensive or Commercial Offensive at a rival. While it runs you pay Influence each turn, and that rival's migration tilts toward your cities. Each person who arrives pays the matching Science, Culture or Gold bonus, as a willing immigrant does.[n][n]These diplomatic actions come from the Diplomacy Extended mod and appear when it is installed.</Text></Row>
         <Row Tag="LOC_PEDIA_EMIG_DISASTERS_TITLE"><Text>Disasters &amp; Plague</Text></Row>
@@ -937,6 +949,30 @@
         <Row Tag="LOC_EMIG_VIEW_TAB_POLICIES">
             <Text>Policies</Text>
         </Row>
+        <Row Tag="LOC_EMIG_VIEW_SEC_DISPLACED"><Text>Displaced people</Text></Row>
+        <Row Tag="LOC_EMIG_VIEW_TAB_DISPLACED"><Text>Displaced</Text></Row>
+        <Row Tag="LOC_EMIG_DP_SECTION"><Text>Displaced: your people who fled, where they are, and the way home</Text></Row>
+        <Row Tag="LOC_EMIG_DP_EMPTY"><Text>Nobody from your settlements is displaced right now.</Text></Row>
+        <Row Tag="LOC_EMIG_DP_SINCE"><Text>since turn {1_Turn}</Text></Row>
+        <Row Tag="LOC_EMIG_DP_AWAY"><Text>Away:</Text></Row>
+        <Row Tag="LOC_EMIG_DP_AWAY_N"><Text>{1_Count} population points: {2_Where}</Text></Row>
+        <Row Tag="LOC_EMIG_DP_IN_OWN"><Text>{1_Count} in {2_City}</Text></Row>
+        <Row Tag="LOC_EMIG_DP_IN_FOREIGN"><Text>{1_Count} in {2_City} ({3_Civ})</Text></Row>
+        <Row Tag="LOC_EMIG_DP_LOST"><Text>{1_Home} is no longer yours. These people stay where they are.</Text></Row>
+        <Row Tag="LOC_EMIG_DP_WORTH"><Text>Worth:</Text></Row>
+        <Row Tag="LOC_EMIG_DP_TILE"><Text>each returnee settles a new tile at {1_Home}, about {2_Yields} a turn.</Text></Row>
+        <Row Tag="LOC_EMIG_DP_WAIT"><Text>Wait:</Text></Row>
+        <Row Tag="LOC_EMIG_DP_HOMECOMING_OFF"><Text>People at home only come back when called.</Text></Row>
+        <Row Tag="LOC_EMIG_DP_WAIT_CALM"><Text>Free, once {1_Home} has been calm for {2_Turns} more turns; then one comes home every {3_Every} turns.</Text></Row>
+        <Row Tag="LOC_EMIG_DP_WAIT_NOW"><Text>Free: one comes home next turn, and the last in about {1_Turns} turns.</Text></Row>
+        <Row Tag="LOC_EMIG_DP_WAIT_NEXT"><Text>Free: the next one comes home in {1_Turns} turns, and the last in about {2_All} turns.</Text></Row>
+        <Row Tag="LOC_EMIG_DP_HASTEN_LBL"><Text>Hasten:</Text></Row>
+        <Row Tag="LOC_EMIG_DP_HASTEN"><Text>bring {1_Count} back now for {2_Gold} Gold or {3_Infl} Influence.</Text></Row>
+        <Row Tag="LOC_EMIG_DP_HASTEN_BTN"><Text>Hasten</Text></Row>
+        <Row Tag="LOC_EMIG_DP_ABROAD_LBL"><Text>Abroad:</Text></Row>
+        <Row Tag="LOC_EMIG_DP_ABROAD"><Text>Call {1_Count} from abroad: {2_Pct}% each, about {3_Expected} expected to come, for {4_Gold} Gold or {5_Infl} Influence. That's about {6_PerGold} Gold or {7_PerInfl} Influence for each person who comes.</Text></Row>
+        <Row Tag="LOC_EMIG_DP_ABROAD_BTN"><Text>Call from abroad</Text></Row>
+        <Row Tag="LOC_EMIG_DP_COOLDOWN"><Text>Available again in {1_Turns} turns.</Text></Row>
         <Row Tag="LOC_EMIG_VIEW_TAB_MY_CITIES">
             <Text>My Cities</Text>
         </Row>

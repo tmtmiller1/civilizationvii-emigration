@@ -15,7 +15,7 @@ globalThis.Database = { makeHash: (s) => "H_" + s }; // hash = "H_" + type strin
 const { immigrationOpenness, emigrationRetention, borderStance, resetBorderCache } = await import(
   "/emigration/ui/emigration-borders.js"
 );
-const { activeAttractions, hasAsylum, treatmentStance, __test } = await import("/emigration/ui/emigration-borders.js");
+const { hasAsylum, treatmentStance, __test } = await import("/emigration/ui/emigration-borders.js");
 const { CONFIG } = await import("/emigration/ui/emigration-config.js");
 
 const OPEN = "H_TRADITION_EMIG_OPEN_BORDERS_MODERN";
@@ -122,7 +122,6 @@ function testAttractionFamiliesResolveToYieldKeys() {
     "H_TRADITION_EMIG_TRADEPULL_MODERN"
   ]);
   resetBorderCache();
-  assert.deepEqual(activeAttractions(15), ["YIELD_SCIENCE", "YIELD_CULTURE", "YIELD_GOLD"]);
 }
 
 function testAsylumAndAttractionDefaults() {
@@ -131,7 +130,6 @@ function testAsylumAndAttractionDefaults() {
   resetBorderCache();
   assert.equal(hasAsylum(16), true);
   assert.equal(hasAsylum(17), false);
-  assert.deepEqual(activeAttractions(17), []);
 }
 
 function testAllAgesResolveForPolicyFamilies() {
@@ -172,24 +170,6 @@ function testAllAgesResolveForPolicyFamilies() {
     resetBorderCache();
     assert.equal(hasAsylum(pid), true);
     pid++;
-  }
-}
-
-function testAllAgesResolveForAttractionFamilies() {
-  const attractionAges = [
-    ["H_TRADITION_EMIG_TALENT_EXPLORATION", "H_TRADITION_EMIG_TALENT_MODERN", "YIELD_SCIENCE"],
-    ["H_TRADITION_EMIG_CULTPULL_EXPLORATION", "H_TRADITION_EMIG_CULTPULL_MODERN", "YIELD_CULTURE"],
-    ["H_TRADITION_EMIG_TRADEPULL_EXPLORATION", "H_TRADITION_EMIG_TRADEPULL_MODERN", "YIELD_GOLD"]
-  ];
-
-  let pid = 50;
-  for (const [a, b, yieldKey] of attractionAges) {
-    for (const h of [a, b]) {
-      ACTIVE[pid] = new Set([h]);
-      resetBorderCache();
-      assert.deepEqual(activeAttractions(pid), [yieldKey]);
-      pid++;
-    }
   }
 }
 
@@ -252,7 +232,6 @@ function testStancesCarryAsylumAndTreatment() {
   assert.equal(hasAsylum(92), true, "both slotted: refugees still drawn by the Pro card");
   assert.equal(treatmentStance(92), null, "both slotted: no treatment");
   assert.equal(immigrationOpenness(92), 1, "both slotted: neutral openness");
-  assert.deepEqual(activeAttractions(93), ["YIELD_SCIENCE"], "Talent Attraction alone pays Science");
 }
 
 function testOtherAgesCardsAreSkippedWhenTheDatabaseDoesntKnowThem() {
@@ -272,7 +251,6 @@ function testOtherAgesCardsAreSkippedWhenTheDatabaseDoesntKnowThem() {
   assert.equal(borderStance(94), "pro", "the Antiquity Pro card alone counts");
   assert.ok(close(immigrationOpenness(94), 1.5));
   assert.equal(treatmentStance(94), "protect", "the unknown Modern suspicion card doesn't cancel it");
-  assert.deepEqual(activeAttractions(94), [], "an unknown attraction card pays nothing");
   globalThis.GameInfo = priorGameInfo;
   resetBorderCache();
 }
@@ -282,7 +260,6 @@ testAsylumAndAttractionDefaults();
 testStancesCarryAsylumAndTreatment();
 testOtherAgesCardsAreSkippedWhenTheDatabaseDoesntKnowThem();
 testAllAgesResolveForPolicyFamilies();
-testAllAgesResolveForAttractionFamilies();
 testHashCacheSurvivesMissingDatabaseAfterWarmup();
 testBorderCacheHoldsUntilReset();
 
@@ -299,7 +276,6 @@ delete globalThis.Players;
 resetBorderCache();
 assert.equal(borderStance(80), "none");
 assert.equal(hasAsylum(80), false);
-assert.equal(activeAttractions(80).length, 0);
 globalThis.Players = priorPlayers;
 
 CONFIG.bordersEnabled = false;

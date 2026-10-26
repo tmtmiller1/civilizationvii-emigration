@@ -7,6 +7,7 @@
 // and the fee is spent regardless. The roll is seeded from game id, pair and turn, so it cannot be re-rolled.
 // People the player chose to leave where they are (the "declined" map, kept by emigration-call-home-action.js)
 // are taken out of every later quote, so the offer comes back only for people displaced since.
+import { netOfReturns, returnedFor } from "/emigration/ui/emigration-returned.js";
 import { CONFIG } from "/emigration/ui/emigration-config.js";
 import { migrationFlows } from "/emigration/ui/emigration-migration-stats.js";
 import { isRefugeeCause } from "/emigration/ui/emigration-causes.js";
@@ -99,11 +100,13 @@ export function callHomeTiers(max) {
 /**
  * Candidate pairs for one player: where their displaced people went, and where they came from. Internal
  * pairs are moves between the player's own settlements; external pairs are the player's people living
- * under another civilization. Only refugee-shaped causes count.
+ * under another civilization. Only refugee-shaped causes count. The flow ledger is an all-game tally, so the
+ * people who have already come home (emigration-returned.js) are taken off it.
  * @param {number} pid @param {*[]} [flows] Flow rows (defaults to the live matrix).
- * @returns {{internal:*[], external:*[]}} Candidate pairs, richest first.
+ * @param {*} [returned] This civ's returns by host civ, host settlement and home (defaults to the save's).
+ * @returns {{internal:*[], external:*[]}} Candidate pairs still away, richest first.
  */
-export function callHomeCandidates(pid, flows) {
+export function callHomeCandidates(pid, flows, returned) {
   const rows = Array.isArray(flows) ? flows : safeFlows();
   /** @type {*[]} */ const internal = [];
   /** @type {*[]} */ const external = [];
@@ -115,8 +118,13 @@ export function callHomeCandidates(pid, flows) {
     if (f.dest === pid) internal.push(row);
     else external.push(row);
   }
-  const bySize = (/** @type {*} */ a, /** @type {*} */ b) => b.points - a.points;
-  return { internal: internal.sort(bySize), external: external.sort(bySize) };
+  const back = returnsOf(pid, returned);
+  return { internal: netOfReturns(internal, back), external: netOfReturns(external, back) };
+}
+
+/** @param {number} pid @param {*} given A caller's returns, or undefined for the save's. @returns {*} */
+function returnsOf(pid, given) {
+  return given === undefined ? returnedFor(pid) : given;
 }
 
 /**

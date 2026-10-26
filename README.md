@@ -716,9 +716,9 @@ Exploration:
 |---|---|
 | Pro-Immigration Stance (Economics) | +2 Influence/turn, +2 Food/city; migration pull ×1.5 |
 | Anti-Immigration Stance (Economics) | −3 Influence/turn, +3 Production/city; inbound ×0.4, outbound ×0.6 |
-| Talent Attraction (Inspiration) | +1 Science/turn; +1.5 Science pool per arrival |
-| Cultural Magnetism (Society) | +1 Culture/turn; +1.5 Culture pool per arrival |
-| Commercial Draw (Mercantilism) | +1 Gold/turn; +1.5 Gold pool per arrival |
+| Talent Attraction (Inspiration) | +1 Science per 5 Population in every settlement |
+| Cultural Magnetism (Society) | +1 Culture per 5 Population in every settlement (retired) |
+| Commercial Draw (Mercantilism) | +1 Gold per 5 Population in every settlement (retired) |
 | Selective Asylum (Piety) | +1 Influence/turn; refugee pull tilt |
 | Charter of Communities (Economics) | +2 Influence/turn; enclave payout kept whole in wartime |
 | Oaths of Loyalty (Economics) | +2 Production/city; enclave payout ×0.5, inbound ×0.75 |
@@ -730,9 +730,9 @@ Modern:
 |---|---|
 | Pro-Immigration Stance (Social Question) | +3 Influence/turn, +3 Food/city; migration pull ×1.5 |
 | Anti-Immigration Stance (Social Question) | −4 Influence/turn, +4 Production/city; inbound ×0.4, outbound ×0.6 |
-| Talent Attraction (Modernization) | +2 Science/turn; +1.5 Science pool per arrival |
-| Cultural Magnetism (Natural History) | +2 Culture/turn; +1.5 Culture pool per arrival |
-| Commercial Draw (Capitalism) | +2 Gold/turn; +1.5 Gold pool per arrival |
+| Talent Attraction (Modernization) | +1 Science per 4 Population in every settlement |
+| Cultural Magnetism (Natural History) | +1 Culture per 4 Population in every settlement (retired) |
+| Commercial Draw (Capitalism) | +1 Gold per 4 Population in every settlement (retired) |
 | Refugee Compact (Political Theory) | +2 Influence/turn, +1 Culture/turn; refugee pull tilt |
 | Equal Protection (Social Question) | +3 Influence/turn; enclave payout kept whole in wartime |
 | Registration of Residents (Social Question) | +3 Production/city; enclave payout ×0.5, inbound ×0.75 |
@@ -742,25 +742,9 @@ Internal IDs: `OPEN_BORDERS` = Pro-Immigration, `CLOSED_BORDERS` = Anti-Immigrat
 
 #### How attraction policy card yields function
 
-Attraction cards stack two yield layers:
+Talent Attraction pays through the game's own per-population yield (`EFFECT_CITY_ADJUST_YIELD_PER_POPULATION`, `data/emigration-policies-gameeffects.xml`): +1 Science per 5 Population in every settlement in Exploration, per 4 in Modern, rural and urban alike. Immigrants raise population, so each newcomer the card draws adds to it for as long as they stay, and it shows in the settlement's yield breakdown like any other modifier. Until 2026-10-25 the card paid a flat +1/+2 plus a carried per-immigrant pool that faded 30% a turn; players couldn't tell what the fade meant, so it's gone. The retired Cultural Magnetism and Commercial Draw cards have the same shape in Culture and Gold for saves that still hold one.
 
-1. A fixed native yield from `data/emigration-policies-gameeffects.xml`.
-2. A carried dividend from immigrant intake (`emigration-dividend.js`):
-
-$$
-\mathrm{pool}_{y} \leftarrow \mathrm{pool}_{y} + \mathrm{dividendPerMigrant}
-$$
-
-Each turn:
-
-$$
-\begin{aligned}
-\mathrm{pool}_{y} &\leftarrow \mathrm{pool}_{y}\cdot\mathrm{dividendDecay}^{\Delta t}, \\
-\mathrm{grant}_{y} &= \min(\mathrm{dividendCap},\ \mathrm{pool}_{y})
-\end{aligned}
-$$
-
-Defaults are `dividendPerMigrant = 1.5`, `dividendDecay = 0.7`, and `dividendCap = 12` per turn per channel. The flat Influence bonus is part of the card; only the carried dividend scales with arrivals.
+The carried dividend (`emigration-dividend.js`) now serves the raids alone (§6e): each person a raid draws adds `dividendPerMigrant` (1.5) to a pool in the raid's yield, the pool decays by `dividendDecay` (0.7) a turn, and at most `dividendCap` (12) is granted a turn.
 
 ### 6c. Environmental disasters & plague (`disastersEnabled`)
 
@@ -911,12 +895,19 @@ contested names that card: a suspicion card falls hardest on the families, a pro
 
 ### 6j. Calling people home (`emigration-call-home.js`, `-call-home-action.js`, `-call-home-view.js`, `callHomeEnabled`)
 
+**Homecoming** (`emigration-homecoming.js`, "People find their own way home" in Advanced settings, on by default). People driven out of one settlement into another of the same civilization go back on their own. On each civilization's turn, a home settlement with no distress (war, siege, disaster, famine or unrest) for `homecomingCalmTurns` (3) turns in a row gets one of its people back every `homecomingEveryTurns` (4) turns, from the settlement holding the most of them, through the same move the paid call makes: a tile at the host is given up and a new one is settled at home, and the return is counted so the number away goes down. Nobody comes home to a settlement that was lost, is still in trouble, or that nobody left. Calm streaks and the last return per home are kept in the save. The Chronicle tells you when your people start coming home to a settlement and when the last of them is back; AI civilizations get the same returns without the lines. While homecoming is on, the call-home offer and the AI's paid calls are for people abroad only.
+
+After fighting in a settlement's borders or a siege the wait is `homecomingCalmTurnsAfterWar` (10) calm turns instead, since a frontier settlement that was hit once is likely to be hit again (watched 2026-10-25: with the short wait, Pārsa took four people back and was lost with them in it).
+
+**The Displaced tab** (`emigration-displaced.js`, `-displaced-view.js`), after My Cities on the Emigration screen, is where you see and act on all of this: one card per settlement of yours that people fled, with how many are away and where (which of your settlements, which foreign cities), since when, what a returnee is worth (the average yields of the rural tiles that settlement works, since a returnee settles a new one), when they come home on their own (calm turns still needed, turns to the next return and to the last), and the paid calls: Hasten for people in your own settlements, Call from abroad for the gamble, each with its price in Gold and Influence and, for the gamble, how many are expected to come and what that makes each person who comes cost. Each button opens the call-home dialog for that settlement's people only, and the tab redraws when it closes. A settlement you no longer hold is listed with its people staying where they are.
+
 A civilization can pay Gold or Influence to bring its displaced people back to the settlement they fled. The dialog offers a ladder of sizes for each currency (one person, about half of what is callable, everyone, up to `callHomeMaxPointsPerAttempt` = 3), priced with the game's own Gold and Influence icons. A size the treasury cannot cover stays in the list, grayed out, with a tooltip giving the price and the balance.
 
 - **From your own settlements** it is a purchase: the pop-up names the settlement people are pulled back from and the one they return to, and exactly the number paid for come.
 - **From abroad** it is a gamble: the pop-up names the foreign city and its ruler and gives the odds per person (`callHomeChanceExternal`, 18%). The call is paid for at the chosen size whether or not anyone answers; each person asked is rolled, and the call may bring nobody. An unanswered call is recorded in the Chronicle and still starts the cooldown.
 - **Price:** `callHomeGoldPerPoint` (60) or `callHomeInfluencePerPoint` (12) for one person, climbing as n^1.5 (two people cost nearly three times one, three about five times), ×`callHomeExternalCostScale` (1.5) abroad, and ×`callHomeAgeCostStep` (3) per age past Antiquity ("Price climb per age": ×3 in Exploration, ×9 in Modern).
 - **AI civilizations call too** (`callHomeAi`, "AI civilizations call people home" in Advanced settings, on by default; `emigration-call-home-ai.js`). On its own turn, when none of its settlements is in distress, its people are away, the cooldown has run out and it can pay, an AI civilization makes the same call at the same price, odds and cooldown, sized by value: the k-th person is called only if their marginal fee is under what they are worth (the home city's net yields per head, the leader's favoured yield from the game's AI data counted twice, over two cooldowns; times the odds for a call abroad), one call spends at most a quarter of the balance, a civ in deficit keeps eight turns of reserve, and it pays in the currency that buys the larger call. From its own settlements first, from abroad only from what the internal bill leaves; the home city with the lowest prosperity is served first. At the shipped prices this means Influence calls of two or three people for an ordinary city and a Gold call of one, and almost no calls abroad unless the home city is very rich. The distress read reuses the last pass's city signals, so an AI turn doesn't read the map again. When a call takes people out of one of your cities you get a train notice and a Chronicle line naming who called. Watched 2026-10-23 from the console on a turn-101 Antiquity lab game: Persia's internal call charged 312 Gold and moved its people; Greece's external call charged 468 Gold and the dice refused all three. Watched running on its own 2026-10-23 in two Deity lab games at Antiquity seed 4242 (the usual set). First game, 100 turns: Hawaii called at turn 54 (34 Influence, two came home, a fishing boat abandoned at the host, "They Answer The Call" in the Chronicle), Goryeo at turn 71 (312 Gold, three) and again at 79 after the eight-turn cooldown (62 Influence, three, Gold being short by then). Second game, 130 turns: eight calls, all internal, Hawaii once and Persia and Goryeo every eight turns from the sixties on, each the three-point cap (those games ran before the value sizing; with it, a Deity Exploration game the same evening logged 21 calls sized 2 and 3). No external call came up on its own in either game (three abroad cost 468 Gold in Antiquity and about 1,400 in Exploration, and the AI only calls abroad with that to spare after its internal bill). The external call out of a human city was watched with seeded flow rows and the odds forced to 1: Persia paid 255 Gold for two, Heian-Kyo lost two and Pārsa gained them, the Chronicle read "Achaemenid Persia calls its people home from Heian-Kyo: 2 population points leave", and a loss notice joined the human seat's train.
+- **Who is away:** the migration ledger is an all-game tally, so everyone who has come home since, by a call or by drifting home on their own, is counted (`emigration-returned.js`, kept in the save) and taken off it. A return comes off the pair it matches; one that landed in a different home city comes off the other groups from the same host city, largest first.
 - **Who can be called:** only people whose host city and home city both still exist under the owners the ledger names; a group whose city changed hands or was razed since they fled is left out of the quote (`callHomeResolvable` in `emigration-call-home-action.js`), and a paid call that still moves nobody refunds its fee. The dice refusing an external call is not a refund case.
 - **Cadence:** `callHomeCooldownTurns` (8) per civilization, kept in the save (`EmigrationCallHomeCooldown_v1`) so a reload doesn't reset it; measured in the mod's monotonic turn, so an age change doesn't either. With `callHomeOfferWhenCalm` ("Call-home offers" on the Mods tab) the call is offered once no settlement is in distress and people are still away. Leaving them where they are (the button, the dialog's close button or Escape) is kept in the save: those people are not offered again, and a later offer lists only people displaced since. The console call `emigration.callHome()` still lists everyone.
 
@@ -967,7 +958,7 @@ When Demographics is installed, Emigration registers through `globalThis.Demogra
     External).
   - **Emigration / Immigration:** gross outflow and inflow, including cause breakdowns.
   - **Refugees (Left / Arrived):** displaced people sent or received, with optional war and disaster onset markers.
-- **Dashboard sub-tabs:** Network, Causes, Settlements, Diversity, Immigration Policies, Notifications, and Guide. Registration is a silent no-op on older Demographics versions.
+- **Dashboard sub-tabs:** Network, Causes, Settlements, Displaced, Diversity, Immigration Policies, Notifications, and Guide. Registration is a silent no-op on older Demographics versions.
 - **Migration Chronicle:** persisted prose for major movements, mirrored into Notifications instead of a separate tab.
 - **Cause drill-down:** broad causes expand to named wars, disasters, or age-crisis mechanisms with emigration and death counts. Per-civ event tallies are persisted in `outByEvent` and `deathsByEvent`.
 - **Notifications:** a permanent, expandable log of fired migration notifications with cause, named event, source, destination, and count.
@@ -1136,8 +1127,7 @@ Invitation (spend Influence or Gold to draw people from one named foreign city f
   They need that mod installed. Whether its AI runs them hasn't been checked; a native action needs an AI favour
   row, and that's Diplomacy Extended's to ship.
 - Agitation is what Sabotage Morale and Sabotage Food already do (11.5), and the AI runs those today.
-- The attraction cards (Talent Attraction, Cultural Magnetism, Commercial Draw) are the untargeted version: a
-  standing pull plus a yield per arrival.
+- Talent Attraction is the untargeted version: Science per population, so every immigrant you draw adds to it.
 
 What's genuinely open is a targeted draw for games without Diplomacy Extended, and a check of whether the AI uses the
 raids when it has them. Both are the owner's call. A cheaper experiment is biasing hostile leaders toward the two

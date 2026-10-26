@@ -322,7 +322,7 @@ export function renderDiversity(body, rows) {
   body.appendChild(originLegend(rows));
   const note = el("div", "emig-diverse-note",
     loc("LOC_EMIG_COSMO_DESC", "Describes the mix of origins living in each settlement. No yields attached."));
-  note.style.cssText = "opacity:0.6;font-style:italic;font-size:var(--dg-fs-85);padding:0.2rem 0.6rem;";
+  note.style.cssText = "opacity:0.6;font-size:var(--dg-fs-85);padding:0.2rem 0.6rem;"; // no italic: it draws as nothing
   body.appendChild(note);
   if (rows.length > top.length) renderAllSettlements(body, rows, ctx);
 }

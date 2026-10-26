@@ -325,6 +325,18 @@
         <Replace Tag="LOC_EMIG_T_MINORFLOOR_D" Language="es_ES"><Text>Presión que siente una ciudad simplemente asediada por una potencia menor antes de sufrir daño real. El daño real siempre cuenta por completo.</Text></Replace>
         <Replace Tag="LOC_EMIG_T_CALLHOME" Language="es_ES"><Text>Llamar a la gente a casa</Text></Replace>
         <Replace Tag="LOC_EMIG_T_CALLHOME_D" Language="es_ES"><Text>Ofrece una llamada de pago para traer a los desplazados de vuelta al asentamiento del que huyeron, en el número que elijas. Desde tus propios asentamientos es una compra: vienen todos los que pagas. Desde el extranjero la llamada se paga igualmente y cada persona llamada puede responder o no.</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_HOMECOMING" Language="es_ES"><Text>People find their own way home</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_HOMECOMING_D" Language="es_ES"><Text>People driven out of one of your settlements into another of yours come back on their own once their home has been calm for a few turns, one at a time, and rebuild a tile there. Every civilization gets the same. While this is on, calling people home is only offered for people abroad. Off brings back the paid call for people at home.</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_HOMECOMING_CALM" Language="es_ES"><Text>Calm turns before people come home</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_HOMECOMING_CALM_D" Language="es_ES"><Text>How many turns in a row a settlement has to be free of disaster, famine and unrest before the people who fled it start coming back. Any trouble starts the count again.</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_HOMECOMING_CALMWAR" Language="es_ES"><Text>Calm turns after fighting</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_HOMECOMING_CALMWAR_D" Language="es_ES"><Text>The same wait when the trouble was fighting in the settlement's borders or a siege. Longer, because a frontier settlement that was hit once is likely to be hit again, and people sent back too soon are lost with it.</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_HOMECOMING_EVERY" Language="es_ES"><Text>Turns between returns</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_HOMECOMING_EVERY_D" Language="es_ES"><Text>Once a settlement is calm, one of its people comes home this often, from whichever of your settlements holds the most of them.</Text></Replace>
+        <Replace Tag="LOC_EMIG_HOMECOMING_START_TITLE" Language="es_ES"><Text>The Road Home</Text></Replace>
+        <Replace Tag="LOC_EMIG_HOMECOMING_START" Language="es_ES"><Text>{1_Home} is safe again, and the people who fled it have started coming home.</Text></Replace>
+        <Replace Tag="LOC_EMIG_HOMECOMING_DONE_TITLE" Language="es_ES"><Text>Home At Last</Text></Replace>
+        <Replace Tag="LOC_EMIG_HOMECOMING_DONE" Language="es_ES"><Text>The last of the people who fled {1_Home} are back.</Text></Replace>
         <Replace Tag="LOC_EMIG_T_CALLHOME_PEACE" Language="es_ES"><Text>Ofrecer cuando haya calma</Text></Replace>
         <Replace Tag="LOC_EMIG_T_CALLHOME_PEACE_D" Language="es_ES"><Text>Lanza la llamada automáticamente cuando ninguno de tus asentamientos sufre guerra, asedio, desastre ni hambruna y tu gente sigue desplazada. Desactivado: queda en manos de la consola.</Text></Replace>
         <Replace Tag="LOC_EMIG_SETUP_AI_STRATEGY" Language="es_ES"><Text>Emigration: AI keeps cities happy</Text></Replace>
@@ -334,7 +346,7 @@
         <Replace Tag="LOC_EMIG_SETUP_AI_STRATEGY_OFF" Language="es_ES"><Text>Off</Text></Replace>
         <Replace Tag="LOC_EMIG_SETUP_AI_STRATEGY_OFF_DESC" Language="es_ES"><Text>The AI keeps the game's own strategies only.</Text></Replace>
         <Replace Tag="LOC_EMIG_T_CALLHOME_AI" Language="es_ES"><Text>AI civilizations call people home</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_CALLHOME_AI_D" Language="es_ES"><Text>On their own turn, AI civilizations call their displaced people home once none of their settlements is in distress, paying the same price with the same odds and cooldown you get. From their own settlements first; from abroad only when they still have the Gold or Influence for it. When a call takes people out of one of your cities, you get a notice naming who called. Off leaves the AI to wait for people to drift back on their own.</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_CALLHOME_AI_D" Language="es_ES"><Text>On their own turn, AI civilizations call their displaced people home once none of their settlements is in distress, paying the same price with the same odds and cooldown you get. From their own settlements first; from abroad only when they still have the Gold or Influence for it. When a call takes people out of one of your cities, you get a notice naming who called. Off leaves the AI to wait for people to drift back on their own. While people find their own way home, an AI only pays to call people back from abroad.</Text></Replace>
         <Replace Tag="LOC_EMIG_T_CALLHOME_EX" Language="es_ES"><Text>Probabilidad de retorno por punto desde el extranjero</Text></Replace>
         <Replace Tag="LOC_EMIG_T_CALLHOME_EX_D" Language="es_ES"><Text>Con qué probabilidad responde a una llamada cada punto que vive bajo otra civilización. Baja: ahora tienen una vida allí, y puede que una llamada no traiga a nadie.</Text></Replace>
         <Replace Tag="LOC_EMIG_T_CALLHOME_GOLD" Language="es_ES"><Text>Oro por punto de población que regresa</Text></Replace>
@@ -562,14 +574,14 @@
         <Replace Tag="LOC_EMIG_POLICY_CLOSED_BORDERS_DESC_EX" Language="es_ES"><Text>+3 [icon:YIELD_PRODUCTION] Producción en cada ciudad. -3 [icon:YIELD_DIPLOMACY] Influencia por turno. -60 % [icon:YIELD_POPULATION] inmigración, -40 % emigración. Los refugiados se asientan un 60 % más despacio. Los enclaves conservan la mitad de sus rendimientos (un cuarto en guerra).</Text></Replace>
         <Replace Tag="LOC_EMIG_POLICY_CLOSED_BORDERS_DESC_MO" Language="es_ES"><Text>+4 [icon:YIELD_PRODUCTION] Producción en cada ciudad. -4 [icon:YIELD_DIPLOMACY] Influencia por turno. -60 % [icon:YIELD_POPULATION] inmigración, -40 % emigración. Los refugiados se asientan un 60 % más despacio. Los enclaves conservan la mitad de sus rendimientos (un cuarto en guerra).</Text></Replace>
         <Replace Tag="LOC_EMIG_POLICY_TALENT_NAME" Language="es_ES"><Text>Atracción de talento</Text></Replace>
-        <Replace Tag="LOC_EMIG_POLICY_TALENT_DESC" Language="es_ES"><Text>+1 [icon:YIELD_SCIENCE] Ciencia por turno, y +1,5 por inmigrante, que se desvanece un 30 % por turno (máx. +12).</Text></Replace>
-        <Replace Tag="LOC_EMIG_POLICY_TALENT_DESC_MO" Language="es_ES"><Text>+2 [icon:YIELD_SCIENCE] Ciencia por turno, y +1,5 por inmigrante, que se desvanece un 30 % por turno (máx. +12).</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_TALENT_DESC" Language="es_ES"><Text>+1 [icon:YIELD_SCIENCE] Science per 5 [icon:YIELD_POPULATION] Population in every settlement. Immigrants count, so the people you draw keep paying for as long as they stay.</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_TALENT_DESC_MO" Language="es_ES"><Text>+1 [icon:YIELD_SCIENCE] Science per 4 [icon:YIELD_POPULATION] Population in every settlement. Immigrants count, so the people you draw keep paying for as long as they stay.</Text></Replace>
         <Replace Tag="LOC_EMIG_POLICY_CULTPULL_NAME" Language="es_ES"><Text>Magnetismo cultural</Text></Replace>
-        <Replace Tag="LOC_EMIG_POLICY_CULTPULL_DESC" Language="es_ES"><Text>Los [icon:YIELD_POPULATION] recién llegados enriquecen tu cultura. Obtienes +1 [icon:YIELD_CULTURE] Cultura, que sube a +2 en la Edad Moderna, más una bonificación de Cultura que crece unos +1,5 por cada inmigrante que atraes, hasta +12 por turno. Esta bonificación se desvanece si la inmigración se detiene.</Text></Replace>
-        <Replace Tag="LOC_EMIG_POLICY_CULTPULL_DESC_MO" Language="es_ES"><Text>[icon:YIELD_POPULATION] Obtienes +2 de [icon:YIELD_CULTURE] Cultura cada turno, más unos +1,5 adicionales por cada inmigrante que atraes, hasta +12; la bonificación se desvanece si la inmigración se detiene.</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_CULTPULL_DESC" Language="es_ES"><Text>+1 [icon:YIELD_CULTURE] Culture per 5 [icon:YIELD_POPULATION] Population in every settlement.</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_CULTPULL_DESC_MO" Language="es_ES"><Text>+1 [icon:YIELD_CULTURE] Culture per 4 [icon:YIELD_POPULATION] Population in every settlement.</Text></Replace>
         <Replace Tag="LOC_EMIG_POLICY_TRADEPULL_NAME" Language="es_ES"><Text>Atractivo comercial</Text></Replace>
-        <Replace Tag="LOC_EMIG_POLICY_TRADEPULL_DESC" Language="es_ES"><Text>Los [icon:YIELD_POPULATION] recién llegados engrosan tus mercados. Obtienes +1 [icon:YIELD_GOLD] Oro, que sube a +2 en la Edad Moderna, más una bonificación de Oro que crece unos +1,5 por cada inmigrante que atraes, hasta +12 por turno. Esta bonificación se desvanece si la inmigración se detiene.</Text></Replace>
-        <Replace Tag="LOC_EMIG_POLICY_TRADEPULL_DESC_MO" Language="es_ES"><Text>[icon:YIELD_POPULATION] Obtienes +2 de [icon:YIELD_GOLD] Oro cada turno, más unos +1,5 adicionales por cada inmigrante que atraes, hasta +12; la bonificación se desvanece si la inmigración se detiene.</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_TRADEPULL_DESC" Language="es_ES"><Text>+1 [icon:YIELD_GOLD] Gold per 5 [icon:YIELD_POPULATION] Population in every settlement.</Text></Replace>
+        <Replace Tag="LOC_EMIG_POLICY_TRADEPULL_DESC_MO" Language="es_ES"><Text>+1 [icon:YIELD_GOLD] Gold per 4 [icon:YIELD_POPULATION] Population in every settlement.</Text></Replace>
         <Replace Tag="LOC_EMIG_POLICY_ASYLUM_EX_NAME" Language="es_ES"><Text>Asilo selectivo</Text></Replace>
         <Replace Tag="LOC_EMIG_POLICY_ASYLUM_EX_DESC" Language="es_ES"><Text>[icon:YIELD_POPULATION] Los refugiados que huyen de la guerra y los desastres se sienten fuertemente atraídos hacia ti, empezando por los más desesperados; obtienes +1 de [icon:YIELD_DIPLOMACY] Influencia cada turno.</Text></Replace>
         <Replace Tag="LOC_EMIG_POLICY_ASYLUM_MO_NAME" Language="es_ES"><Text>Pacto de refugiados</Text></Replace>
@@ -604,7 +616,7 @@
         <Replace Tag="LOC_PEDIA_EMIG_BORDERS_TITLE" Language="es_ES"><Text>Fronteras e Influencia</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIG_BORDERS_BODY" Language="es_ES"><Text>Dos palancas moldean la migración a través de tus fronteras. Tu propia postura es una carta de política, disponible en cada era. Elige la Postura Proinmigración para acoger al mundo: llegan más migrantes y tu reputación cosmopolita genera algo de Influencia por turno. O elige la Postura Antiinmigración para aislarte: llegan menos recién llegados, menos de tu propia gente se marcha a rivales, y una economía interna movilizada añade Producción en cada ciudad, aunque el mundo juzga tu aislamiento con una merma constante de Influencia. Elige lo que se ajuste a tu estrategia.[n][n]La diplomacia también importa. Cuando tú y otra civilización firmáis un acuerdo de fronteras abiertas, los migrantes fluyen con más libertad entre vuestras dos tierras, en ambas direcciones.</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIG_ATTRACTION_TITLE" Language="es_ES"><Text>Atracción y asilo</Text></Replace>
-        <Replace Tag="LOC_PEDIA_EMIG_ATTRACTION_BODY" Language="es_ES"><Text>Mientras las políticas de postura deciden si tus fronteras están abiertas, un segundo conjunto de cartas decide qué haces con las personas que las cruzan. Las políticas de Atracción de Talento, Cultural y Comercial convierten la inmigración en un motor: cada recién llegado que atraes acumula un dividendo creciente de Ciencia, Cultura u Oro que se compone mientras la gente sigue llegando y se desvanece en cuanto cesa el flujo: un contrapunto al coste de integración, que recompensa a las civilizaciones que mantienen su atracción.[n][n]Las políticas de Asilo responden a otra llamada. Abrir tus puertas a quienes huyen de la guerra y la catástrofe atrae refugiados hacia ti, los más desesperados primero, y el mundo recuerda el gesto en forma de Influencia, y el pacto posterior además enriquece tu cultura. Juntas permiten que un pueblo acogedor se beneficie de la apertura en vez de limitarse a soportarla.</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIG_ATTRACTION_BODY" Language="es_ES"><Text>Talent Attraction turns the people you draw into Science: +1 per 5 Population in every settlement (per 4 in the Modern Age), counted by the game like any other yield. Immigrants raise population, so every newcomer adds to it for as long as they stay.[n][n]The asylum policies, Selective Asylum and Refugee Compact, draw refugees fleeing war and disaster toward you, the most desperate first, and pay Influence each turn; Refugee Compact also pays Culture.</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIG_RAIDS_TITLE" Language="es_ES"><Text>Cacería de talento</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIG_RAIDS_BODY" Language="es_ES"><Text>Desde la pantalla de diplomacia puedes dirigir una Cacería de talento, una Ofensiva cultural o una Ofensiva comercial contra un rival. Mientras dura pagas Influencia cada turno, y la migración de ese rival se inclina hacia tus ciudades. Cada persona que llega aporta la bonificación correspondiente de Ciencia, Cultura u Oro, igual que un inmigrante voluntario.[n][n]Estas acciones diplomáticas proceden del mod Diplomacy Extended y aparecen cuando está instalado.</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIG_DISASTERS_TITLE" Language="es_ES"><Text>Desastres y peste</Text></Replace>
@@ -707,6 +719,30 @@
         <Replace Tag="LOC_EMIG_VIEW_TAB_NET_TABLE" Language="es_ES"><Text>Migración neta (tabla)</Text></Replace>
         <Replace Tag="LOC_EMIG_VIEW_TAB_CAUSES" Language="es_ES"><Text>Causas</Text></Replace>
         <Replace Tag="LOC_EMIG_VIEW_TAB_POLICIES" Language="es_ES"><Text>Políticas</Text></Replace>
+        <Replace Tag="LOC_EMIG_VIEW_SEC_DISPLACED" Language="es_ES"><Text>Displaced people</Text></Replace>
+        <Replace Tag="LOC_EMIG_VIEW_TAB_DISPLACED" Language="es_ES"><Text>Displaced</Text></Replace>
+        <Replace Tag="LOC_EMIG_DP_SECTION" Language="es_ES"><Text>Displaced: your people who fled, where they are, and the way home</Text></Replace>
+        <Replace Tag="LOC_EMIG_DP_EMPTY" Language="es_ES"><Text>Nobody from your settlements is displaced right now.</Text></Replace>
+        <Replace Tag="LOC_EMIG_DP_SINCE" Language="es_ES"><Text>since turn {1_Turn}</Text></Replace>
+        <Replace Tag="LOC_EMIG_DP_AWAY" Language="es_ES"><Text>Away:</Text></Replace>
+        <Replace Tag="LOC_EMIG_DP_AWAY_N" Language="es_ES"><Text>{1_Count} population points: {2_Where}</Text></Replace>
+        <Replace Tag="LOC_EMIG_DP_IN_OWN" Language="es_ES"><Text>{1_Count} in {2_City}</Text></Replace>
+        <Replace Tag="LOC_EMIG_DP_IN_FOREIGN" Language="es_ES"><Text>{1_Count} in {2_City} ({3_Civ})</Text></Replace>
+        <Replace Tag="LOC_EMIG_DP_LOST" Language="es_ES"><Text>{1_Home} is no longer yours. These people stay where they are.</Text></Replace>
+        <Replace Tag="LOC_EMIG_DP_WORTH" Language="es_ES"><Text>Worth:</Text></Replace>
+        <Replace Tag="LOC_EMIG_DP_TILE" Language="es_ES"><Text>each returnee settles a new tile at {1_Home}, about {2_Yields} a turn.</Text></Replace>
+        <Replace Tag="LOC_EMIG_DP_WAIT" Language="es_ES"><Text>Wait:</Text></Replace>
+        <Replace Tag="LOC_EMIG_DP_HOMECOMING_OFF" Language="es_ES"><Text>People at home only come back when called.</Text></Replace>
+        <Replace Tag="LOC_EMIG_DP_WAIT_CALM" Language="es_ES"><Text>Free, once {1_Home} has been calm for {2_Turns} more turns; then one comes home every {3_Every} turns.</Text></Replace>
+        <Replace Tag="LOC_EMIG_DP_WAIT_NOW" Language="es_ES"><Text>Free: one comes home next turn, and the last in about {1_Turns} turns.</Text></Replace>
+        <Replace Tag="LOC_EMIG_DP_WAIT_NEXT" Language="es_ES"><Text>Free: the next one comes home in {1_Turns} turns, and the last in about {2_All} turns.</Text></Replace>
+        <Replace Tag="LOC_EMIG_DP_HASTEN_LBL" Language="es_ES"><Text>Hasten:</Text></Replace>
+        <Replace Tag="LOC_EMIG_DP_HASTEN" Language="es_ES"><Text>bring {1_Count} back now for {2_Gold} Gold or {3_Infl} Influence.</Text></Replace>
+        <Replace Tag="LOC_EMIG_DP_HASTEN_BTN" Language="es_ES"><Text>Hasten</Text></Replace>
+        <Replace Tag="LOC_EMIG_DP_ABROAD_LBL" Language="es_ES"><Text>Abroad:</Text></Replace>
+        <Replace Tag="LOC_EMIG_DP_ABROAD" Language="es_ES"><Text>Call {1_Count} from abroad: {2_Pct}% each, about {3_Expected} expected to come, for {4_Gold} Gold or {5_Infl} Influence. That's about {6_PerGold} Gold or {7_PerInfl} Influence for each person who comes.</Text></Replace>
+        <Replace Tag="LOC_EMIG_DP_ABROAD_BTN" Language="es_ES"><Text>Call from abroad</Text></Replace>
+        <Replace Tag="LOC_EMIG_DP_COOLDOWN" Language="es_ES"><Text>Available again in {1_Turns} turns.</Text></Replace>
         <Replace Tag="LOC_EMIG_VIEW_TAB_MY_CITIES" Language="es_ES"><Text>Mis ciudades</Text></Replace>
         <Replace Tag="LOC_EMIG_VIEW_TAB_NOTIFICATIONS" Language="es_ES"><Text>Notificaciones</Text></Replace>
         <Replace Tag="LOC_EMIG_VIEW_TAB_GUIDE" Language="es_ES"><Text>Guía</Text></Replace>

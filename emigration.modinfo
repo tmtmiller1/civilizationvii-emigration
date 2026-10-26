@@ -7,7 +7,7 @@
         <SpecialThanks>killmeplease, Tomahawk, Mk Z, and Tim_The_Texan's "Emigration" mod for Civilization V (the Prosperity model this adapts).</SpecialThanks>
         <Package>EmigrationMod</Package>
         <PackageSortIndex>1000</PackageSortIndex>
-        <Version>3.6.7</Version>
+        <Version>3.7.0</Version>
     </Properties>
     <Dependencies>
         <Mod id="base-standard" title="LOC_MODULE_BASE_STANDARD_NAME" />
@@ -260,9 +260,16 @@
                     <Item>ui/emigration-quarter-phrases.js</Item>
                     <!-- Return migration (homeland recovery): moves real population back home. -->
                     <Item>ui/emigration-return.js</Item>
+                    <!-- Who has come home, taken off the all-game flow ledger by call-home. -->
+                    <Item>ui/emigration-returned.js</Item>
                     <Item>ui/emigration-call-home.js</Item>
                     <Item>ui/emigration-call-home-action.js</Item>
                     <Item>ui/emigration-call-home-ai.js</Item>
+                    <!-- People displaced inside their civ go home on their own once home is calm. -->
+                    <Item>ui/emigration-homecoming.js</Item>
+                    <!-- The Displaced tab: where your people are, what a returnee is worth, the way home. -->
+                    <Item>ui/emigration-displaced.js</Item>
+                    <Item>ui/emigration-displaced-view.js</Item>
                     <Item>ui/emigration-pass-signals.js</Item>
                     <Item>ui/emigration-ai-host.js</Item>
                     <Item>ui/emigration-call-home-view.js</Item>

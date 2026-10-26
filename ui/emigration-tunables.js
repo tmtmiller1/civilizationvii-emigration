@@ -186,6 +186,10 @@ export const TUNABLES = [
   { key: "quarterFadeShare", group: "enclaves", type: "choice", values: [0, 0.075, 0.125, 0.2], choiceLabels: ["LOC_EMIG_CHOICE_NEVER", "7.5%", "12.5%", "20%"], label: "LOC_EMIG_T_QFADE", desc: "LOC_EMIG_T_QFADE_D" },
   { key: "quarterFadeTurns", group: "enclaves", type: "choice", values: [6, 12, 20, 30], format: "turns", label: "LOC_EMIG_T_QFADETURNS", desc: "LOC_EMIG_T_QFADETURNS_D" },
   // Calling people home
+  { key: "homecomingEnabled", group: "callhome", type: "bool", label: "LOC_EMIG_T_HOMECOMING", desc: "LOC_EMIG_T_HOMECOMING_D" },
+  { key: "homecomingCalmTurns", group: "callhome", type: "choice", values: [1, 2, 3, 5, 8], format: "turns", label: "LOC_EMIG_T_HOMECOMING_CALM", desc: "LOC_EMIG_T_HOMECOMING_CALM_D" },
+  { key: "homecomingCalmTurnsAfterWar", group: "callhome", type: "choice", values: [3, 5, 8, 10, 15, 20], format: "turns", label: "LOC_EMIG_T_HOMECOMING_CALMWAR", desc: "LOC_EMIG_T_HOMECOMING_CALMWAR_D" },
+  { key: "homecomingEveryTurns", group: "callhome", type: "choice", values: [2, 3, 4, 6, 8], format: "turns", label: "LOC_EMIG_T_HOMECOMING_EVERY", desc: "LOC_EMIG_T_HOMECOMING_EVERY_D" },
   { key: "callHomeEnabled", group: "callhome", type: "bool", label: "LOC_EMIG_T_CALLHOME", desc: "LOC_EMIG_T_CALLHOME_D" },
   { key: "callHomeOfferWhenCalm", group: "callhome", type: "bool", label: "LOC_EMIG_T_CALLHOME_PEACE", desc: "LOC_EMIG_T_CALLHOME_PEACE_D" },
   { key: "callHomeAi", group: "callhome", type: "bool", label: "LOC_EMIG_T_CALLHOME_AI", desc: "LOC_EMIG_T_CALLHOME_AI_D" },
