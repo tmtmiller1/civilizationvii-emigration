@@ -47,8 +47,7 @@ Your saves and settings carry over from 3.6.
   best settlement instead. AI civilizations do it too when a settlement is overwhelmed.
 - **People come home.** People driven from one of your settlements into another go back on their own once home is
   calm, and settle the plot their people left. Hasten and Call from abroad bring them back sooner, for Gold or Influence.
-- **Wars that make sense for refugees.** A siege nobody fights stalls after three quiet turns. People flee fighting
-  once it has lasted two turns. Refugees steer clear of a settlement that's under attack itself.
+- **Wars that make sense for refugees.** Sieges that stall after three turns lose their impact on a settlement. People also flee fighting once it has lasted at least two turns instead of immediately. Refugees steer clear of a settlement that's under attack itself.
 - **The AI plays its side.** Two city strategies have AI cities build against losing people. AI civilizations get
   the free homecoming, call their people back from abroad, and pay the mod's prices with a discount for the game's
   difficulty, 20% at Deity.
