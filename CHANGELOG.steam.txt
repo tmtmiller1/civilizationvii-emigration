@@ -3,45 +3,39 @@ Generated from CHANGELOG.md by scripts/steam-changelog.mjs; release.sh uploads t
 To fix an old Workshop entry, paste the text under its ==== line into that entry's Edit box on the change-notes page.
 A block edited by hand is kept as-is. Delete a block to regenerate it from CHANGELOG.md.
 
-==== 4.0.0 | 2026-10-26 | src 4539240cf783 | gen c5e328518943 ====
+==== 4.0.0 | 2026-10-26 | src 5c4487920a5e | gen 59ba377714f4 ====
 [b]Version 4.0.0 · 26 October 2026[/b]
 The Emigration screen is rebuilt around your settlements, displaced people come home on their own, wars treat refugees more sensibly, and the AI plays its side of the system. Your saves and settings carry over.
 
 [b]Added[/b]
-• The Settlements tab is the dashboard, and the screen opens on it
-• A departure forecast under the pressure gauge and in the city readout: “About 3 people are likely to leave in the next 4 turns”, worked o...
-• “Close to newcomers” on each of your settlements' cards
-• “Your settlements | All civilizations” and “By pressure | By name” at the top of the tab
-• People driven out of one of your settlements into another of yours go home on their own
-• Hasten and Call from abroad are buttons on the card, priced in Gold or Influence
-• A reminder replaces the call-home pop-up
-• A first-loss explainer, off by default
-• The city readout says what would stop people leaving (“What would stop it: +3 Food or +2 Happiness here (Granary gives +1 Food)”), what n...
-• A notice and a Chronicle line when a civilization you've met opens or closes its borders (“Persia closes its borders”)
-• Spoil Guard, in place of the old visibility dropdown
-• The AI has a second city strategy, “hold your people”: an established town whose Food has stalled leans toward Production and Happiness
-• AI civilizations pay the mod's call-home and refugee prices with a discount for the difficulty: 4% a step from Settler, so 20% off at Deity
-• The Civilopedia covers the new screen, Coming Home, the cards' numbers and what the AI does
+• The Settlements tab is the dashboard, and the screen opens on it. Each settlement gets a card with four panes (Arriving, Leaving, Arrived, Left) with the prosperity score between them, listing its terms.
+• A departure forecast under the pressure gauge and in the city readout: “About 3 people are likely to leave in the next 4 turns”, or “Nobody is likely to leave soon”.
+• “Close to newcomers” on each settlement's card, for 1 Influence a turn. A closed settlement doesn't take anyone in or pay integration costs; arrivals go to your next best settlement. AI civilizations close an overwhelmed settlement too, and pay the same upkeep.
+• “All civilizations” shows each civilization's causes and a table of its settlements.
+• People driven from one of your settlements into another go home on their own once home is calm, and settle the plot their people left. AI civilizations get the same.
+• Hasten and Call from abroad are buttons on the card, priced in Gold or Influence, with what the fee buys shown beside them.
+• A small reminder with a homecoming quote replaces the call-home pop-up.
+• A first-loss explainer for new players, off by default.
+• The city readout says what would stop people leaving and what newcomers cost you.
+• A notice when a civilization you've met opens or closes its borders.
+• Spoil Guard hides civilizations you haven't met.
+• A second AI city strategy, “hold your people”, and a price discount for the AI on harder difficulties (20% at Deity).
 
 [b]Changed[/b]
-• A siege nobody fights stalls
-• People flee fighting once it has lasted two turns
-• Refugees avoid a settlement under attack
-• Talent Attraction gives +1 Science per 5 Population in each settlement (per 4 in the Modern Age) and costs 2 Gold per settlement (3 in Mo...
-• Consular Protection gives +3 Influence a turn in Exploration and +5 in Modern, plus its Influence per enclave abroad
-• The two stance cards name their downsides with the game's icons
-• A settlement's Character comes from its own people: Homogeneous, Local Majority, Mixed City, Cosmopolitan Center or World City
-• The screen has four tabs, Settlements, Network, Policies and Notifications, on its own and inside Demographics
-• A notice beside End Turn opens the tab it's about: Settlements for “People are leaving” and “People are coming home”, Notifications for t...
-• After fighting or a siege, a settlement has to be calm for 10 turns before its people come back (3 after a disaster, famine or unrest)
-• The interface is translated into all eleven of the game's other languages, the new screen and Civilopedia pages included
+• A siege nobody fights stalls after three quiet turns and doesn't kill anyone until the next attack.
+• People flee fighting once it has lasted two turns; a settlement being razed still empties at once.
+• Refugees steer clear of a settlement that's under attack itself.
+• Talent Attraction costs 2 Gold per settlement (3 in Modern) for its Science. Consular Protection gives +3 Influence a turn (+5 in Modern).
+• A settlement's Character comes from its own people.
+• Four tabs: Settlements, Network, Policies and Notifications. The Guide's answers moved to the Civilopedia.
+• All twelve languages, the new screen and Civilopedia pages included.
 
 [b]Fixed[/b]
-• The Deity discount was the half-price floor
-• The “hold your people” strategy never switched on: it waited for Food under 2, which no settlement reaches
-• The “Nothing to show yet” lines, the notes beside a settlement's name and the Network tab's timeline hint were invisible: the game's font...
-• Calling people home kept offering people who had already come back, and AI civilizations kept paying for them
-• A settlement's pies counted only the last fifty moves, so they could disagree with the Left pane
+• The AI's difficulty discount was stuck at half price from King up. It's 4% a step now.
+• The “hold your people” strategy never switched on.
+• Some screen text was invisible because the game's font doesn't draw italics.
+• Calling people home kept offering people who had already come back.
+• A civilization's pies on “All civilizations” left out moves between its own settlements.
 
 Details in the [url=https://github.com/tmtmiller1/civilizationvii-emigration/blob/main/CHANGELOG.md]full changelog[/url].
 

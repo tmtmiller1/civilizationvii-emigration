@@ -3645,3 +3645,40 @@ languages; the window capture missed de, es and fr, whose readings are in the ru
 One fix from it: the Japanese card used 流出 for both the Leaving and the Left pane. Left (`LOC_EMIG_DP_SUB`) is
 now 離郷, beside 定住 for Arrived; the owner confirmed it on a card on 2026-10-26. The setup screen itself, which the lab skips: the owner confirmed
 on 2026-10-26 that the option "Emigration: AI keeps cities happy" appears there and works.
+
+## 65. The 4.0.0 release round (2026-10-26, night)
+
+3.7.0 became 4.0.0 (the owner's call: a new screen, the AI side and the war rules change how the mod plays).
+What changed on the way, and what was seen:
+
+- **The AI's difficulty discount was on its floor from King up.** The game stores the Gold handicap as a
+  percentage (base-standard `difficulties.xml`: Settler -20, Prince 0 ... Deity 80), and the code read that number
+  as a step count, so 4% times 20 and up hit the 0.5 floor. That's why §59 saw half price at Deity. The step is now
+  the difficulty's place among the Gold rows. Watched: a Deity lab game read the scale 0.8 and the steps Settler 0
+  through Deity 5.
+- **The civilization pies on All civilizations left out moves between a civilization's own settlements**, so a
+  civilization whose people only moved at home showed a lone "Died" wedge under its cause bars (the owner's read
+  of the first capture game). Both pies have a "Between its own settlements" slice now. Watched in the capture game.
+- **Closing a settlement costs 1 Influence a turn** (`cityIntakeInfluence`, 0 to 3; the owner chose 1, flat), charged
+  each pass for the turns since the last charge; a short treasury keeps what it can pay for and opens the rest,
+  with a notice. The button is the card's standard gold button with the price under it, greyed with the shortfall
+  on hover when a turn can't be covered. Watched: Influence 423 to 422 on one charge with one settlement closed,
+  the button and price line drawn, the greyed state unit-tested only.
+- **AI civilizations close settlements** (`emigration-intake-ai.js`, the owner's ask): past the congestion bar, an
+  unhappy settlement that has been taking people in, never the capital, a third of its settlements at most, ten
+  turns of upkeep in hand; open again after five turns once the pressure eases, the settlement is content, or
+  Influence runs low. Unit-tested. In the Antiquity capture game no AI reached the bar (the highest headwind was
+  0.88 against 1), so nothing closed, which is what the rule says.
+- **Plural forms** in the two count lines: "About 1 person is likely to leave in the next 1 turn", "1 person left
+  Paris this turn". Watched composing in a fresh game.
+- **The release captures** were retaken in a lab game with every other mod off, the player given five settlements
+  with `tower-bench place town` at turn 3 so the cards have something to show, driven 60 turns: the Settlements tab,
+  All civilizations, Network, and the Coming Home and Reading the Dashboard pages
+  (`docs/steam-screenshots/01`, `02`, `03`, `14`, `15`). The Net Migration, Causes, Diversity and call-home-offer
+  captures went with their screens. A capture of a window on another desktop returns its previous frame; the game
+  has to be activated (`tell application id "com.2k.civ7" to activate`) and on screen.
+- **The "hold your people" condition, watched.** Exploration, seed 4242, Deity, the usual set, 110 turns: the game's
+  `AI_CityStrategy.csv` has `CITY_STRATEGY_EMIG_HOLD_PEOPLE` Following in Goryeo's fourth city (56 to 76),
+  Persia's ninth (64 to 93) and an independent's (from 105). The old condition never fired in two games.
+- **An AI closing a settlement, not seen.** In the same game no AI civilization reached its congestion bar (0.46 at
+  most) and its cities ran +6 to +106 happiness, so the rule never had a settlement to close. It ran each turn.

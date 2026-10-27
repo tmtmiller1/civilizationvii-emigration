@@ -26,12 +26,12 @@
 </p>
 
 <p align="center">
-  <a href="docs/steam-screenshots/01-dashboard-network.jpg"><img src="docs/steam-screenshots/01-dashboard-network.jpg" width="880" alt="The migration network: each civilization's people, the moves between its cities, and the flows across borders"></a>
+  <a href="docs/steam-screenshots/01-settlements-dashboard.jpg"><img src="docs/steam-screenshots/01-settlements-dashboard.jpg" width="880" alt="The Settlements tab: a card for each settlement, with who is arriving, who is leaving and why, who lives there, and who has gone"></a>
 </p>
 
 When a settlement is starving, unhappy, or under siege, people leave. When one is thriving, people move there instead. *Emigration* adds migration and refugee systems to Civilization VII, moving population within and between civilizations and changing yields, growth, and Influence. Each move is logged with its cause.
 
-Documentation on GitHub: [README.md](https://github.com/tmtmiller1/civilizationvii-emigration/blob/main/README.md) · [typeset PDF](https://github.com/tmtmiller1/civilizationvii-emigration/blob/main/README.pdf), with the formulas typeset.
+Documentation on GitHub: [README.md](https://github.com/tmtmiller1/civilizationvii-emigration/blob/main/README.md) · [typeset PDF](https://github.com/tmtmiller1/civilizationvii-emigration/blob/main/README.pdf).
 
 ## What's new in 4.0.0
 
@@ -39,21 +39,21 @@ Your saves and settings carry over from 3.6.
 
 - **A dashboard built around your settlements.** The Emigration screen opens on the Settlements tab: a card for each
   settlement with four panes, for who's arriving and what would draw more, who's leaving and what would keep them,
-  who lives there, and who has gone and how to bring them back. The prosperity score sits between the panes, term by
-  term. "All civilizations" shows everyone's settlements in one table.
+  who lives there, and who has gone and how to bring them back. Between the panes, the prosperity score lists its terms
+  one by one. "All civilizations" shows each civilization's causes and a table of its settlements.
 - **A forecast.** Under each settlement's pressure gauge: "About 3 people are likely to leave in the next 4 turns",
   or "Nobody is likely to leave soon".
 - **Close a settlement to newcomers.** One button on the card, for 1 Influence a turn, and arrivals go to your next
   best settlement instead. AI civilizations do it too when a settlement is overwhelmed.
 - **People come home.** People driven from one of your settlements into another go back on their own once home is
-  calm, and settle the plot they left. Hasten and Call from abroad bring them back sooner, for Gold or Influence.
+  calm, and settle the plot their people left. Hasten and Call from abroad bring them back sooner, for Gold or Influence.
 - **Wars that make sense for refugees.** A siege nobody fights stalls after three quiet turns. People flee fighting
   once it has lasted two turns. Refugees steer clear of a settlement that's under attack itself.
 - **The AI plays its side.** Two city strategies have AI cities build against losing people. AI civilizations get
   the free homecoming, call their people back from abroad, and pay the mod's prices with a discount for the game's
   difficulty, 20% at Deity.
-- **Cards that are a choice.** Talent Attraction now costs 2 Gold per settlement for its Science, and Consular
-  Protection gives +3 Influence a turn.
+- **Policy cards with a cost.** Talent Attraction now costs 2 Gold per settlement (3 in Modern) for its Science,
+  and Consular Protection gives +3 Influence a turn (+5 in Modern).
 - **A first-loss explainer** for new players, off by default: one page the first time a settlement loses a tile.
 - **All twelve languages**, the new screen included.
 
@@ -178,8 +178,8 @@ Compatible with Civilization VII 1.5.0.
 - **Crisis deaths:** prolonged siege, famine, war, or disaster can kill trapped populations
 - **Displacement caps:** up to 60% of a city's population per siege and 50% per disaster; deaths under siege count against the same siege, which stops killing at 80% of the population it began with
 - **Refugees avoid a settlement under attack:** a settlement in a crisis of its own draws far fewer people while it lasts, and refugees heading there wait or go to the next calm settlement; with nowhere safer, they still go
-- **Flight waits for sustained fighting:** people flee once the fighting has lasted two turns; a lone skirmish or one turn of enemies at the gates moves nobody, and a settlement being razed empties at once
-- **Stalled sieges:** after 3 turns with no attack, a siege stops driving people out and kills nobody until the next attack, and the readout says "Siege stalled"
+- **Flight waits for sustained fighting:** people flee once the fighting has lasted two turns; a lone skirmish or one turn of enemies at the gates won't make anyone leave, and a settlement being razed empties at once
+- **Stalled sieges:** after 3 quiet turns, a siege stops driving people out and doesn't kill anyone until the next attack, and the readout says "Siege stalled"
 - **Resettlement time:** war and disaster refugees join the host population gradually; happy, open, uncrowded hosts settle them faster and pay upkeep while they wait
 - **Refugee decisions:** rare choices to welcome refugees, settle them on the frontier, or turn them away; AI hosts make the same choice by a rule, at the same cost
 
@@ -192,15 +192,15 @@ Compatible with Civilization VII 1.5.0.
 
 ### Diplomacy and policy
 
-- **Pro-Immigration Stance:** +50% immigration, refugees come to you first, enclaves keep their full yields even at
-  war, Influence, and Food in every city
+- **Pro-Immigration Stance:** +50% immigration, Influence, and Food in every city; refugees come to you first, and
+  enclaves keep their full yields even at war
 - **Anti-Immigration Stance:** -60% immigration and -40% emigration, enclaves keep half their yields, Production in
   every city at a cost in Influence
 - **Open Borders:** increases cross-civilization migration
 - **Ten cards in all:** the two stances in every age, Talent Attraction and Consular Protection from the Exploration
   Age
 - **Talent Attraction:** +1 Science per 5 Population in every settlement (per 4 in Modern) for 2 Gold per settlement
-  (3 in Modern), so the people you draw keep paying and a wide civilization pays more for it
+  (3 in Modern), so the people you draw keep adding Science, and a wide civilization pays more for it
 - **Consular Protection:** +3 Influence a turn (+5 in Modern) plus Influence for your people's enclaves abroad, and
   grievances against a host that slots a suspicion card over them
 
@@ -211,7 +211,7 @@ Compatible with Civilization VII 1.5.0.
 - **Integration:** newcomers assimilate over time; war with the homeland stops it and unrest slows it
 - **Return migration:** diasporas can return to peaceful, prosperous homelands
 - **The AI plays too:** AI civilizations choose their enclaves' stances, decide on refugees and call their people home from abroad through the same rules, at the player's prices less a discount for the game's difficulty; their displaced people come home on their own; and two city strategies ("keep them happy", "hold your people") have AI cities build against losing people
-- **Coming home:** people driven out of one of your settlements into another of yours come back on their own once it's calm, and settle the plot their people left; Hasten pays Gold or Influence to bring them sooner, and Call from abroad is the paid gamble for people in another civilization's cities, each person asked answering at the odds shown
+- **Coming home:** people driven out of one of your settlements into another of yours come back on their own once it's calm, and settle the plot their people left; Hasten pays Gold or Influence to bring them sooner, and Call from abroad is the paid gamble for people in another civilization's cities, and each person you ask decides at the odds shown
 - **Cultural Enclaves:** lasting foreign communities become improvements on the map with the origin civilization's identity and yields; hover an enclave's tile to see its stage and where each of its yields comes from
 - **Put down roots:** enclave communities are less likely to return home
 - **Migration Chronicle:** major movements become history entries
@@ -219,11 +219,11 @@ Compatible with Civilization VII 1.5.0.
 
 ### Interface
 
-- **Migration dashboard:** a card per settlement with who is arriving, leaving, living here and away, what drives the pressure and what would stop it, and a prosperity ledger; each civilization's causes and settlements; the animated network diagram, where a click on a city highlights just its migrant flows and a settlement can be dragged out of its civilization's circle
+- **Migration dashboard:** a card per settlement with who is arriving, who is leaving, who lives there and who is away, what drives the pressure and what would stop it, and a prosperity ledger; each civilization's causes and settlements; the animated network diagram, where a click on a city highlights just its migrant flows and a settlement can be dragged out of its civilization's circle
 - **Departure forecast:** under the pressure gauge on each settlement's card and in the city readout, "About 3 people are likely to leave in the next 4 turns", projected from how fast the pressure has been rising, or "Nobody is likely to leave soon"
-- **Close a settlement to newcomers:** a button on each of your settlements' cards, for 1 Influence a turn; a closed settlement takes nobody in, arrivals go to your next best settlement, and one already on the road is re-aimed when it lands. AI civilizations close an overwhelmed settlement by the same rules
+- **Close a settlement to newcomers:** a button on each of your settlements' cards, for 1 Influence a turn; a closed settlement doesn't take anyone in, arrivals go to your next best settlement, and people already on the road are re-aimed when they get there. AI civilizations close an overwhelmed settlement too, and pay the same upkeep
 - **First-loss explainer:** off by default; on, one page the first time a settlement of yours loses a tile, saying what happened, where they went and why, what happens next and where to look
-- **Spoil Guard:** civilizations you haven't met stay hidden across the Emigration screens until you meet them; one checkbox, shared with the Demographics guard
+- **Spoil Guard:** civilizations you haven't met stay hidden across the Emigration screens until you meet them; one checkbox; with Demographics installed, the stricter of the two guards wins
 - **Notifications in the game's own train:** the mod's notices sit beside End Turn as the game's do, plus a persistent log
 - **Move attribution:** records the factor that decided each move
 - **City readout:** pressure mix, reasons to leave and reasons to stay, what would stop people leaving, what newcomers cost, and enclave progress by settlement
@@ -246,12 +246,12 @@ Compatible with Civilization VII 1.5.0.
 <h2 id="screenshots">Screenshots</h2>
 
 <table>
-  <tr><td width="50%" align="center" valign="top"><a href="docs/steam-screenshots/02-dashboard-net-migration.jpg"><img src="docs/steam-screenshots/02-dashboard-net-migration.jpg" alt="Net Migration: internal and external movement for every civilization"></a><br><sub>Net Migration: internal and external movement for every civilization</sub></td><td width="50%" align="center" valign="top"><a href="docs/steam-screenshots/03-dashboard-causes.jpg"><img src="docs/steam-screenshots/03-dashboard-causes.jpg" alt="Why people move: causes broken down by named war, disaster, and crisis"></a><br><sub>Why people move: causes broken down by named war, disaster, and crisis</sub></td></tr>
-  <tr><td width="50%" align="center" valign="top"><a href="docs/steam-screenshots/04-dashboard-diversity.jpg"><img src="docs/steam-screenshots/04-dashboard-diversity.jpg" alt="Diversity: the most mixed settlements and every settlement's origins"></a><br><sub>Diversity: the most mixed settlements and every settlement's origins</sub></td><td width="50%" align="center" valign="top"><a href="docs/steam-screenshots/05-refugee-decision.jpg"><img src="docs/steam-screenshots/05-refugee-decision.jpg" alt="A refugee decision after an upheaval, in the words of that people's own refugees"></a><br><sub>A refugee decision after an upheaval, in the words of that people's own refugees</sub></td></tr>
-  <tr><td width="50%" align="center" valign="top"><a href="docs/steam-screenshots/06-newcomer-placement.jpg"><img src="docs/steam-screenshots/06-newcomer-placement.jpg" alt="Newcomers: choose where arrivals settle"></a><br><sub>Newcomers: choose where arrivals settle</sub></td><td width="50%" align="center" valign="top"><a href="docs/steam-screenshots/07-call-home-offer.jpg"><img src="docs/steam-screenshots/07-call-home-offer.jpg" alt="Calling your people home: three sizes, priced in Gold or Influence"></a><br><sub>Calling your people home: three sizes, priced in Gold or Influence</sub></td></tr>
+  <tr><td width="50%" align="center" valign="top"><a href="docs/steam-screenshots/02-all-civilizations.jpg"><img src="docs/steam-screenshots/02-all-civilizations.jpg" alt="All civilizations: each civilization's causes, where its people went, and its settlements"></a><br><sub>All civilizations: each civilization's causes, where its people went, and its settlements</sub></td><td width="50%" align="center" valign="top"><a href="docs/steam-screenshots/03-network.jpg"><img src="docs/steam-screenshots/03-network.jpg" alt="The Network tab: each civilization's people and the moves between its settlements"></a><br><sub>The Network tab: each civilization's people and the moves between its settlements</sub></td></tr>
+  <tr><td width="50%" align="center" valign="top"><a href="docs/steam-screenshots/05-refugee-decision.jpg"><img src="docs/steam-screenshots/05-refugee-decision.jpg" alt="A refugee decision after an upheaval, in the words of that people's own refugees"></a><br><sub>A refugee decision after an upheaval, in the words of that people's own refugees</sub></td><td width="50%" align="center" valign="top"><a href="docs/steam-screenshots/06-newcomer-placement.jpg"><img src="docs/steam-screenshots/06-newcomer-placement.jpg" alt="Newcomers: choose where arrivals settle"></a><br><sub>Newcomers: choose where arrivals settle</sub></td></tr>
   <tr><td width="50%" align="center" valign="top"><a href="docs/steam-screenshots/08-enclave-stance.jpg"><img src="docs/steam-screenshots/08-enclave-stance.jpg" alt="A Cultural Enclave asks for your stance; each button shows what it pays"></a><br><sub>A Cultural Enclave asks for your stance; each button shows what it pays</sub></td><td width="50%" align="center" valign="top"><a href="docs/steam-screenshots/09-enclave-on-map.jpg"><img src="docs/steam-screenshots/09-enclave-on-map.jpg" alt="A recognized enclave on the map, with its own tooltip"></a><br><sub>A recognized enclave on the map, with its own tooltip</sub></td></tr>
-  <tr><td width="50%" align="center" valign="top"><a href="docs/steam-screenshots/10-ethnic-composition-lens.jpg"><img src="docs/steam-screenshots/10-ethnic-composition-lens.jpg" alt="The Ethnic Composition lens: Rostov on Don and its Bulgar Enclave"></a><br><sub>The Ethnic Composition lens: Rostov on Don and its Bulgar Enclave</sub></td><td width="50%" align="center" valign="top"><a href="docs/steam-screenshots/11-prosperity-lens.jpg"><img src="docs/steam-screenshots/11-prosperity-lens.jpg" alt="The Prosperity lens: every tile scored in points"></a><br><sub>The Prosperity lens: every tile scored in points</sub></td></tr>
-  <tr><td width="50%" align="center" valign="top"><a href="docs/steam-screenshots/12-civilopedia-voices-rome.jpg"><img src="docs/steam-screenshots/12-civilopedia-voices-rome.jpg" alt="Civilopedia: Voices of the Displaced, one page for every people"></a><br><sub>Civilopedia: Voices of the Displaced, one page for every people</sub></td><td width="50%" align="center" valign="top"><a href="docs/steam-screenshots/13-civilopedia-departures-arrivals.jpg"><img src="docs/steam-screenshots/13-civilopedia-departures-arrivals.jpg" alt="Civilopedia: how departures and arrivals work"></a><br><sub>Civilopedia: how departures and arrivals work</sub></td></tr>
+  <tr><td width="50%" align="center" valign="top"><a href="docs/steam-screenshots/10-ethnic-composition-lens.jpg"><img src="docs/steam-screenshots/10-ethnic-composition-lens.jpg" alt="The Ethnic Composition lens: Rostov on Don and its Bulgar Enclave"></a><br><sub>The Ethnic Composition lens: Rostov on Don and its Bulgar Enclave</sub></td><td width="50%" align="center" valign="top"><a href="docs/steam-screenshots/11-prosperity-lens.jpg"><img src="docs/steam-screenshots/11-prosperity-lens.jpg" alt="The Prosperity lens: each tile scored in points"></a><br><sub>The Prosperity lens: each tile scored in points</sub></td></tr>
+  <tr><td width="50%" align="center" valign="top"><a href="docs/steam-screenshots/14-civilopedia-coming-home.jpg"><img src="docs/steam-screenshots/14-civilopedia-coming-home.jpg" alt="Civilopedia: Coming Home, the free homecoming, Hasten and Call from abroad"></a><br><sub>Civilopedia: Coming Home, the free homecoming, Hasten and Call from abroad</sub></td><td width="50%" align="center" valign="top"><a href="docs/steam-screenshots/15-civilopedia-reading-the-dashboard.jpg"><img src="docs/steam-screenshots/15-civilopedia-reading-the-dashboard.jpg" alt="Civilopedia: Reading the Dashboard"></a><br><sub>Civilopedia: Reading the Dashboard</sub></td></tr>
+  <tr><td width="50%" align="center" valign="top"><a href="docs/steam-screenshots/12-civilopedia-voices-rome.jpg"><img src="docs/steam-screenshots/12-civilopedia-voices-rome.jpg" alt="Civilopedia: Voices of the Displaced, a page for each people"></a><br><sub>Civilopedia: Voices of the Displaced, a page for each people</sub></td><td width="50%" align="center" valign="top"><a href="docs/steam-screenshots/13-civilopedia-departures-arrivals.jpg"><img src="docs/steam-screenshots/13-civilopedia-departures-arrivals.jpg" alt="Civilopedia: how departures and arrivals work"></a><br><sub>Civilopedia: how departures and arrivals work</sub></td></tr>
 </table>
 
 ## FAQ
@@ -1075,8 +1075,8 @@ The choices are shared too:
 
 ### 11.1 What the game's AI is
 
-It helps to know what the game's AI is before reading how the mod works with it. For example, it isn't a
-hyper-intelligent engine or strategist weighing rivals and scheming several turns ahead. It's a scoring system that runs each turn: weights from data tables are run through the engine's planners for builds, diplomacy, and combat. 
+The game's AI isn't a strategist weighing rivals and scheming several turns ahead. It's a scoring system that
+runs each turn: the engine's planners for builds, diplomacy and combat run weights from data tables. 
 
 - Each turn it scores the options and acts on the high scores. In diplomacy, each available action against each
   player gets a number (the game writes them to `AI_DiplomaticActions.csv` in its Logs folder). In the build queue,
@@ -1086,18 +1086,18 @@ hyper-intelligent engine or strategist weighing rivals and scheming several turn
   al-Hurra espionage at 50) and agendas, which compare counts such as cities, units, wonders and happy towns and
   move the relationship by 5, 10 or 15.
 - Between turns it keeps state, not intent: relationships, grievances, the strategies it has switched on, the
-  operations under way. It holds nothing like "weaken this neighbour before the war".
+  operations under way. It can't hold a plan like "weaken this neighbour before the war".
 - It reads the game's own numbers only: yields, happiness, units, relationships. The mod's pressure, enclaves and
   pending departures are invisible to it, which is why the Pro-Immigration Stance is expressed to it as Food.
 - Its lists and strategies carry difficulty bounds, and none is set in the shipped data, so Deity and Settler run
   the same decision tables. Difficulty works through bonuses.
 
-The limits in 11.6 below are the game's, not gaps the mod left. The mod adds rules to the choices it owns and tilts the
+The limits in 11.6 come from the game. The mod adds rules to the choices it owns and tilts the
 numbers the planner already reads.
 
-### 11.2 Does the AI fall behind the Human Player from not engaging with the mod?
+### 11.2 Does the AI fall behind under the mod?
 
-No. 30 lab games of 240 to 350 turns on 6 seeds, at three difficulties (Settler, Sovereign and Deity), showed the AI keeping pace with the mod on, and slightly larger on average than with it off (AI mean settlement population with the mod on and off: 24.8 and 23.6).
+No. Across 30 lab games of 240 to 350 turns on 6 seeds, at Settler, Sovereign and Deity, AI settlements were slightly larger on average with the mod on than off (mean population 24.8 against 23.6).
 
 
 ### 11.3 Choices the mod makes for the AI
@@ -1152,7 +1152,7 @@ cooldown.
 
 ### 11.4 Nudges to the game's native planner
 
-The planner is what sits behind the AI's build and card choices in-game. As designed, it cannot currently be given a rule directly. Therefore the only method of manipulating this mechanically is by changing a standing preference in the data tables. 
+The planner makes the AI's build and card choices. A mod can't hand it a rule, so the only way to steer it is to change a standing preference in the data tables. 
 
 The emigration mod uses four such changes:
 
@@ -1165,8 +1165,7 @@ for that game.
 **A "hold your people" city strategy.** The AI data has no condition that reads population loss, and a yield grant
 can't reach a city's own Happiness, so the nearest native signal to a settlement losing people is its Food stalling.
 `CITY_STRATEGY_EMIG_HOLD_PEOPLE` switches on when a settlement with more than 4 rural population has gross Food
-under 16 (an established town that has stopped growing; the first threshold, Food under 2, never fired in 138
-turns) and biases Production and Happiness at 25, the yields the Anti-Immigration Stance and the happiness
+under 16 (an established town that has stopped growing) and biases Production and Happiness at 25, the yields the Anti-Immigration Stance and the happiness
 buildings carry (`data/emigration-ai-strategy.sql`).
 
 **Food on the Pro-Immigration Stance.** The planner values a card by its native yields and can't see the migration
@@ -1180,11 +1179,11 @@ Protection carries a flat +3 Influence a turn in Exploration and +5 in Modern (`
 of its Influence per enclave, which stays in the script. Both give the planner something it can see when it weighs
 the card.
 
-### 11.5 What the game's AI natively does on its own:
+### 11.5 What the game's AI already does
 
 - The AI's routine espionage includes Sabotage Morale and Sabotage Food Production. Both lower the numbers that
   push people out, so an AI that sabotages a rival also helps empty the rival's cities.
-- In lab games the AI weighed Sabotage Morale most turns, about a quarter as often as Open Borders.
+- In lab games the AI weighed Sabotage Morale about a quarter as often as Open Borders.
 - The AI picks its targets by its relationships, and the mod leaves that alone.
 
 ### 11.6 Where the limits are
@@ -1192,16 +1191,15 @@ the card.
 - **Steering the game's AI.** The game's AI data can switch a preference on by a condition, and the mod's happiness
   strategy does that, but the conditions on offer read the AI's own empire: its happiness, food, city count, yields,
   military rank and victory progress. None reads a rival, so a leader can be made to favour a project, but not to
-  favour it only while a neighbour is in trouble. Leader agendas do compare rivals, and only move relationship scores.
+  favour it only while a neighbour is in trouble. Leader agendas do compare rivals, but they only move relationship scores.
 - **Acting for the AI.** The choices above are the mod's own, so the AI makes them the same way you do, through the
   mod: a rule answers the prompt you'd see, and the mod moves the people and charges the treasury as it would for you.
-  The game's own commands are a different matter. One sent for another player's id is refused, or accepted and then
-  ignored, as a request to seat a specialist in an AI city is (`docs/engine-limits-from-probes.md`, section 3;
+  The game's own commands are a different matter. One sent for another player is refused, or accepted and then ignored; a request to seat a specialist in an AI city is ignored that way (`docs/engine-limits-from-probes.md`, section 3;
   `engine-closed.md`), so anything the game itself has to carry out for the AI is out of the mod's reach.
 
-### 11.7 Ideas that came up, and why they aren't built
+### 11.7 Targeted draws and agitation
 
-Two levers get suggested for giving the AI, and you, a strategic reason to care about a neighbour's troubles: an
+Two levers would give the AI, and you, a strategic reason to care about a neighbour's troubles: an
 Invitation (spend Influence or Gold to draw people from one named foreign city for a few turns) and Agitation
 (spend Influence to add emigration pressure in a rival city). Most of both already exists:
 
@@ -1223,17 +1221,18 @@ From the 30 lab games in 11.2, with a usual set of other mods, unless a row says
 
 | What | Seen |
 |---|---|
-| AI calls home, internal | Yes: 30 games. One example taken from those seen: the last with the value sizing in, 21 calls sized two and three |
-| AI calls home, from abroad | Yes: 30 games. One example taken from those seen: Exploration, turn 88, Persia paid 1,404 Gold for three from Heian-Kyo and one came; the Chronicle line and the human host's train notice both showed |
-| AI enclave stances | Yes: 30 games. One example taken from those seen:  three hosts in one Exploration game, each matching the rule |
-| AI refugee decision | Yes: 30 games. One example taken from those seen: Antiquity, turn 63, a plague wave of four reached Goryeo; Goryeo welcomed them into Gaegyeong under the congestion bar and paid 120 Gold. Modern, turn 104, Hawaii at war with the origin turned a wave away |
-| The happiness strategy | Yes: 30 games. One example taken from those seen: Antiquity, turns 40 to 70, three AI cities with net happiness between 0 and 5 queued a happiness building within five turns under On, and none did under Off on the same save |
-| The Pro-Immigration card | Yes: 30 games: Taken in every age: at +2 in Antiquity (by turn 61 and 81) and Exploration (by turn 31), at +3 in Modern (by turn 71); not at +1 |
+| AI calls home, internal | Yes, in all 30 games. For example, in the last game with value sizing, 21 calls of two or three people |
+| AI calls home, from abroad | Yes, in all 30 games. For example, Exploration, turn 88, Persia paid 1,404 Gold for three from Heian-Kyo and one came; the Chronicle line and the human host's train notice both showed |
+| AI enclave stances | Yes, in all 30 games. For example, three hosts in one Exploration game, each matching the rule |
+| AI refugee decision | Yes, in all 30 games. For example, Antiquity, turn 63, a plague wave of four reached Goryeo; Goryeo welcomed them into Gaegyeong under the congestion bar and paid 120 Gold. Modern, turn 104, Hawaii at war with the origin turned a wave away |
+| The happiness strategy | Yes, in all 30 games. For example, Antiquity, turns 40 to 70, three AI cities with net happiness between 0 and 5 queued a happiness building within five turns under On, and none did under Off on the same save |
+| The Pro-Immigration card | Yes, in all 30 games, taken in every age: at +2 in Antiquity (by turn 61 and 81) and Exploration (by turn 31), at +3 in Modern (by turn 71); not at +1 |
 | A stance across an age change | Yes: 30 games. Exploration to Modern, turn 152, Dai Viet's Pro-Immigration Stance survived the crossing; the Modern card was slotted on the first turn of the age and its effects applied |
 | The difficulty discount | Yes (2026-10-26, a Deity lab game): the live scale reads 0.8, 20% off, and the steps read Settler 0 through Deity 5 from the game's own table. Before 4.0 the raw handicap value put King and up on the half-price floor: a Deity AI paid 54 Gold for one person abroad, half the player's price |
-| Stance notices | Yes (2026-10-25, same game): four Chronicle lines over 54 turns (Abbasid closes its borders, Đại Việt opens, drops its stance, closes), each with a notice beside End Turn the same turn |
-| The "hold your people" strategy | Not yet: with its first condition (Food under 2) the game's `AI_CityStrategy.csv` showed it never switching on in 138 and 110 turns, while "keep them happy" switched on 29 and 48 times. The 4.0 condition (Food under 16, more than 4 rural population) comes from AI towns stuck at 8 or 9 people reading 13 to 20 Food; seeing it switch on is owed |
-| Talent Attraction and Consular Protection taken by an AI | Talent, yes (2026-10-26, Exploration, seed 4242, 110 turns): with its Gold cost, four of five AIs slotted it 10 to 40 turns after Inspiration, and two dropped it and took it back; at turn 100 three held it. Consular, no: not slotted by any AI in 139 turns at +1 nor in 111 turns at +3 |
+| Stance notices | Yes (2026-10-25, an Exploration lab game): four Chronicle lines over 54 turns (Abbasid closes its borders, Đại Việt opens, drops its stance, closes), each with a notice beside End Turn the same turn |
+| The "hold your people" strategy | Yes (2026-10-26, Exploration, seed 4242, Deity, 110 turns): the game's `AI_CityStrategy.csv` shows it switching on in a Goryeo city from turn 56 to 76, a Persian city from 64 to 93, and a third from 105. Its first condition, Food under 2, never switched it on in 138 and 110 turns |
+| An AI civilization closing a settlement to newcomers | Not yet: in the same game no AI reached its congestion bar (the highest headwind was 0.46 against 1) and its cities ran +6 to +106 happiness, so the rule had nothing to act on |
+| Talent Attraction and Consular Protection taken by an AI | Talent, yes (2026-10-26, Exploration, seed 4242, 110 turns): with its Gold cost, four of five AIs slotted it 10 to 40 turns after Inspiration, and two dropped it and took it back; at turn 100 three held it. Consular, no: no AI slotted it in 139 turns at +1 or 111 turns at +3 |
 | Refugees avoiding a settlement under attack | Yes (2026-10-26, Exploration, seed 4242): one arrival into a settlement in crisis in 110 turns, against 46 in 138 turns before the rule. On the WashingtonAnt130 save, besieged New York took no refugees once its siege began |
 | The AI's free homecoming | Yes (2026-10-25, WashingtonAnt130 save driven ten turns): AI civilizations' displaced people came home on the same schedule as the player's |
 

@@ -29,13 +29,13 @@ refugees more sensibly, and the AI plays its side of the system. Your saves and 
   the next 4 turns", worked out from how fast the pressure has been rising, or "Nobody is likely to leave soon".
   A settlement losing people to war or disaster says they're fleeing now. It's a projection, not a promise.
   Advanced settings has the switch and the horizon (3, 5 or 8 turns).
-- "Close to newcomers" on each of your settlements' cards. A closed settlement takes nobody in and pays no
-  integration cost for them: arrivals go to your next best settlement, and people already on the road are re-aimed
+- "Close to newcomers" on each of your settlements' cards. A closed settlement doesn't take anyone in or pay
+  integration costs for them: arrivals go to your next best settlement, and people already on the road are re-aimed
   when they get there. Refugees with nowhere else to go still find somewhere. It costs 1 Influence a turn while it
   stays closed; when the treasury can't cover it, the settlement opens again and a notice says so. "Open to
-  newcomers" undoes it. AI civilizations close settlements too: one past its congestion bar closes an unhappy
-  settlement that has been taking people in, never its capital, pays the same upkeep, and opens it again once the
-  pressure eases. Advanced settings has the cost (0 makes it free) and the AI's switch.
+  newcomers" undoes it. AI civilizations close settlements too. An AI civilization past its congestion bar closes an
+  unhappy settlement that has been taking people in (never its capital), pays the same upkeep, and opens it again
+  once the pressure eases. Advanced settings has the cost (0 makes it free) and the AI's switch.
 - "Your settlements | All civilizations" and "By pressure | By name" at the top of the tab. All civilizations shows
   each civilization's causes and a table of its settlements with their origins, Mix, Character, enclave and
   pressure to leave.
@@ -69,16 +69,16 @@ refugees more sensibly, and the AI plays its side of the system. Your saves and 
 
 ### Changed
 - A siege nobody fights stalls. Enemy units parked beside a city used to drive its people out, and kill some, for
-  as long as they stood there. After 3 quiet turns with no damage and no fighting in its borders, the siege stops
-  adding pressure and kills nobody until the next attack. Deaths under a siege now count toward the same limit as
-  departures, so a siege that has taken 80% of the people it started with kills nobody else.
-- People flee fighting once it has lasted two turns. A lone skirmish or one turn of enemies at the gates moves
-  nobody; a settlement being razed still empties at once.
+  as long as they stood there. After 3 quiet turns without damage or fighting in its borders, the siege stops
+  adding pressure and doesn't kill anyone until the next attack. Deaths and departures under a siege now share an
+  80% limit, so once a siege has taken 80% of the people it started with, it doesn't kill anyone else.
+- People flee fighting once it has lasted two turns. A lone skirmish or one turn of enemies at the gates won't make
+  anyone leave; a settlement being razed still empties at once.
 - Refugees avoid a settlement under attack. A city in a crisis of its own pulls far less while it lasts, and
   refugees heading there wait or go to the next calm settlement. With nowhere safer, they still go.
 - Talent Attraction gives +1 Science per 5 Population in each settlement (per 4 in the Modern Age) and costs 2
   Gold per settlement (3 in Modern). Both show in the settlement's yield breakdown, and the people you draw keep
-  paying for as long as they stay. The old bonus that faded each turn is gone.
+  adding Science for as long as they stay. The old bonus that faded each turn is gone.
 - Consular Protection gives +3 Influence a turn in Exploration and +5 in Modern, plus its Influence per enclave
   abroad.
 - The two stance cards name their downsides with the game's icons.
@@ -89,25 +89,23 @@ refugees more sensibly, and the AI plays its side of the system. Your saves and 
   Causes and Guide tabs are part of Settlements. The Guide's answers moved to the Civilopedia.
 - A notice beside End Turn opens the tab it's about: Settlements for "People are leaving" and "People are coming
   home", Notifications for the rest.
-- After fighting or a siege, a settlement has to be calm for 10 turns before its people come back (3 after a
-  disaster, famine or unrest).
 - The interface is translated into all eleven of the game's other languages, the new screen and Civilopedia pages
   included.
 
 ### Fixed
-- The Deity discount was the half-price floor. The difficulty was read as the game's raw Gold handicap (80 at
-  Deity) instead of its step on the ladder, so King and up all paid half. It's 4% a step now.
+- The AI's difficulty discount was stuck at half price from King up. The difficulty was read as the game's raw
+  Gold handicap (80 at Deity) instead of its step on the ladder. It's 4% a step now.
 - The "hold your people" strategy never switched on: it waited for Food under 2, which no settlement reaches. It
   now looks for a town of more than 4 rural population with Food under 16.
 - The "Nothing to show yet" lines, the notes beside a settlement's name and the Network tab's timeline hint were
-  invisible: the game's font draws italic text as nothing. They're plain text now.
+  invisible: the game's font doesn't draw italic text. They're plain text now.
 - Calling people home kept offering people who had already come back, and AI civilizations kept paying for them.
   Returns are counted now.
 - A settlement's pies counted only the last fifty moves, so they could disagree with the Left pane. They count
   the whole age now.
 - On "All civilizations", a civilization's arrivals and departures pies left out moves between its own
-  settlements, so a civilization whose people only moved at home showed a lone "Died" wedge under thousands of
-  people in its cause bars. Both pies now have a "Between its own settlements" slice.
+  settlements, so a civilization whose people only moved at home showed a pie that was a single "Died" wedge,
+  while its cause bars counted thousands of people. Both pies now have a "Between its own settlements" slice.
 
 ## [3.6.7] - 2026-10-25
 

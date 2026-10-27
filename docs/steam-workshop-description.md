@@ -6,7 +6,7 @@ People leave settlements that fail them and move to ones that thrive. Emigration
 [*][b]A forecast.[/b] Under each settlement's pressure gauge: "About 3 people are likely to leave in the next 4 turns."
 [*][b]Close a settlement to newcomers.[/b] One button, for 1 Influence a turn, and arrivals go to your next best settlement instead. AI civilizations close an overwhelmed settlement too.
 [*][b]People come home.[/b] Those driven from one of your settlements into another go back on their own once home is calm.
-[*][b]Wars that make sense for refugees.[/b] A siege nobody fights stalls, a single skirmish moves nobody, and refugees steer clear of a settlement under attack.
+[*][b]Wars that make sense for refugees.[/b] A siege nobody fights stalls, a single skirmish won't make anyone leave, and refugees steer clear of a settlement under attack.
 [*][b]The AI plays its side,[/b] with two city strategies against losing people and a price discount for the game's difficulty.
 [*][b]All twelve languages,[/b] the new screen included.
 [/list]
@@ -16,10 +16,10 @@ Your saves and settings carry over from 3.6.
 [*][b]Compatible with 1.5.0.[/b]
 [*][b]Prosperity.[/b] Each settlement is scored on its yields, happiness, war weariness and government. People move from weaker settlements to stronger ones nearby, more often than across the map.
 [*][b]Refugees.[/b] Fighting, pillaging, sieges, starvation, unrest and disasters drive people out. They look for shelter in their own civilization first and cross a border when home has little to offer. People flee fighting once it has lasted two turns, and they avoid a settlement that's under attack itself.
-[*][b]Sieges.[/b] A siege drives people out until a set share of the city is gone. A siege nobody fights stalls after three quiet turns and kills nobody until the next attack.
+[*][b]Sieges.[/b] A siege drives people out until a set share of the city is gone. A siege nobody fights stalls after three quiet turns and doesn't kill anyone until the next attack.
 [*][b]Losses.[/b] People who can't get out of a long siege, famine, war or disaster die. The risk builds over several turns.
-[*][b]Departures and arrivals change the map.[/b] When people leave, an outlying rural tile goes with them: a pillaged tile first, a starving settlement keeps its farms, and a settlement keeps its last rural tiles. When newcomers reach your city, you can place them, let the city decide, or wait; by default only refugees ask.
-[*][b]Coming home.[/b] People driven from one of your settlements into another come back on their own once it's calm, and settle the plot their people left. Hasten pays Gold or Influence to bring them sooner. Call from abroad is the gamble for people living in another civilization's cities.
+[*][b]Departures and arrivals change the map.[/b] When people leave, an outlying rural tile goes with them. Pillaged tiles go first, a starving settlement keeps its farms, and the last rural tiles always stay. When newcomers reach your city, you can place them, let the city decide, or wait; by default only refugees ask.
+[*][b]Coming home.[/b] People driven from one of your settlements into another come back on their own once home is calm, and settle the plot their people left. Hasten pays Gold or Influence to bring them sooner. Call from abroad is the gamble for people living in another civilization's cities.
 [*][b]Cultural enclaves.[/b] A foreign community that holds its ground puts down roots as a tile on the map: its people's own unique improvement where they have one (a Goryeo enclave is a Gama, a Mongol one an Ortoo), otherwise a matching improvement or a village. It carries its improvement's yields, can be built over, and fades as its community dwindles.
 [*][b]Policy cards.[/b] A Pro-Immigration and an Anti-Immigration Stance in each age, plus Talent Attraction (Science for your population, at a Gold cost per settlement) and Consular Protection (Influence, and grievances against a host that turns on your people abroad) from the Exploration Age. Open Borders agreements raise migration both ways.
 [*][b]The cost of taking people in.[/b] Newcomers cost the host Gold and delay its next Celebration while they settle in, and a settlement can only absorb so many at once.
@@ -27,11 +27,11 @@ Your saves and settings carry over from 3.6.
 [*][b]The AI plays too.[/b] AI civilizations take stances, decide on refugees and call their people home by the same rules, with a discount for the game's difficulty, and two city strategies have their cities build against losing people.
 [*][b]Your decisions, your switches.[/b] Each decision pop-up has its own switch in Options > Mods > Emigration. Turn one off and the mod decides for you.
 [*][b]Each move says why.[/b] Notifications, the city readout and a log name what decided each move: prosperity, distance, safety, open borders, allies, asylum, crisis or war.
-[*][b]Tuned to your roster.[/b] The leaders and civilizations are read from your installed game, all 38 and 50 of them.
+[*][b]Tuned to your roster.[/b] The 38 leaders and 50 civilizations each have their own tuning, read from your installed game.
 [*][b]Twelve languages.[/b]
 [/list]
 [h2]The dashboard and map lenses[/h2]
-The dashboard opens from a dock button or from a migration notice beside End Turn. The Settlements tab has a card for each of your settlements, with its pressure to leave as a gauge, a forecast, what would stop people leaving, who lives there, and who is away with the buttons that bring them home; "All civilizations" shows everyone's settlements in a table. The Network tab is the animated migration diagram with the Net Migration table behind it, Policies shows who has taken a stance, and Notifications keeps the log. A Spoil Guard hides civilizations you haven't met.
+The dashboard opens from a dock button or from a migration notice beside End Turn. The Settlements tab has a card for each of your settlements, with its pressure to leave as a gauge, a forecast, what would stop people leaving, who lives there, and who is away, with the buttons that bring them home; "All civilizations" shows each civilization's causes and a table of its settlements. The Network tab is the animated migration diagram with the Net Migration table behind it, Policies shows who has taken a stance, and Notifications keeps the log. A Spoil Guard hides civilizations you haven't met.
 On the map, the Ethnic Composition lens paints each settlement by where its people came from, and the Prosperity lens shades each settlement's land by how good its tiles are.
 [h2]Works with other Tower mods[/h2]
 [list]
@@ -41,7 +41,7 @@ On the map, the Ethnic Composition lens paints each settlement by where its peop
 [*]Emigration works on its own; each part above switches on when its mod is installed.
 [/list]
 [h2]The displaced speak for themselves[/h2]
-The refugee, newcomer and homecoming pop-ups carry a quote chosen by the people involved, in the words of their own refugees, exiles and migrants: Ovid from exile, the Zoroastrian refugees at Sanjan, Sugawara no Michizane leaving for Dazaifu, a Galician emigrant bound for Havana, Heine in Paris.
+The refugee, newcomer and homecoming pop-ups carry a quote chosen for the people involved, in the words of their own refugees, exiles and migrants: Ovid from exile, the Zoroastrian refugees at Sanjan, Sugawara no Michizane leaving for Dazaifu, a Galician emigrant bound for Havana, Heine in Paris.
 The quotes are source-checked and listed in the repository.
 [h2]Caveats and known issues[/h2]
 [list]
