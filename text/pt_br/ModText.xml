@@ -90,6 +90,7 @@
         <Replace Tag="LOC_EMIG_EXPLAIN_CELEBRATION" Language="pt_BR"><Text>Celebrações</Text></Replace>
         <Replace Tag="LOC_EMIG_EXPLAIN_STAGE" Language="pt_BR"><Text>Estágio de felicidade</Text></Replace>
         <Replace Tag="LOC_EMIG_EXPLAIN_HAPPINESS_SHAPED" Language="pt_BR"><Text>Em relação à média do império</Text></Replace>
+        <Replace Tag="LOC_EMIG_EXPLAIN_HAPPINESS_OWN" Language="pt_BR"><Text>Its own Happiness</Text></Replace>
         <Replace Tag="LOC_EMIG_EXPLAIN_CAP_TRIM" Language="pt_BR"><Text>Teto do que foi construído</Text></Replace>
         <Replace Tag="LOC_EMIG_EXPLAIN_FOOD" Language="pt_BR"><Text>Alimento</Text></Replace>
         <Replace Tag="LOC_EMIG_EXPLAIN_PRODUCTION" Language="pt_BR"><Text>Produção</Text></Replace>
@@ -390,6 +391,10 @@
         <Replace Tag="LOC_EMIG_HOMECOMING_SPLIT" Language="pt_BR"><Text>{1_Home} está segura de novo. Parte das pessoas que fugiram ({2_Go}) está voltando para casa, e o resto ({3_Stay}) se estabeleceu onde foi parar.</Text></Replace>
         <Replace Tag="LOC_EMIG_HOMECOMING_ALL_STAY" Language="pt_BR"><Text>{1_Home} está segura de novo, mas quem fugiu ({2_Stay}) se estabeleceu onde foi parar. Apressar ainda pode trazer essas pessoas de volta.</Text></Replace>
         <Replace Tag="LOC_EMIG_HOMECOMING_DONE_GOING" Language="pt_BR"><Text>Os últimos que estavam voltando para {1_Home} chegaram.</Text></Replace>
+        <Replace Tag="LOC_EMIG_RELIEF_LINE" Language="pt_BR"><Text>People who left</Text></Replace>
+        <Replace Tag="LOC_BUILDING_EMIG_RELIEF_NAME" Language="pt_BR"><Text>People who left</Text></Replace>
+        <Replace Tag="LOC_BUILDING_EMIG_RELIEF_DESCRIPTION" Language="pt_BR"><Text>+1 Happiness for each person who left this settlement over unhappiness, until it grows back to the size it was when they left.</Text></Replace>
+        <Replace Tag="LOC_BUILDING_EMIG_RELIEF_TOOLTIP" Language="pt_BR"><Text>+1 Happiness for each person who left this settlement over unhappiness, until it grows back to the size it was when they left.</Text></Replace>
         <Replace Tag="LOC_EMIG_DP_WAIT_STAYED" Language="pt_BR"><Text>Quem se estabeleceu onde foi parar ({1_Count}) vai ficar lá, a não ser que você pague pelo retorno.</Text></Replace>
         <Replace Tag="LOC_EMIG_DP_WAIT_DECIDE" Language="pt_BR"><Text>Quando {1_Home} completar os turnos de calma que faltam ({2_Turns}), as pessoas que fugiram decidem se voltam para casa. Quanto mais tempo estiverem fora, e quanto melhor estiverem onde vivem agora, mais delas ficam.</Text></Replace>
         <Replace Tag="LOC_EMIG_DP_FREE_STAY" Language="pt_BR"><Text>ficam onde estão: {1_Count}</Text></Replace>
@@ -489,6 +494,7 @@
         <Replace Tag="LOC_EMIG_SC_TALLY_SUM" Language="pt_BR"><Text>Total</Text></Replace>
         <Replace Tag="LOC_EMIG_SC_LEDGER_TITLE_TIP" Language="pt_BR"><Text>Clique em uma linha para ver o que há por trás dela; clique aqui para abrir ou fechar todas.</Text></Replace>
         <Replace Tag="LOC_EMIG_LEDGER_HAPPY_NOTE" Language="pt_BR"><Text>{1_H} aqui, {2_Mean} no império</Text></Replace>
+        <Replace Tag="LOC_EMIG_LEDGER_HAPPY_NOTE_OWN" Language="pt_BR"><Text>{1_H} here</Text></Replace>
         <Replace Tag="LOC_EMIG_LEDGER_POP_NOTE" Language="pt_BR"><Text>{1_Pop} pessoas</Text></Replace>
         <Replace Tag="LOC_EMIG_LEDGER_PCT_NOTE" Language="pt_BR"><Text>{1_Pct}% da base</Text></Replace>
         <Replace Tag="LOC_EMIG_LEDGER_TURNS_LEFT" Language="pt_BR"><Text>{1_Turns} turnos restantes</Text></Replace>
@@ -557,12 +563,6 @@
         <Replace Tag="LOC_EMIG_IN_COST_TAIL" Language="pt_BR"><Text>Os recém-chegados agora custam {1_Gold} de Ouro e {2_Happy} de Felicidade por turno enquanto se instalam.</Text></Replace>
         <Replace Tag="LOC_EMIG_T_CALLHOME_PEACE" Language="pt_BR"><Text>Lembrar-me quando as pessoas puderem voltar para casa</Text></Replace>
         <Replace Tag="LOC_EMIG_T_CALLHOME_PEACE_D" Language="pt_BR"><Text>Quando um assentamento de onde seu povo fugiu estiver calmo há tempo suficiente para que voltem e pelo menos o limite de pessoas suas estiver deslocado, uma pequena janela se oferece para abrir a aba Assentamentos, onde você vê onde elas estão e escolhe de qual assentamento trazer o povo de volta. Ela só volta quando houver metade a mais de deslocados, nunca antes de 10 turnos da última, e seu botão "Não me lembrar de novo" a desliga de vez. Ativado por padrão; a aba tem o mesmo interruptor.</Text></Replace>
-        <Replace Tag="LOC_EMIG_SETUP_AI_STRATEGY" Language="pt_BR"><Text>Emigração: a IA mantém as cidades felizes</Text></Replace>
-        <Replace Tag="LOC_EMIG_SETUP_AI_STRATEGY_DESC" Language="pt_BR"><Text>Dá às civilizações da IA uma estratégia de cidade "mantenha-os felizes" mais cedo e mais suave, para que uma cidade da IA que está ficando infeliz construa felicidade antes de as pessoas começarem a sair. A estratégia do próprio jogo só começa quando a cidade já está infeliz. Escolhido aqui para a partida inteira.</Text></Replace>
-        <Replace Tag="LOC_EMIG_SETUP_AI_STRATEGY_ON" Language="pt_BR"><Text>Ativado</Text></Replace>
-        <Replace Tag="LOC_EMIG_SETUP_AI_STRATEGY_ON_DESC" Language="pt_BR"><Text>As cidades da IA começam a construir felicidade enquanto sua felicidade líquida ainda está um pouco acima de zero.</Text></Replace>
-        <Replace Tag="LOC_EMIG_SETUP_AI_STRATEGY_OFF" Language="pt_BR"><Text>Desativado</Text></Replace>
-        <Replace Tag="LOC_EMIG_SETUP_AI_STRATEGY_OFF_DESC" Language="pt_BR"><Text>A IA fica só com as estratégias do próprio jogo.</Text></Replace>
         <Replace Tag="LOC_EMIG_T_CALLHOME_AI" Language="pt_BR"><Text>Civilizações da IA chamam o povo de volta</Text></Replace>
         <Replace Tag="LOC_EMIG_T_CALLHOME_AI_D" Language="pt_BR"><Text>No seu próprio turno, as civilizações da IA chamam seu povo deslocado de volta quando nenhum dos seus assentamentos está em apuros, pagando o mesmo preço, com a mesma chance e o mesmo tempo de espera que você. Primeiro dos seus próprios assentamentos; do exterior só quando ainda têm o Ouro ou a Influência para isso. Quando um chamado tira pessoas de uma cidade sua, você recebe um aviso dizendo quem chamou. Desativado deixa a IA esperar que as pessoas voltem por conta própria. Enquanto as pessoas encontram o caminho de casa sozinhas, a IA só paga para chamar gente de volta do exterior.</Text></Replace>
         <Replace Tag="LOC_EMIG_T_CALLHOME_EX" Language="pt_BR"><Text>Chance de cada ponto voltar do exterior</Text></Replace>

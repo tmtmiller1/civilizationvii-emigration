@@ -114,6 +114,30 @@ function stageTable() {
   }
 }
 
+/** The Antiquity bands, for when the game's table can't be read. */
+const DEFAULT_BANDS = Object.freeze({ joyousMin: 20, ecstaticMin: 40, angryMax: -20 });
+
+/**
+ * The current age's stage lines from GameInfo.HappinessStages: where Joyous and Ecstatic start and where Angry
+ * begins. Falls back to the Antiquity values when the table can't be read.
+ * @returns {{joyousMin:number, ecstaticMin:number, angryMax:number}}
+ */
+export function happinessBands() {
+  const table = stageTable();
+  if (!table) return DEFAULT_BANDS;
+  /** @param {number} ord @param {"min"|"max"} key @param {number} fallback @returns {number} */
+  const line = (ord, key, fallback) => {
+    const row = table.find((r) => r.ordinal === ord);
+    const v = row ? row[key] : NaN;
+    return Number.isFinite(v) ? v : fallback;
+  };
+  return {
+    joyousMin: line(1, "min", DEFAULT_BANDS.joyousMin),
+    ecstaticMin: line(2, "min", DEFAULT_BANDS.ecstaticMin),
+    angryMax: line(-2, "max", DEFAULT_BANDS.angryMax)
+  };
+}
+
 /**
  * The per-settlement happiness stage as an ordinal in [-2, +2] (ANGRY −2 … ECSTATIC +2). Reads the
  * city's net happiness and buckets it against GameInfo.HappinessStages the way the base-game banner

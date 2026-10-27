@@ -90,6 +90,7 @@
         <Replace Tag="LOC_EMIG_EXPLAIN_CELEBRATION" Language="pl_PL"><Text>Święta</Text></Replace>
         <Replace Tag="LOC_EMIG_EXPLAIN_STAGE" Language="pl_PL"><Text>Poziom zadowolenia</Text></Replace>
         <Replace Tag="LOC_EMIG_EXPLAIN_HAPPINESS_SHAPED" Language="pl_PL"><Text>Względem średniej imperium</Text></Replace>
+        <Replace Tag="LOC_EMIG_EXPLAIN_HAPPINESS_OWN" Language="pl_PL"><Text>Its own Happiness</Text></Replace>
         <Replace Tag="LOC_EMIG_EXPLAIN_CAP_TRIM" Language="pl_PL"><Text>Limit za zabudowę</Text></Replace>
         <Replace Tag="LOC_EMIG_EXPLAIN_FOOD" Language="pl_PL"><Text>Żywność</Text></Replace>
         <Replace Tag="LOC_EMIG_EXPLAIN_PRODUCTION" Language="pl_PL"><Text>Produkcja</Text></Replace>
@@ -390,6 +391,10 @@
         <Replace Tag="LOC_EMIG_HOMECOMING_SPLIT" Language="pl_PL"><Text>{1_Home} jest znów bezpieczna. Część ludzi, którzy z niej uciekli ({2_Go}), wraca do domu, a reszta ({3_Stay}) osiedliła się tam, dokąd poszła.</Text></Replace>
         <Replace Tag="LOC_EMIG_HOMECOMING_ALL_STAY" Language="pl_PL"><Text>{1_Home} jest znów bezpieczna, ale ludzie, którzy z niej uciekli ({2_Stay}), osiedlili się tam, dokąd poszli. Przyspiesz wciąż może ich sprowadzić.</Text></Replace>
         <Replace Tag="LOC_EMIG_HOMECOMING_DONE_GOING" Language="pl_PL"><Text>Ostatni z ludzi wracających do osady {1_Home} są z powrotem.</Text></Replace>
+        <Replace Tag="LOC_EMIG_RELIEF_LINE" Language="pl_PL"><Text>People who left</Text></Replace>
+        <Replace Tag="LOC_BUILDING_EMIG_RELIEF_NAME" Language="pl_PL"><Text>People who left</Text></Replace>
+        <Replace Tag="LOC_BUILDING_EMIG_RELIEF_DESCRIPTION" Language="pl_PL"><Text>+1 Happiness for each person who left this settlement over unhappiness, until it grows back to the size it was when they left.</Text></Replace>
+        <Replace Tag="LOC_BUILDING_EMIG_RELIEF_TOOLTIP" Language="pl_PL"><Text>+1 Happiness for each person who left this settlement over unhappiness, until it grows back to the size it was when they left.</Text></Replace>
         <Replace Tag="LOC_EMIG_DP_WAIT_STAYED" Language="pl_PL"><Text>Ci, którzy osiedlili się tam, dokąd poszli ({1_Count}), zostaną, chyba że zapłacisz za ich sprowadzenie.</Text></Replace>
         <Replace Tag="LOC_EMIG_DP_WAIT_DECIDE" Language="pl_PL"><Text>Gdy {1_Home} pozostanie spokojna przez pozostałe tury ({2_Turns}), ludzie, którzy z niej uciekli, zdecydują, czy wrócić do domu. Im dłużej są nieobecni i im lepiej im tam, gdzie teraz mieszkają, tym więcej z nich zostaje.</Text></Replace>
         <Replace Tag="LOC_EMIG_DP_FREE_STAY" Language="pl_PL"><Text>zostają tam, gdzie są: {1_Count}</Text></Replace>
@@ -489,6 +494,7 @@
         <Replace Tag="LOC_EMIG_SC_TALLY_SUM" Language="pl_PL"><Text>Razem</Text></Replace>
         <Replace Tag="LOC_EMIG_SC_LEDGER_TITLE_TIP" Language="pl_PL"><Text>Kliknij wiersz, by zobaczyć, co za nim stoi; kliknij tutaj, by otworzyć lub zamknąć wszystkie.</Text></Replace>
         <Replace Tag="LOC_EMIG_LEDGER_HAPPY_NOTE" Language="pl_PL"><Text>{1_H} tutaj, {2_Mean} w całym imperium</Text></Replace>
+        <Replace Tag="LOC_EMIG_LEDGER_HAPPY_NOTE_OWN" Language="pl_PL"><Text>{1_H} here</Text></Replace>
         <Replace Tag="LOC_EMIG_LEDGER_POP_NOTE" Language="pl_PL"><Text>{1_Pop} ludzi</Text></Replace>
         <Replace Tag="LOC_EMIG_LEDGER_PCT_NOTE" Language="pl_PL"><Text>{1_Pct}% podstawy</Text></Replace>
         <Replace Tag="LOC_EMIG_LEDGER_TURNS_LEFT" Language="pl_PL"><Text>pozostało {1_Turns} tur</Text></Replace>
@@ -557,12 +563,6 @@
         <Replace Tag="LOC_EMIG_IN_COST_TAIL" Language="pl_PL"><Text>Przybysze kosztują cię teraz {1_Gold} Złota i {2_Happy} Zadowolenia na turę, póki się zadomawiają.</Text></Replace>
         <Replace Tag="LOC_EMIG_T_CALLHOME_PEACE" Language="pl_PL"><Text>Przypominaj, gdy ludzie mogą wrócić do domu</Text></Replace>
         <Replace Tag="LOC_EMIG_T_CALLHOME_PEACE_D" Language="pl_PL"><Text>Gdy osada, z której uciekli twoi ludzie, jest już dość długo spokojna, by mogli wrócić, a wysiedlonych jest co najmniej tylu, ile wynosi próg, małe okno proponuje otwarcie zakładki Osady, gdzie widzisz, gdzie są, i wybierasz, mieszkańców której osady sprowadzić. Wraca dopiero, gdy wysiedlonych jest o połowę więcej, nigdy w ciągu 10 tur od ostatniego, a jego przycisk „Nie przypominaj więcej” wyłącza je na stałe. Domyślnie włączone; zakładka ma ten sam przełącznik.</Text></Replace>
-        <Replace Tag="LOC_EMIG_SETUP_AI_STRATEGY" Language="pl_PL"><Text>Emigracja: SI dba o zadowolenie miast</Text></Replace>
-        <Replace Tag="LOC_EMIG_SETUP_AI_STRATEGY_DESC" Language="pl_PL"><Text>Daje cywilizacjom SI wcześniejszą, łagodniejszą strategię miejską „dbaj o zadowolenie”, więc miasto SI, które zaczyna być niezadowolone, buduje zadowolenie, zanim ludzie zaczną odchodzić. Własna strategia gry rusza dopiero, gdy miasto jest już niezadowolone. Wybierane tutaj na całą grę.</Text></Replace>
-        <Replace Tag="LOC_EMIG_SETUP_AI_STRATEGY_ON" Language="pl_PL"><Text>Włączone</Text></Replace>
-        <Replace Tag="LOC_EMIG_SETUP_AI_STRATEGY_ON_DESC" Language="pl_PL"><Text>Miasta SI zaczynają budować zadowolenie, gdy ich zadowolenie netto jest jeszcze nieco powyżej zera.</Text></Replace>
-        <Replace Tag="LOC_EMIG_SETUP_AI_STRATEGY_OFF" Language="pl_PL"><Text>Wyłączone</Text></Replace>
-        <Replace Tag="LOC_EMIG_SETUP_AI_STRATEGY_OFF_DESC" Language="pl_PL"><Text>SI trzyma się tylko własnych strategii gry.</Text></Replace>
         <Replace Tag="LOC_EMIG_T_CALLHOME_AI" Language="pl_PL"><Text>Cywilizacje SI wzywają ludzi do domu</Text></Replace>
         <Replace Tag="LOC_EMIG_T_CALLHOME_AI_D" Language="pl_PL"><Text>W swojej turze cywilizacje SI wzywają swoich wysiedlonych do domu, gdy żadna z ich osad nie jest w opałach, płacąc tę samą cenę, z tymi samymi szansami i czasem odnowienia co ty. Najpierw z własnych osad; z zagranicy tylko wtedy, gdy wciąż mają na to Złoto lub Wpływy. Gdy wezwanie zabiera ludzi z jednego z twoich miast, dostajesz powiadomienie z nazwą tego, kto wezwał. Wyłączone zostawia SI czekanie, aż ludzie sami wrócą. Gdy ludzie sami wracają do domu, SI płaci tylko za wzywanie ludzi z zagranicy.</Text></Replace>
         <Replace Tag="LOC_EMIG_T_CALLHOME_EX" Language="pl_PL"><Text>Szansa powrotu punktu z zagranicy</Text></Replace>

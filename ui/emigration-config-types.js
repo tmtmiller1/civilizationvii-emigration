@@ -223,6 +223,12 @@
  * @property {number} dividendDecay Per-turn decay of the carried dividend pool.
  * @property {number} dividendCap Max per-turn carried dividend granted in a yield.
  * @property {boolean} happinessShaped Use the shaped (field-relative, saturating) happiness model.
+ * @property {"field"|"stage"} happinessModel What a settlement's Happiness is measured against: the field's mean or
+ *   the game's stage bands.
+ * @property {number} happinessStageFullAt Happiness below zero at which the stage model's push is strongest.
+ * @property {number} happinessStagePush The stage model's strongest push (in the units of happyRepulsion).
+ * @property {number} unhappyPressurePush Pressure a turn an unhappy settlement adds at full strength (stage model).
+ * @property {boolean} reliefEnabled Departures over unhappiness give their settlement Happiness back (stage model).
  * @property {number} happyScale Tanh scale for field-relative happiness (shaped model).
  * @property {number} happyRepulsion Steepness multiplier on the misery side (shaped model).
  * @property {number} happyAmp Happiness→economy amplification (shaped model).

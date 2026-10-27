@@ -54,6 +54,9 @@ Your saves and settings carry over from 3.6.
 - **The AI plays its side.** Two city strategies have AI cities build against losing people. AI civilizations get
   the free homecoming, call their people back from abroad, and pay the mod's prices with a discount for the game's
   difficulty, 20% at Deity.
+- **Unhappiness that matters, and relief when people leave.** Happiness counts by the settlement's own stage. Unhappy
+  settlements lose people faster the unhappier they are, and each person who leaves over unhappiness gives the
+  settlement +1 Happiness until it grows back.
 - **Policy cards with a cost.** Talent Attraction now costs 2 Gold per settlement (3 in Modern) for its Science,
   and Consular Protection gives +3 Influence a turn (+5 in Modern).
 - **A first-loss explainer** for new players, off by default: one page the first time a settlement loses a tile.
@@ -162,6 +165,8 @@ Compatible with Civilization VII 1.5.0.
 ### Migration
 
 - **Prosperity-based migration:** settlements are scored each turn on yields, happiness, war weariness, and government; population flows toward stronger settlements
+- **Unhappiness by stage:** a settlement's Happiness counts by its own stage, the one on its banner. A Happy settlement's Happiness doesn't push anyone out; below 0 the pressure to leave builds faster, more the unhappier it is, up to its full strength at -10
+- **Fewer people, less strain:** each person who leaves over unhappiness gives the settlement +1 Happiness until it grows back to the size it was, shown in the game's Happiness tooltip as "People who left"
 - **Internal migration:** movement between a civilization's own settlements, shown separately on the dashboard
 - **Cross-civilization migration:** shaped by borders, alliances, war, and asylum
 - **Distance-weighted destinations:** nearby settlements are favored
@@ -240,7 +245,6 @@ Compatible with Civilization VII 1.5.0.
 - **Decision pop-ups on or off:** refugee decisions, newcomer placement, displaced-people reminders, and enclave stances each have their own switch on the Mods tab
 - **Hover help on the options:** each Mods-tab option explains what it does, what each choice means, and when a change takes effect
 - **122 advanced options:** Options ▸ Mods ▸ Emigration
-- **One game-setup option:** "Emigration: AI keeps cities happy" on the game setup screen, on by default, chosen for the whole game
 - **Per-leader and per-civilization tuning:** all 38 leaders and 50 civilizations, including alternate personas
 - **Game-speed scaling:** Online through Marathon
 - **12 languages:** English, German, Spanish, French, Italian, Japanese, Korean, Polish, Portuguese (Brazil), Russian, Simplified Chinese, and Traditional Chinese
@@ -261,6 +265,7 @@ Compatible with Civilization VII 1.5.0.
 ### Why do people move?
 
 - Settlements are scored each turn on yields, happiness, war weariness, and government. Lower-scoring settlements lose people to stronger ones.
+- Happiness counts by the settlement's own stage. An unhappy settlement's people leave faster the unhappier it is, as long as there's somewhere better to go, and each one who leaves gives it +1 Happiness until it grows back.
 - War damage, sieges, and pillaged tiles create refugees.
 - Starvation, unrest, plague, disasters, and overcrowding also push people out.
 - Causes run independently, so a city can lose war refugees and economic migrants in the same turn.
@@ -399,7 +404,7 @@ Defaults are shown below; most are tunable in §10, and the Civilopedia's Emigra
 
 | | Counts? | |
 |---|:---:|---|
-| Unhappiness / low yields | ✓ | Main peacetime driver; happiness weighs most, with low per-capita yields adding pressure |
+| Unhappiness / low yields | ✓ | Below 0 Happiness the pressure to leave builds faster, full at -10; low per-capita yields add pressure at any stage |
 | Empire-wide war weariness | ✓ | Modest civ-wide pressure on top of local violence |
 | War damage to districts | ✓ | More damage means more pressure |
 | Being besieged or attacked | ✓ | Applies only to the affected city |
@@ -415,7 +420,7 @@ Defaults are shown below; most are tunable in §10, and the Civilopedia's Emigra
 | | Attracts? | |
 |---|:---:|---|
 | Higher prosperity | ✓ | Weighted per-capita food, production, gold, science, and culture |
-| Higher happiness | ✓ | Strongest factor, but capped by the shaped model |
+| Higher happiness | ✓ | Joyous and Ecstatic settlements draw people; Happy is neutral |
 | Pro-Immigration Stance | ✓ | Raises inbound pull, Influence and Food |
 | Open Borders | ✓ | Cross-civ pull bonus |
 | Being nearby | ✓ | Distance-penalized |
@@ -442,7 +447,7 @@ Defaults are shown below; most are tunable in §10, and the Civilopedia's Emigra
 | No Open Borders reduces cross-civ flow | ✓ | Movement remains possible but is harder |
 | Population and yields change | ✓ | Real gameplay writes |
 | Pacing adapts to game speed | ✓ | Cooldowns, ramps, transit, and thresholds scale (§2) |
-| Systems can be tuned or disabled | ✓ | Presets + 122 options, and one game-setup option |
+| Systems can be tuned or disabled | ✓ | Presets + 122 options |
 | Fighting outside a city's borders | ✗ | Does not drive that city's emigration |
 | Migrants arrive instantly | ✗ | Travel takes time |
 | Absorbing migrants is free | ✗ | Temporary happiness/celebration and gold costs apply |
@@ -465,7 +470,7 @@ Defaults are shown below; most are tunable in §10, and the Civilopedia's Emigra
 | | | |
 |---|:---:|---|
 | Replaces base-game files | ✗ | Additive only |
-| Changes the AI | ✓ | Adds two city strategies ("keep them happy", an earlier and gentler copy of the game's own, a game-setup option on by default; "hold your people", Production and Happiness once a settlement's Food stalls); AI civilizations call people home from abroad, pick one of an enclave's two stances and decide on refugees through the mod's own rules, at a difficulty discount (§11) |
+| Changes the AI | ✓ | Adds two city strategies ("keep them happy", an earlier and gentler copy of the game's own; "hold your people", Production and Happiness once a settlement's Food stalls); AI civilizations call people home from abroad, pick one of an enclave's two stances and decide on refugees through the mod's own rules, at a difficulty discount (§11) |
 | Moves population instantly | ✗ | Distance and transit apply |
 | Lets you place individual migrants | ✗ | You shape flows indirectly; local arrivals can be placed |
 | Lets one civ snowball unchecked | ✗ | Field-relative scoring, congestion, and anti-snowball headwinds limit runaway inflow |
@@ -654,6 +659,14 @@ Four algorithms and a per-civ tuning table refine the baseline. All default on a
 ### A. Shaped happiness (`happinessShaped`)
 
 The original linear `happiness × 6` term let extreme happiness bonuses dominate the model. The shaped version compares happiness with the world mean, saturates positive pull, steepens severe unhappiness with `tanh`, and uses happiness to amplify the economy rather than replace it. Franklin's Glass Armonica drops from roughly a 50× attraction effect to about 2× while deeply unhappy cities still shed strongly.
+
+**The stage model (`happinessModel` "stage", the default since 4.0.0).** Happiness is read against the game's own stage
+lines for the age (`GameInfo.HappinessStages`) instead of the world mean: 0 through Happy, rising through Joyous to 1 at
+Ecstatic, and below 0 falling evenly to `happinessStagePush` (2.8) at `happinessStageFullAt` (10) below zero
+(`stageScore`). An unhappy settlement also adds `unhappyPressure` to its pressure each turn, up to `unhappyPressurePush`
+(3) at the same depth, while its best destination pulls at all; and each person who leaves over unhappiness gives it +1
+Happiness until it regrows to the size it was (`emigration-relief.js`, ten hidden city-center building tiers in
+`data/emigration-relief.sql`). Sized and checked in roadmap sections 69 and 70. `"field"` keeps the shaped model above.
 
 ### B. Overcrowding discount (`overcrowdDiscount`)
 
@@ -1171,8 +1184,7 @@ The emigration mod uses four such changes:
 **An earlier "keep them happy" city strategy.** The game's own happiness strategy only kicks in once a city's
 happiness is negative, and under this mod a city starts losing people well before that. The mod adds a gentler
 strategy that starts while net happiness is still a little above zero, so AI cities build happiness sooner. It's
-game data, so the switch is on the game setup screen: "Emigration: AI keeps cities happy", on by default and fixed
-for that game.
+always on: it only helps the AI play by the mod's rules, so it isn't a choice the player makes.
 
 **A "hold your people" city strategy.** The AI data has no condition that reads population loss, and a yield grant
 can't reach a city's own Happiness, so the nearest native signal to a settlement losing people is its Food stalling.

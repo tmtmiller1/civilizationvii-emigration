@@ -90,6 +90,7 @@
         <Replace Tag="LOC_EMIG_EXPLAIN_CELEBRATION" Language="zh_Hans_CN"><Text>庆典</Text></Replace>
         <Replace Tag="LOC_EMIG_EXPLAIN_STAGE" Language="zh_Hans_CN"><Text>幸福阶段</Text></Replace>
         <Replace Tag="LOC_EMIG_EXPLAIN_HAPPINESS_SHAPED" Language="zh_Hans_CN"><Text>相对于帝国平均水平</Text></Replace>
+        <Replace Tag="LOC_EMIG_EXPLAIN_HAPPINESS_OWN" Language="zh_Hans_CN"><Text>Its own Happiness</Text></Replace>
         <Replace Tag="LOC_EMIG_EXPLAIN_CAP_TRIM" Language="zh_Hans_CN"><Text>建筑加成上限</Text></Replace>
         <Replace Tag="LOC_EMIG_EXPLAIN_FOOD" Language="zh_Hans_CN"><Text>食物</Text></Replace>
         <Replace Tag="LOC_EMIG_EXPLAIN_PRODUCTION" Language="zh_Hans_CN"><Text>生产力</Text></Replace>
@@ -390,6 +391,10 @@
         <Replace Tag="LOC_EMIG_HOMECOMING_SPLIT" Language="zh_Hans_CN"><Text>{1_Home}重归安全。逃离它的人中有 {2_Go} 人正在回家，{3_Stay} 人已在他们去的地方定居。</Text></Replace>
         <Replace Tag="LOC_EMIG_HOMECOMING_ALL_STAY" Language="zh_Hans_CN"><Text>{1_Home}重归安全，但逃离它的 {2_Stay} 人已在他们去的地方定居。加急仍可以把他们带回来。</Text></Replace>
         <Replace Tag="LOC_EMIG_HOMECOMING_DONE_GOING" Language="zh_Hans_CN"><Text>回{1_Home}的最后一批人已经到家。</Text></Replace>
+        <Replace Tag="LOC_EMIG_RELIEF_LINE" Language="zh_Hans_CN"><Text>People who left</Text></Replace>
+        <Replace Tag="LOC_BUILDING_EMIG_RELIEF_NAME" Language="zh_Hans_CN"><Text>People who left</Text></Replace>
+        <Replace Tag="LOC_BUILDING_EMIG_RELIEF_DESCRIPTION" Language="zh_Hans_CN"><Text>+1 Happiness for each person who left this settlement over unhappiness, until it grows back to the size it was when they left.</Text></Replace>
+        <Replace Tag="LOC_BUILDING_EMIG_RELIEF_TOOLTIP" Language="zh_Hans_CN"><Text>+1 Happiness for each person who left this settlement over unhappiness, until it grows back to the size it was when they left.</Text></Replace>
         <Replace Tag="LOC_EMIG_DP_WAIT_STAYED" Language="zh_Hans_CN"><Text>{1_Count} 人已在他们去的地方定居，会一直留在那里，除非你付费带他们回来。</Text></Replace>
         <Replace Tag="LOC_EMIG_DP_WAIT_DECIDE" Language="zh_Hans_CN"><Text>{1_Home}再平静 {2_Turns} 回合后，逃离它的人会决定是否回家。他们在外越久、在现居地过得越好，留下的人就越多。</Text></Replace>
         <Replace Tag="LOC_EMIG_DP_FREE_STAY" Language="zh_Hans_CN"><Text>{1_Count} 人留在原地</Text></Replace>
@@ -489,6 +494,7 @@
         <Replace Tag="LOC_EMIG_SC_TALLY_SUM" Language="zh_Hans_CN"><Text>合计</Text></Replace>
         <Replace Tag="LOC_EMIG_SC_LEDGER_TITLE_TIP" Language="zh_Hans_CN"><Text>点击某一行查看其背后的内容；点击此处可全部展开或收起。</Text></Replace>
         <Replace Tag="LOC_EMIG_LEDGER_HAPPY_NOTE" Language="zh_Hans_CN"><Text>此处 {1_H}，全帝国 {2_Mean}</Text></Replace>
+        <Replace Tag="LOC_EMIG_LEDGER_HAPPY_NOTE_OWN" Language="zh_Hans_CN"><Text>{1_H} here</Text></Replace>
         <Replace Tag="LOC_EMIG_LEDGER_POP_NOTE" Language="zh_Hans_CN"><Text>{1_Pop} 人</Text></Replace>
         <Replace Tag="LOC_EMIG_LEDGER_PCT_NOTE" Language="zh_Hans_CN"><Text>基础值的 {1_Pct}%</Text></Replace>
         <Replace Tag="LOC_EMIG_LEDGER_TURNS_LEFT" Language="zh_Hans_CN"><Text>剩余 {1_Turns} 回合</Text></Replace>
@@ -557,12 +563,6 @@
         <Replace Tag="LOC_EMIG_IN_COST_TAIL" Language="zh_Hans_CN"><Text>新来者安顿期间现在每回合花费你 {1_Gold} 金币和 {2_Happy} 幸福值。</Text></Replace>
         <Replace Tag="LOC_EMIG_T_CALLHOME_PEACE" Language="zh_Hans_CN"><Text>人们可以回家时提醒我</Text></Replace>
         <Replace Tag="LOC_EMIG_T_CALLHOME_PEACE_D" Language="zh_Hans_CN"><Text>当你的人民逃离的某个定居点已经平静到足以让他们回来，并且流离失所的人数达到门槛时，一个小弹窗会提议打开定居点标签页，在那里你可以看到他们在哪里，并选择把哪个定居点的人带回来。只有当流离失所的人数再增加一半时才会再次出现，且距上次至少 10 回合；它的“不再提醒我”按钮会永久关闭它。默认开启；标签页中有同样的开关。</Text></Replace>
-        <Replace Tag="LOC_EMIG_SETUP_AI_STRATEGY" Language="zh_Hans_CN"><Text>移民：AI 保持城市幸福</Text></Replace>
-        <Replace Tag="LOC_EMIG_SETUP_AI_STRATEGY_DESC" Language="zh_Hans_CN"><Text>给 AI 文明一个更早、更温和的“保持幸福”城市策略，这样正在变得不满的 AI 城市会在人们开始离开之前建设幸福设施。游戏自带的策略只在城市已经不满时才启动。在此处为整局游戏选定。</Text></Replace>
-        <Replace Tag="LOC_EMIG_SETUP_AI_STRATEGY_ON" Language="zh_Hans_CN"><Text>开启</Text></Replace>
-        <Replace Tag="LOC_EMIG_SETUP_AI_STRATEGY_ON_DESC" Language="zh_Hans_CN"><Text>AI 城市在净幸福值仍略高于零时就开始建设幸福设施。</Text></Replace>
-        <Replace Tag="LOC_EMIG_SETUP_AI_STRATEGY_OFF" Language="zh_Hans_CN"><Text>关闭</Text></Replace>
-        <Replace Tag="LOC_EMIG_SETUP_AI_STRATEGY_OFF_DESC" Language="zh_Hans_CN"><Text>AI 只使用游戏自带的策略。</Text></Replace>
         <Replace Tag="LOC_EMIG_T_CALLHOME_AI" Language="zh_Hans_CN"><Text>AI 文明召唤人民回家</Text></Replace>
         <Replace Tag="LOC_EMIG_T_CALLHOME_AI_D" Language="zh_Hans_CN"><Text>AI 文明在自己的回合中，一旦其所有定居点都不在困境中，就会召唤流离失所的人民回家，支付的价格、几率和冷却与你相同。先从自己的定居点召唤；只有在仍有足够的金币或影响力时才从海外召唤。当一次召唤把人从你的某座城市带走时，你会收到一条写明召唤者的通知。关闭后，AI 只会等人们自行回来。当人们能自行找到回家的路时，AI 只会付费从海外召回。</Text></Replace>
         <Replace Tag="LOC_EMIG_T_CALLHOME_EX" Language="zh_Hans_CN"><Text>每点人口从国外返回的几率</Text></Replace>

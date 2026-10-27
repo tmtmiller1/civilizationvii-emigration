@@ -90,6 +90,7 @@
         <Replace Tag="LOC_EMIG_EXPLAIN_CELEBRATION" Language="ja_JP"><Text>祝祭</Text></Replace>
         <Replace Tag="LOC_EMIG_EXPLAIN_STAGE" Language="ja_JP"><Text>幸福度の段階</Text></Replace>
         <Replace Tag="LOC_EMIG_EXPLAIN_HAPPINESS_SHAPED" Language="ja_JP"><Text>帝国の平均との比較</Text></Replace>
+        <Replace Tag="LOC_EMIG_EXPLAIN_HAPPINESS_OWN" Language="ja_JP"><Text>Its own Happiness</Text></Replace>
         <Replace Tag="LOC_EMIG_EXPLAIN_CAP_TRIM" Language="ja_JP"><Text>建造物による加点の上限</Text></Replace>
         <Replace Tag="LOC_EMIG_EXPLAIN_FOOD" Language="ja_JP"><Text>食料</Text></Replace>
         <Replace Tag="LOC_EMIG_EXPLAIN_PRODUCTION" Language="ja_JP"><Text>生産力</Text></Replace>
@@ -390,6 +391,10 @@
         <Replace Tag="LOC_EMIG_HOMECOMING_SPLIT" Language="ja_JP"><Text>{1_Home}は再び安全になりました。そこから逃げた人々のうち{2_Go}人が故郷へ戻り、{3_Stay}人は移った先に定住しました。</Text></Replace>
         <Replace Tag="LOC_EMIG_HOMECOMING_ALL_STAY" Language="ja_JP"><Text>{1_Home}は再び安全になりましたが、そこから逃げた{2_Stay}人は移った先に定住しました。「早める」でまだ連れ戻せます。</Text></Replace>
         <Replace Tag="LOC_EMIG_HOMECOMING_DONE_GOING" Language="ja_JP"><Text>{1_Home}へ戻っていた人々の最後の一団が帰り着きました。</Text></Replace>
+        <Replace Tag="LOC_EMIG_RELIEF_LINE" Language="ja_JP"><Text>People who left</Text></Replace>
+        <Replace Tag="LOC_BUILDING_EMIG_RELIEF_NAME" Language="ja_JP"><Text>People who left</Text></Replace>
+        <Replace Tag="LOC_BUILDING_EMIG_RELIEF_DESCRIPTION" Language="ja_JP"><Text>+1 Happiness for each person who left this settlement over unhappiness, until it grows back to the size it was when they left.</Text></Replace>
+        <Replace Tag="LOC_BUILDING_EMIG_RELIEF_TOOLTIP" Language="ja_JP"><Text>+1 Happiness for each person who left this settlement over unhappiness, until it grows back to the size it was when they left.</Text></Replace>
         <Replace Tag="LOC_EMIG_DP_WAIT_STAYED" Language="ja_JP"><Text>{1_Count}人は移った先に定住しました。費用を払って連れ戻さない限り、そこに留まります。</Text></Replace>
         <Replace Tag="LOC_EMIG_DP_WAIT_DECIDE" Language="ja_JP"><Text>{1_Home}があと{2_Turns}ターン平穏であれば、そこから逃げた人々は故郷へ戻るかどうかを決めます。離れていた期間が長いほど、またいま暮らしている場所で恵まれているほど、留まる人が増えます。</Text></Replace>
         <Replace Tag="LOC_EMIG_DP_FREE_STAY" Language="ja_JP"><Text>{1_Count}人はいまの場所に留まる</Text></Replace>
@@ -489,6 +494,7 @@
         <Replace Tag="LOC_EMIG_SC_TALLY_SUM" Language="ja_JP"><Text>合計</Text></Replace>
         <Replace Tag="LOC_EMIG_SC_LEDGER_TITLE_TIP" Language="ja_JP"><Text>行をクリックするとその内訳が開きます。ここをクリックするとすべてを開閉します。</Text></Replace>
         <Replace Tag="LOC_EMIG_LEDGER_HAPPY_NOTE" Language="ja_JP"><Text>ここは{1_H}、帝国全体では{2_Mean}</Text></Replace>
+        <Replace Tag="LOC_EMIG_LEDGER_HAPPY_NOTE_OWN" Language="ja_JP"><Text>{1_H} here</Text></Replace>
         <Replace Tag="LOC_EMIG_LEDGER_POP_NOTE" Language="ja_JP"><Text>{1_Pop}人</Text></Replace>
         <Replace Tag="LOC_EMIG_LEDGER_PCT_NOTE" Language="ja_JP"><Text>基本値の{1_Pct}%</Text></Replace>
         <Replace Tag="LOC_EMIG_LEDGER_TURNS_LEFT" Language="ja_JP"><Text>残り{1_Turns}ターン</Text></Replace>
@@ -557,12 +563,6 @@
         <Replace Tag="LOC_EMIG_IN_COST_TAIL" Language="ja_JP"><Text>新来者が定住を終えるまで、毎ターン{1_Gold}ゴールドと幸福度{2_Happy}がかかるようになりました。</Text></Replace>
         <Replace Tag="LOC_EMIG_T_CALLHOME_PEACE" Language="ja_JP"><Text>人々が戻れるようになったら知らせる</Text></Replace>
         <Replace Tag="LOC_EMIG_T_CALLHOME_PEACE_D" Language="ja_JP"><Text>あなたの人々が逃げ出した居住地が戻れるほど長く平穏になり、しきい値以上の人々が離散しているとき、小さなポップアップが「居住地」タブを開くよう勧めます。そこで彼らの居場所を確認し、どの居住地の人々を連れ戻すか選べます。再び出るのは離散した人数がさらに半分増えたときだけで、前回から10ターン以内には出ず、「今後は知らせない」ボタンでずっとオフになります。既定ではオンで、タブにも同じスイッチがあります。</Text></Replace>
-        <Replace Tag="LOC_EMIG_SETUP_AI_STRATEGY" Language="ja_JP"><Text>移住：AIが都市を幸福に保つ</Text></Replace>
-        <Replace Tag="LOC_EMIG_SETUP_AI_STRATEGY_DESC" Language="ja_JP"><Text>AI文明に、より早く穏やかに働く「幸福に保つ」都市戦略を与えます。これにより、不幸になりかけているAIの都市は、人々が去りはじめる前に幸福度を建設します。ゲーム本来の戦略は、都市がすでに不幸になってから始まります。ここでの選択はゲーム全体に適用されます。</Text></Replace>
-        <Replace Tag="LOC_EMIG_SETUP_AI_STRATEGY_ON" Language="ja_JP"><Text>オン</Text></Replace>
-        <Replace Tag="LOC_EMIG_SETUP_AI_STRATEGY_ON_DESC" Language="ja_JP"><Text>AIの都市は、純幸福度がまだゼロをわずかに上回っている段階で幸福度の建設を始めます。</Text></Replace>
-        <Replace Tag="LOC_EMIG_SETUP_AI_STRATEGY_OFF" Language="ja_JP"><Text>オフ</Text></Replace>
-        <Replace Tag="LOC_EMIG_SETUP_AI_STRATEGY_OFF_DESC" Language="ja_JP"><Text>AIはゲーム本来の戦略だけを使います。</Text></Replace>
         <Replace Tag="LOC_EMIG_T_CALLHOME_AI" Language="ja_JP"><Text>AI文明が人々を呼び戻す</Text></Replace>
         <Replace Tag="LOC_EMIG_T_CALLHOME_AI_D" Language="ja_JP"><Text>AI文明は自分のターンに、どの居住地も苦境にないとき、離散した自国の人々を呼び戻します。価格、確率、クールダウンはあなたと同じです。まず自国の居住地から呼び戻し、国外からはゴールドか影響力に余裕があるときだけです。呼びかけであなたの都市から人々が去ると、誰が呼びかけたかを示す知らせが届きます。オフにすると、AIは人々が自分たちで戻ってくるのを待つだけになります。「人々は自分たちで故郷へ戻る」がオンのあいだ、AIが費用を払うのは国外からの呼び戻しだけです。</Text></Replace>
         <Replace Tag="LOC_EMIG_T_CALLHOME_EX" Language="ja_JP"><Text>国外から1ポイントが戻る確率</Text></Replace>

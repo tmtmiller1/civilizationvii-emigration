@@ -90,6 +90,7 @@
         <Replace Tag="LOC_EMIG_EXPLAIN_CELEBRATION" Language="ru_RU"><Text>Празднования</Text></Replace>
         <Replace Tag="LOC_EMIG_EXPLAIN_STAGE" Language="ru_RU"><Text>Уровень счастья</Text></Replace>
         <Replace Tag="LOC_EMIG_EXPLAIN_HAPPINESS_SHAPED" Language="ru_RU"><Text>Относительно среднего по империи</Text></Replace>
+        <Replace Tag="LOC_EMIG_EXPLAIN_HAPPINESS_OWN" Language="ru_RU"><Text>Its own Happiness</Text></Replace>
         <Replace Tag="LOC_EMIG_EXPLAIN_CAP_TRIM" Language="ru_RU"><Text>Потолок за постройки</Text></Replace>
         <Replace Tag="LOC_EMIG_EXPLAIN_FOOD" Language="ru_RU"><Text>Еда</Text></Replace>
         <Replace Tag="LOC_EMIG_EXPLAIN_PRODUCTION" Language="ru_RU"><Text>Производство</Text></Replace>
@@ -390,6 +391,10 @@
         <Replace Tag="LOC_EMIG_HOMECOMING_SPLIT" Language="ru_RU"><Text>{1_Home} снова в безопасности. Из бежавших оттуда людей возвращаются домой: {2_Go}, осели там, куда ушли: {3_Stay}.</Text></Replace>
         <Replace Tag="LOC_EMIG_HOMECOMING_ALL_STAY" Language="ru_RU"><Text>{1_Home} снова в безопасности, но бежавшие оттуда люди ({2_Stay}) осели там, куда ушли. «Ускорить» всё ещё может их вернуть.</Text></Replace>
         <Replace Tag="LOC_EMIG_HOMECOMING_DONE_GOING" Language="ru_RU"><Text>Последние из тех, кто возвращался в {1_Home}, уже дома.</Text></Replace>
+        <Replace Tag="LOC_EMIG_RELIEF_LINE" Language="ru_RU"><Text>People who left</Text></Replace>
+        <Replace Tag="LOC_BUILDING_EMIG_RELIEF_NAME" Language="ru_RU"><Text>People who left</Text></Replace>
+        <Replace Tag="LOC_BUILDING_EMIG_RELIEF_DESCRIPTION" Language="ru_RU"><Text>+1 Happiness for each person who left this settlement over unhappiness, until it grows back to the size it was when they left.</Text></Replace>
+        <Replace Tag="LOC_BUILDING_EMIG_RELIEF_TOOLTIP" Language="ru_RU"><Text>+1 Happiness for each person who left this settlement over unhappiness, until it grows back to the size it was when they left.</Text></Replace>
         <Replace Tag="LOC_EMIG_DP_WAIT_STAYED" Language="ru_RU"><Text>Осели там, куда ушли: {1_Count}. Они останутся там, если вы не заплатите за их возвращение.</Text></Replace>
         <Replace Tag="LOC_EMIG_DP_WAIT_DECIDE" Language="ru_RU"><Text>Когда {1_Home} пробудет в покое ещё немного (осталось ходов: {2_Turns}), бежавшие оттуда люди решат, возвращаться ли домой. Чем дольше они отсутствуют и чем лучше им живётся на новом месте, тем больше из них остаётся.</Text></Replace>
         <Replace Tag="LOC_EMIG_DP_FREE_STAY" Language="ru_RU"><Text>остаются на месте: {1_Count}</Text></Replace>
@@ -489,6 +494,7 @@
         <Replace Tag="LOC_EMIG_SC_TALLY_SUM" Language="ru_RU"><Text>Итого</Text></Replace>
         <Replace Tag="LOC_EMIG_SC_LEDGER_TITLE_TIP" Language="ru_RU"><Text>Нажмите на строку, чтобы увидеть, что за ней стоит; нажмите здесь, чтобы раскрыть или свернуть все.</Text></Replace>
         <Replace Tag="LOC_EMIG_LEDGER_HAPPY_NOTE" Language="ru_RU"><Text>{1_H} здесь, {2_Mean} в среднем по империи</Text></Replace>
+        <Replace Tag="LOC_EMIG_LEDGER_HAPPY_NOTE_OWN" Language="ru_RU"><Text>{1_H} here</Text></Replace>
         <Replace Tag="LOC_EMIG_LEDGER_POP_NOTE" Language="ru_RU"><Text>{1_Pop} жителей</Text></Replace>
         <Replace Tag="LOC_EMIG_LEDGER_PCT_NOTE" Language="ru_RU"><Text>{1_Pct}% от базы</Text></Replace>
         <Replace Tag="LOC_EMIG_LEDGER_TURNS_LEFT" Language="ru_RU"><Text>осталось {1_Turns} ходов</Text></Replace>
@@ -557,12 +563,6 @@
         <Replace Tag="LOC_EMIG_IN_COST_TAIL" Language="ru_RU"><Text>Новоприбывшие теперь стоят вам {1_Gold} Золота и {2_Happy} Счастья за ход, пока обживаются.</Text></Replace>
         <Replace Tag="LOC_EMIG_T_CALLHOME_PEACE" Language="ru_RU"><Text>Напоминать, когда люди могут вернуться домой</Text></Replace>
         <Replace Tag="LOC_EMIG_T_CALLHOME_PEACE_D" Language="ru_RU"><Text>Когда поселение, из которого бежали ваши люди, достаточно долго пробыло в покое, чтобы они могли вернуться, и перемещено не меньше порогового числа ваших людей, небольшое окно предлагает открыть вкладку «Поселения», где видно, где они, и можно выбрать, людей какого поселения вернуть. Оно появляется снова, только когда перемещённых становится в полтора раза больше, никогда раньше чем через 10 ходов после прошлого, а его кнопка «Больше не напоминать» отключает его навсегда. По умолчанию включено; на вкладке есть тот же переключатель.</Text></Replace>
-        <Replace Tag="LOC_EMIG_SETUP_AI_STRATEGY" Language="ru_RU"><Text>Эмиграция: ИИ поддерживает счастье городов</Text></Replace>
-        <Replace Tag="LOC_EMIG_SETUP_AI_STRATEGY_DESC" Language="ru_RU"><Text>Даёт цивилизациям ИИ более раннюю и мягкую городскую стратегию «поддерживать счастье», так что город ИИ, где растёт недовольство, строит счастье до того, как люди начнут уезжать. Собственная стратегия игры включается, только когда город уже несчастен. Выбирается здесь на всю игру.</Text></Replace>
-        <Replace Tag="LOC_EMIG_SETUP_AI_STRATEGY_ON" Language="ru_RU"><Text>Вкл.</Text></Replace>
-        <Replace Tag="LOC_EMIG_SETUP_AI_STRATEGY_ON_DESC" Language="ru_RU"><Text>Города ИИ начинают строить счастье, пока их чистое счастье ещё немного выше нуля.</Text></Replace>
-        <Replace Tag="LOC_EMIG_SETUP_AI_STRATEGY_OFF" Language="ru_RU"><Text>Выкл.</Text></Replace>
-        <Replace Tag="LOC_EMIG_SETUP_AI_STRATEGY_OFF_DESC" Language="ru_RU"><Text>ИИ пользуется только собственными стратегиями игры.</Text></Replace>
         <Replace Tag="LOC_EMIG_T_CALLHOME_AI" Language="ru_RU"><Text>Цивилизации ИИ призывают людей домой</Text></Replace>
         <Replace Tag="LOC_EMIG_T_CALLHOME_AI_D" Language="ru_RU"><Text>В свой ход цивилизации ИИ призывают перемещённых людей домой, когда ни одно из их поселений не в беде, платя ту же цену с теми же шансами и временем восстановления, что и вы. Сначала из своих поселений; из-за рубежа только когда у них ещё есть на это Золото или Влияние. Когда призыв забирает людей из одного из ваших городов, вы получаете уведомление с именем того, кто призвал. Выкл. = ИИ ждёт, пока люди вернутся сами. Пока люди сами находят дорогу домой, ИИ платит только за призыв людей из-за рубежа.</Text></Replace>
         <Replace Tag="LOC_EMIG_T_CALLHOME_EX" Language="ru_RU"><Text>Шанс возврата очка из-за рубежа</Text></Replace>

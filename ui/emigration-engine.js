@@ -10,7 +10,7 @@ import { CONFIG } from "/emigration/ui/emigration-config.js";
 import { rememberPassRanked } from "/emigration/ui/emigration-pass-signals.js";
 import { speedTurns, speedBar, speedDecay } from "/emigration/ui/emigration-game-speed.js";
 import { collectCitySignals } from "/emigration/ui/emigration-cities.js";
-import { rankByProsperity } from "/emigration/ui/emigration-prosperity.js";
+import { rankByProsperity, unhappyPressure } from "/emigration/ui/emigration-prosperity.js";
 import { marginalPeople, settlementSignal } from "/emigration/ui/emigration-population.js";
 import { hexDistance } from "/emigration/ui/emigration-geography.js";
 import { tickViolence, siegeEscalation, violenceCrisis } from "/emigration/ui/emigration-violence.js";
@@ -463,7 +463,8 @@ function cityMigrationCap() {
 // eslint-disable-next-line max-params
 function shedVoluntary(src, best, state, st, maxVol, inboundCtx) {
   if (st.cooldown > 0 || maxVol <= 0) return [];
-  st.pressure += Math.pow(Math.max(0, best.adjusted), CONFIG.deltaExponent);
+  // The pull, and under the stage model the direct push of the settlement's own unhappiness.
+  st.pressure += Math.pow(Math.max(0, best.adjusted), CONFIG.deltaExponent) + unhappyPressure(src.happiness);
   if (st.pressure < speedBar(CONFIG.emigrationBar)) {
     noteVoluntaryCue(src, best, st.pressure); // building toward the bar → low-key trend cue
     return [];

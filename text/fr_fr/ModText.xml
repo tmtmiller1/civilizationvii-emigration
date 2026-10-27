@@ -90,6 +90,7 @@
         <Replace Tag="LOC_EMIG_EXPLAIN_CELEBRATION" Language="fr_FR"><Text>Célébrations</Text></Replace>
         <Replace Tag="LOC_EMIG_EXPLAIN_STAGE" Language="fr_FR"><Text>Niveau de bonheur</Text></Replace>
         <Replace Tag="LOC_EMIG_EXPLAIN_HAPPINESS_SHAPED" Language="fr_FR"><Text>Par rapport à la moyenne de l'empire</Text></Replace>
+        <Replace Tag="LOC_EMIG_EXPLAIN_HAPPINESS_OWN" Language="fr_FR"><Text>Its own Happiness</Text></Replace>
         <Replace Tag="LOC_EMIG_EXPLAIN_CAP_TRIM" Language="fr_FR"><Text>Plafond sur ce qui est construit</Text></Replace>
         <Replace Tag="LOC_EMIG_EXPLAIN_FOOD" Language="fr_FR"><Text>Nourriture</Text></Replace>
         <Replace Tag="LOC_EMIG_EXPLAIN_PRODUCTION" Language="fr_FR"><Text>Production</Text></Replace>
@@ -390,6 +391,10 @@
         <Replace Tag="LOC_EMIG_HOMECOMING_SPLIT" Language="fr_FR"><Text>{1_Home} est de nouveau en sécurité. {2_Go} des personnes qui l'avaient fuie rentrent chez elles, et {3_Stay} se sont installées là où elles sont allées.</Text></Replace>
         <Replace Tag="LOC_EMIG_HOMECOMING_ALL_STAY" Language="fr_FR"><Text>{1_Home} est de nouveau en sécurité, mais les {2_Stay} personnes qui l'avaient fuie se sont installées là où elles sont allées. Hâter peut toujours les ramener.</Text></Replace>
         <Replace Tag="LOC_EMIG_HOMECOMING_DONE_GOING" Language="fr_FR"><Text>Les derniers habitants qui rentraient à {1_Home} sont de retour.</Text></Replace>
+        <Replace Tag="LOC_EMIG_RELIEF_LINE" Language="fr_FR"><Text>People who left</Text></Replace>
+        <Replace Tag="LOC_BUILDING_EMIG_RELIEF_NAME" Language="fr_FR"><Text>People who left</Text></Replace>
+        <Replace Tag="LOC_BUILDING_EMIG_RELIEF_DESCRIPTION" Language="fr_FR"><Text>+1 Happiness for each person who left this settlement over unhappiness, until it grows back to the size it was when they left.</Text></Replace>
+        <Replace Tag="LOC_BUILDING_EMIG_RELIEF_TOOLTIP" Language="fr_FR"><Text>+1 Happiness for each person who left this settlement over unhappiness, until it grows back to the size it was when they left.</Text></Replace>
         <Replace Tag="LOC_EMIG_DP_WAIT_STAYED" Language="fr_FR"><Text>{1_Count} personnes se sont installées là où elles sont allées et y resteront, à moins que vous ne payiez pour les ramener.</Text></Replace>
         <Replace Tag="LOC_EMIG_DP_WAIT_DECIDE" Language="fr_FR"><Text>Une fois que {1_Home} sera restée calme {2_Turns} tours de plus, ceux qui l'ont fuie décideront s'ils rentrent. Plus ils sont partis depuis longtemps, et mieux ils vivent là où ils sont maintenant, plus ils sont nombreux à rester.</Text></Replace>
         <Replace Tag="LOC_EMIG_DP_FREE_STAY" Language="fr_FR"><Text>{1_Count} restent là où ils sont</Text></Replace>
@@ -489,6 +494,7 @@
         <Replace Tag="LOC_EMIG_SC_TALLY_SUM" Language="fr_FR"><Text>Total</Text></Replace>
         <Replace Tag="LOC_EMIG_SC_LEDGER_TITLE_TIP" Language="fr_FR"><Text>Cliquez sur une ligne pour voir ce qu'il y a derrière ; cliquez ici pour toutes les ouvrir ou les fermer.</Text></Replace>
         <Replace Tag="LOC_EMIG_LEDGER_HAPPY_NOTE" Language="fr_FR"><Text>{1_H} ici, {2_Mean} dans l'ensemble de l'empire</Text></Replace>
+        <Replace Tag="LOC_EMIG_LEDGER_HAPPY_NOTE_OWN" Language="fr_FR"><Text>{1_H} here</Text></Replace>
         <Replace Tag="LOC_EMIG_LEDGER_POP_NOTE" Language="fr_FR"><Text>{1_Pop} personnes</Text></Replace>
         <Replace Tag="LOC_EMIG_LEDGER_PCT_NOTE" Language="fr_FR"><Text>{1_Pct}% de la base</Text></Replace>
         <Replace Tag="LOC_EMIG_LEDGER_TURNS_LEFT" Language="fr_FR"><Text>{1_Turns} tours restants</Text></Replace>
@@ -557,12 +563,6 @@
         <Replace Tag="LOC_EMIG_IN_COST_TAIL" Language="fr_FR"><Text>Les nouveaux venus vous coûtent désormais {1_Gold} Or et {2_Happy} Bonheur par tour le temps qu'ils s'installent.</Text></Replace>
         <Replace Tag="LOC_EMIG_T_CALLHOME_PEACE" Language="fr_FR"><Text>Me prévenir quand des gens peuvent rentrer</Text></Replace>
         <Replace Tag="LOC_EMIG_T_CALLHOME_PEACE_D" Language="fr_FR"><Text>Quand une colonie que vos habitants ont fuie est restée assez calme pour qu'ils y reviennent et qu'au moins le seuil de vos habitants sont déplacés, une petite fenêtre propose d'ouvrir l'onglet Établissements, où vous voyez où ils sont et choisissez quelle colonie fait revenir ses habitants. Elle ne revient que lorsque le nombre de déplacés a augmenté de moitié, jamais moins de 10 tours après la précédente, et son bouton « Ne plus me le rappeler » la désactive pour de bon. Activé par défaut ; l'onglet a le même interrupteur.</Text></Replace>
-        <Replace Tag="LOC_EMIG_SETUP_AI_STRATEGY" Language="fr_FR"><Text>Émigration : l'IA garde ses villes heureuses</Text></Replace>
-        <Replace Tag="LOC_EMIG_SETUP_AI_STRATEGY_DESC" Language="fr_FR"><Text>Donne aux civilisations IA une stratégie de ville « les garder heureux » plus précoce et plus douce, pour qu'une ville IA qui commence à devenir malheureuse construise du bonheur avant que les gens partent. La stratégie du jeu ne démarre qu'une fois la ville déjà malheureuse. Choisi ici pour toute la partie.</Text></Replace>
-        <Replace Tag="LOC_EMIG_SETUP_AI_STRATEGY_ON" Language="fr_FR"><Text>Activé</Text></Replace>
-        <Replace Tag="LOC_EMIG_SETUP_AI_STRATEGY_ON_DESC" Language="fr_FR"><Text>Les villes IA commencent à construire du bonheur tant que leur bonheur net est encore un peu au-dessus de zéro.</Text></Replace>
-        <Replace Tag="LOC_EMIG_SETUP_AI_STRATEGY_OFF" Language="fr_FR"><Text>Désactivé</Text></Replace>
-        <Replace Tag="LOC_EMIG_SETUP_AI_STRATEGY_OFF_DESC" Language="fr_FR"><Text>L'IA garde uniquement les stratégies du jeu.</Text></Replace>
         <Replace Tag="LOC_EMIG_T_CALLHOME_AI" Language="fr_FR"><Text>Les civilisations IA rappellent leur peuple</Text></Replace>
         <Replace Tag="LOC_EMIG_T_CALLHOME_AI_D" Language="fr_FR"><Text>À leur propre tour, les civilisations IA rappellent leurs déplacés dès qu'aucune de leurs colonies n'est en détresse, au même prix, avec les mêmes chances et le même délai que vous. Depuis leurs propres colonies d'abord ; depuis l'étranger seulement quand il leur reste l'Or ou l'Influence nécessaire. Quand un rappel retire des gens d'une de vos villes, vous recevez un avis qui nomme qui a rappelé. Désactivé = l'IA attend que les gens reviennent d'eux-mêmes. Tant que les gens rentrent chez eux d'eux-mêmes, une IA ne paie que pour rappeler des gens de l'étranger.</Text></Replace>
         <Replace Tag="LOC_EMIG_T_CALLHOME_EX" Language="fr_FR"><Text>Chance de retour par point depuis l'étranger</Text></Replace>

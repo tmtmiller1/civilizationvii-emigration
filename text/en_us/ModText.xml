@@ -107,6 +107,7 @@
         <Row Tag="LOC_EMIG_EXPLAIN_CELEBRATION"><Text>Celebrations</Text></Row>
         <Row Tag="LOC_EMIG_EXPLAIN_STAGE"><Text>Happiness stage</Text></Row>
         <Row Tag="LOC_EMIG_EXPLAIN_HAPPINESS_SHAPED"><Text>Against the empire's average</Text></Row>
+        <Row Tag="LOC_EMIG_EXPLAIN_HAPPINESS_OWN"><Text>Its own Happiness</Text></Row>
         <Row Tag="LOC_EMIG_EXPLAIN_CAP_TRIM"><Text>Cap on what's built</Text></Row>
         <Row Tag="LOC_EMIG_EXPLAIN_FOOD"><Text>Food</Text></Row>
         <Row Tag="LOC_EMIG_EXPLAIN_PRODUCTION"><Text>Production</Text></Row>
@@ -416,6 +417,10 @@
         <Row Tag="LOC_EMIG_HOMECOMING_SPLIT"><Text>{1_Home} is safe again. {2_Go} {2_Go: plural 1?person who fled it is; other?people who fled it are;} coming home, and {3_Stay} {3_Stay: plural 1?has; other?have;} settled where they went.</Text></Row>
         <Row Tag="LOC_EMIG_HOMECOMING_ALL_STAY"><Text>{1_Home} is safe again, but the {2_Stay} {2_Stay: plural 1?person who fled it has; other?people who fled it have;} settled where they went. Hasten can still bring them back.</Text></Row>
         <Row Tag="LOC_EMIG_HOMECOMING_DONE_GOING"><Text>The last of the people coming home to {1_Home} are back.</Text></Row>
+        <Row Tag="LOC_EMIG_RELIEF_LINE"><Text>People who left</Text></Row>
+        <Row Tag="LOC_BUILDING_EMIG_RELIEF_NAME"><Text>People who left</Text></Row>
+        <Row Tag="LOC_BUILDING_EMIG_RELIEF_DESCRIPTION"><Text>+1 Happiness for each person who left this settlement over unhappiness, until it grows back to the size it was when they left.</Text></Row>
+        <Row Tag="LOC_BUILDING_EMIG_RELIEF_TOOLTIP"><Text>+1 Happiness for each person who left this settlement over unhappiness, until it grows back to the size it was when they left.</Text></Row>
         <Row Tag="LOC_EMIG_DP_WAIT_STAYED"><Text>{1_Count} {1_Count: plural 1?person has; other?people have;} settled where they went and will stay unless you pay to bring them back.</Text></Row>
         <Row Tag="LOC_EMIG_DP_WAIT_DECIDE"><Text>Once {1_Home} has been calm for {2_Turns} more {2_Turns: plural 1?turn; other?turns;}, the people who fled it decide whether to come home. The longer they've been away, and the better off they are where they live now, the more of them stay.</Text></Row>
         <Row Tag="LOC_EMIG_DP_FREE_STAY"><Text>{1_Count} staying where they are</Text></Row>
@@ -515,6 +520,7 @@
         <Row Tag="LOC_EMIG_SC_TALLY_SUM"><Text>Total</Text></Row>
         <Row Tag="LOC_EMIG_SC_LEDGER_TITLE_TIP"><Text>Click a line for what is behind it; click here to open or close them all.</Text></Row>
         <Row Tag="LOC_EMIG_LEDGER_HAPPY_NOTE"><Text>{1_H} here, {2_Mean} across the empire</Text></Row>
+        <Row Tag="LOC_EMIG_LEDGER_HAPPY_NOTE_OWN"><Text>{1_H} here</Text></Row>
         <Row Tag="LOC_EMIG_LEDGER_POP_NOTE"><Text>{1_Pop} people</Text></Row>
         <Row Tag="LOC_EMIG_LEDGER_PCT_NOTE"><Text>{1_Pct}% of the base</Text></Row>
         <Row Tag="LOC_EMIG_LEDGER_TURNS_LEFT"><Text>{1_Turns} turns remaining</Text></Row>
@@ -583,12 +589,6 @@
         <Row Tag="LOC_EMIG_IN_COST_TAIL"><Text>Newcomers now cost you {1_Gold} Gold and {2_Happy} Happiness a turn while they settle in.</Text></Row>
         <Row Tag="LOC_EMIG_T_CALLHOME_PEACE"><Text>Remind me when people can come home</Text></Row>
         <Row Tag="LOC_EMIG_T_CALLHOME_PEACE_D"><Text>Once a settlement your people fled has been calm long enough for them to come back and at least the threshold's worth of your people are displaced, a small pop-up offers to open the Settlements tab, where you see where they are and pick which settlement's people to bring back. It comes again only once half again as many are displaced, never within 10 turns of the last, and its "Don't remind me again" button turns it off for good. On by default; the tab has the same switch.</Text></Row>
-        <Row Tag="LOC_EMIG_SETUP_AI_STRATEGY"><Text>Emigration: AI keeps cities happy</Text></Row>
-        <Row Tag="LOC_EMIG_SETUP_AI_STRATEGY_DESC"><Text>Gives AI civilizations an earlier, gentler "keep them happy" city strategy, so an AI city that is getting unhappy builds happiness before people start leaving. The game's own strategy only starts once a city is already unhappy. Chosen here for the whole game.</Text></Row>
-        <Row Tag="LOC_EMIG_SETUP_AI_STRATEGY_ON"><Text>On</Text></Row>
-        <Row Tag="LOC_EMIG_SETUP_AI_STRATEGY_ON_DESC"><Text>AI cities start building happiness while their net happiness is still a little above zero.</Text></Row>
-        <Row Tag="LOC_EMIG_SETUP_AI_STRATEGY_OFF"><Text>Off</Text></Row>
-        <Row Tag="LOC_EMIG_SETUP_AI_STRATEGY_OFF_DESC"><Text>The AI keeps the game's own strategies only.</Text></Row>
         <Row Tag="LOC_EMIG_T_CALLHOME_AI"><Text>AI civilizations call people home</Text></Row>
         <Row Tag="LOC_EMIG_T_CALLHOME_AI_D"><Text>On their own turn, AI civilizations call their displaced people home once none of their settlements is in distress, paying the same price with the same odds and cooldown you get. From their own settlements first; from abroad only when they still have the Gold or Influence for it. When a call takes people out of one of your cities, you get a notice naming who called. Off leaves the AI to wait for people to drift back on their own. While people find their own way home, an AI only pays to call people back from abroad.</Text></Row>
         <Row Tag="LOC_EMIG_T_CALLHOME_EX"><Text>Chance each point returns from abroad</Text></Row>

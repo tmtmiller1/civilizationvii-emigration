@@ -71,6 +71,7 @@ const FALLBACK = {
   celebration: "Celebrations",
   stage: "Happiness stage",
   happinessShaped: "Against the empire's average",
+  happinessOwn: "Its own Happiness",
   capTrim: "Cap on what's built",
   food: "Food",
   production: "Production",
@@ -277,6 +278,25 @@ function pushRow(rows, key, delta, sub) {
 }
 
 /**
+ * The happiness row's pieces: under the stage model the settlement's own Happiness alone; under the field model its
+ * Happiness against the empire's average, and the stage term.
+ * @param {import("/emigration/ui/emigration-prosperity.js").BaseTerms} base
+ * @param {import("/emigration/ui/emigration-prosperity.js").BaseDetails} d @returns {*[]}
+ */
+function happinessParts(base, d) {
+  if (CONFIG.happinessModel === "stage") {
+    return [{ label: factorLabel("happinessOwn"), delta: base.happiness,
+      note: loc("LOC_EMIG_LEDGER_HAPPY_NOTE_OWN", "{1_H} here", round1(d.happiness.h)) }];
+  }
+  return [
+    { label: factorLabel("happinessShaped"), delta: base.happiness,
+      note: loc("LOC_EMIG_LEDGER_HAPPY_NOTE", "{1_H} here, {2_Mean} across the empire",
+        round1(d.happiness.h), round1(d.happiness.mean)) },
+    { label: factorLabel("stage"), delta: d.polity.stage }
+  ];
+}
+
+/**
  * The base terms as ledger rows: the economy with its yields, happiness with its two pieces, population, the
  * local character, the wonders and the buildings each with what was credited, the government and the celebration.
  * @param {*} s The signal. @param {import("/emigration/ui/emigration-prosperity.js").BaseTerms} base
@@ -287,12 +307,7 @@ function baseRows(s, base, d) {
   const rows = [];
   pushRow(rows, "economy", base.economy, ["food", "production", "gold", "science", "culture"]
     .map((k) => ({ label: factorLabel(k), delta: d.economy[/** @type {keyof typeof d.economy} */ (k)] })));
-  pushRow(rows, "happiness", base.happiness + d.polity.stage, [
-    { label: factorLabel("happinessShaped"), delta: base.happiness,
-      note: loc("LOC_EMIG_LEDGER_HAPPY_NOTE", "{1_H} here, {2_Mean} across the empire",
-        round1(d.happiness.h), round1(d.happiness.mean)) },
-    { label: factorLabel("stage"), delta: d.polity.stage }
-  ]);
+  pushRow(rows, "happiness", base.happiness + d.polity.stage, happinessParts(base, d));
   pushRow(rows, "population", base.population, [{ label: factorLabel("population"),
     note: loc("LOC_EMIG_LEDGER_POP_NOTE", "{1_Pop} people", Math.round(s.population || 0)) }]);
   pushRow(rows, "civBias", base.civBias, []);

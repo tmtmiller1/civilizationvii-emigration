@@ -88,9 +88,11 @@ export function reportMigration(m) {
         m.destName +
         " (" +
         ownerLabel(m.destOwner ?? m.srcOwner ?? 0) +
-        ")"
+        ") [" +
+        m.cause +
+        "]"
     );
   } else {
-    dlog("MIGRATION " + count + " moved from " + m.srcName + " to " + m.destName);
+    dlog("MIGRATION " + count + " moved from " + m.srcName + " to " + m.destName + " [" + m.cause + "]");
   }
 }

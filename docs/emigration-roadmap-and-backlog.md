@@ -3805,3 +3805,67 @@ At 1 Happiness and 1 Food per newcomer for a settling period of T turns, a settl
 The owner's goal after section 67: mechanics a player can understand, not only fewer of them. The review is in
 [emigration-understandability-review.md](emigration-understandability-review.md): five tests, the patterns that fail
 them, a table by mechanic, and an order of work. Nothing in it is built or decided.
+
+## 69. Happiness against the world's average, or against the game's own stages (lab comparison, 2026-10-27)
+
+The owner asked to score a settlement's Happiness by its own stage, not against the mean of every simulated
+settlement, and to check first whether that makes migration come in waves. `CONFIG.happinessModel` ("field", the
+default, or "stage") switches between the two; `stageScore` in `emigration-prosperity.js` is 0 through Happy, ramps
+through Joyous to 1 at Ecstatic, and ramps through Unhappy to -1 at the Angry line (to -1.8 past it), with the stepped
+stage term folded in (`tests/happiness-stage.mjs`). Each run: one fresh lab launch, the save loaded once, 30 turns
+driven one at a time, every settlement's Happiness and stage read each turn, each move logged with its cause.
+
+| Run | Turns | All moves | War and disaster | Ordinary | Over unhappiness | From Happy | From Unhappy or Angry | A turn (mean, spread, worst) | AI settlements Unhappy or worse, last 5 turns |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Exploration 106, field | 30 | 445 | 381 | 64 | 14 | 44 | 17 | 2.1, 1.8, 7 | 24 |
+| Exploration 106, field again | 23 | 348 | 305 | 43 | 12 | 27 | 13 | 1.9, 1.0, 4 | 18 |
+| Exploration 106, stage | 30 | 450 | 389 | 61 | 6 | 52 | 6 | 1.9, 1.3, 5 | 14 |
+| Antiquity 130, field | 30 | 121 | 97 | 24 | 4 | 18 | 5 | 0.7, 0.9, 3 | 13 |
+| Antiquity 130, stage | 30 | 124 | 112 | 12 | 1 | 9 | 2 | 0.3, 0.6, 3 | 14 |
+
+- No waves under either rule: no settlement lost more than one person to ordinary migration in any 5 turns, and the
+  stage run's turn-to-turn spread sits between the two field runs.
+- The two field runs differ about as much as field and stage do on spread, the worst turn and AI unhappiness, so
+  those differences are noise.
+- What the stage rule does change: departures over unhappiness halve or more. With the world's average around +15 in
+  Exploration, the field rule pushed a settlement at -5 almost as hard as it ever pushes; the stage ramp gives it a
+  quarter of the push. In Antiquity ordinary departures halve overall (24 to 12).
+- The largest civilization's share of population didn't move in any run.
+
+Two native crashes came up during the runs, both under the field rule as well as the stage one, so neither comes from
+this change: signature B (`0x2266d3c`, bad address 0x8, right after the turn-end autosave) at 12:14 and 13:26, and
+signature A (`0x21091fc`, bad address 0x0, minutes into a session) at 11:55 in the owner's own game and on 10-26 at
+20:33. Unsymbolicated; not isolated.
+
+## 70. Unhappiness that matters, and people leaving makes a place happier (2026-10-27)
+
+Section 69's stage scoring halved departures over unhappiness. A deeper Happiness term in the score didn't fix it: the
+gap that moves people is mostly economy, and pressure grows with its square root (`deltaExponent` 0.5), so a bigger
+Happiness term barely moves the rate (push 2.8: 4.4, push 3.6: 5.0 per 100 Unhappy settlement-turns in Exploration,
+against today's 6.3 and 6.7; Antiquity flat at 1.2 to 1.3). Two rules close it, both only under the stage model:
+
+- A direct push (`unhappyPressure`, `unhappyPressurePush` 3): an unhappy settlement adds up to 3 pressure a turn on top
+  of its pull, rising evenly from 0 at Happiness 0 to full at -10 (`happinessStageFullAt`), while it has somewhere
+  better to go. Sized from a static read of every settlement on one game state (the turn-130 autosave of the 16:00
+  run, copied to `Saves/Single/EmigCalibExp130`), with the engine's own pressure rule: at push 3 with score push 2.8,
+  Unhappy settlements 2.2 per 100 turns against today's 0.9 there, Happy 0.5 against 0.3; Antiquity 2.5 against 2.0.
+- Relief (`emigration-relief.js`, `data/emigration-relief.sql`): each person who leaves over unhappiness gives the
+  settlement +1 Happiness until it grows back to the size it was when they left, the game's own Happiness through ten
+  hidden city-center building tiers under the tooltip line "People who left". War, disaster and economic moves don't
+  count. Watched 2026-10-27 (Modern turn 9 to 14 after the age change on that save): Washington, D.C. lost one person
+  over unhappiness at 41, tier 1 stood, the Happiness breakdown read "People who left = 1", and when the city grew back
+  to 41 the next pass took the building down and emptied the book.
+
+The package in 30-turn runs (one fresh launch each, the saves loaded once):
+
+| Run | Ordinary | Over unhappiness | Per 100 Unhappy turns | Per 100 Happy turns | A turn (mean, spread, worst) |
+| --- | --- | --- | --- | --- | --- |
+| Exploration 106, today | 64 / 43 | 14 / 12 | 6.3 / 6.7 | 2.2 / 1.8 | 2.1, 1.8, 7 / 1.9, 1.0, 4 |
+| Exploration 106, package | 55 | 15 | 6.8 | 1.8 | 1.8, 1.3, 5 |
+| Antiquity 130, today | 24 | 4 | 2.8 | 1.3 | 0.7, 0.9, 3 |
+| Antiquity 130, package | 14 | 2 | 1.9 | 0.7 | 0.3, 0.7, 3 |
+
+No settlement lost more than one person in any 5 turns under any rule, and the largest civilization's share didn't
+move. The package stays behind `happinessModel` ("field" is still the default). Not watched: the relief building on
+the map and in a city's building list, an age change or a change of hands with one standing, and the player-facing
+text (the pressure gauge's reasons, the Civilopedia, the 11 translations of the four new lines).

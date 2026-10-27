@@ -72,6 +72,23 @@ refugees more sensibly, and the AI plays its side of the system. Your saves and 
 - The Civilopedia covers the new screen, Coming Home, the cards' numbers and what the AI does.
 
 ### Changed
+- A settlement's Happiness counts by its own stage, the one on its banner, not against the average of every
+  settlement in the game. A Happy settlement's Happiness doesn't push anyone out, whatever its neighbours' Happiness is;
+  Joyous and Ecstatic settlements draw people; below 0 a settlement looks worse to the people who might move there.
+- Unhappy settlements lose people faster, the unhappier they are. Below 0 Happiness the pressure to leave builds an
+  extra amount each turn, rising evenly to its full strength at -10, as long as there's somewhere better to go. In a
+  30-turn Exploration test unhappy settlements lost people at today's rate or a little faster (6.8 per 100 turns of
+  being unhappy, against 6.3 and 6.7) and Happy ones less often (1.8 against 2.2 and 1.8).
+- People leaving over unhappiness make a settlement happier. Each one gives it +1 Happiness until it grows back to the
+  size it was when they left, in the game's own Happiness under "People who left". People fleeing war or a disaster,
+  and people drawn to a richer place, don't count. Civ VII charges no Happiness for ordinary population, so before
+  this a settlement that kept losing people never got any happier for it.
+- The city readout's "What would stop it" offers the Happiness that gets an unhappy settlement back to 0, where its
+  extra pressure ends. For a Happy settlement it suggests Food or Production instead, since more Happiness wouldn't
+  keep anyone there.
+- The AI's two city strategies, "keep them happy" and "hold your people", are always on. The game-setup option
+  "Emigration: AI keeps cities happy" is gone. It switched both strategies, and turning it off only made the AI
+  worse at keeping its people. A game started with it off gets both strategies the next time it's loaded.
 - A siege nobody fights stalls. Enemy units parked beside a city used to drive its people out, and kill some, for
   as long as they stood there. After 3 quiet turns without damage or fighting in its borders, the siege stops
   adding pressure and doesn't kill anyone until the next attack. Deaths and departures under a siege now share an

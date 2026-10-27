@@ -15,7 +15,7 @@
 import { CONFIG } from "/emigration/ui/emigration-config.js";
 import { siegeEscalation, siegeStalled, siegeDeathCapped, violenceCrisis } from "/emigration/ui/emigration-violence.js";
 import { civTuning } from "/emigration/ui/emigration-civ-tuning.js";
-import { governmentLean } from "/emigration/ui/emigration-polity.js";
+import { governmentLean, happinessBands } from "/emigration/ui/emigration-polity.js";
 
 /**
  * Per-citizen weighted yield output - the core attractiveness of a city.
@@ -119,7 +119,8 @@ export function polityParts(s, tune) {
   // The stage term is pull-biased: an unhappy city is already repelled by the happiness term and its
   // suppressed yields, so a negative stage is scaled down by happinessStageMiseryScale, while positive
   // happiness does not boost yields and so gets full weight.
-  const stage = s.stage || 0;
+  // The stage model folds the stepped term into its continuous ramp (happinessShape).
+  const stage = CONFIG.happinessModel === "stage" ? 0 : s.stage || 0;
   const stageW = stage >= 0
     ? CONFIG.happinessStageWeight
     : CONFIG.happinessStageWeight * CONFIG.happinessStageMiseryScale;
@@ -192,11 +193,50 @@ function happinessShape(s, ctx, tune) {
   if (!CONFIG.happinessShaped) {
     return { term: h * CONFIG.localHappinessFactor * tune.happinessPull, mult: 1, h, mean: 0 };
   }
+  if (CONFIG.happinessModel === "stage") {
+    const shaped = stageScore(h, happinessBands()) * tune.happinessPull;
+    const m = clamp(1 + CONFIG.happyAmp * shaped, CONFIG.happyMultMin, CONFIG.happyMultMax);
+    return { term: CONFIG.happyFloor * shaped, mult: m, h, mean: 0 };
+  }
   const mean = ctx && typeof ctx.meanHappiness === "number" ? ctx.meanHappiness : 0;
   const hNorm = Math.tanh((h - mean) / CONFIG.happyScale);
   const hShaped = (hNorm >= 0 ? hNorm : hNorm * CONFIG.happyRepulsion) * tune.happinessPull;
   const mult = clamp(1 + CONFIG.happyAmp * hShaped, CONFIG.happyMultMin, CONFIG.happyMultMax);
   return { term: CONFIG.happyFloor * hShaped, mult, h, mean };
+}
+
+/**
+ * A settlement's Happiness read against the game's stage lines: 0 through Happy, rising through Joyous to 1 at
+ * Ecstatic, and below zero falling evenly to -happinessStagePush, the strongest push, at happinessStageFullAt below
+ * zero.
+ * Continuous, so a settlement crossing a line gets no jump.
+ * @param {number} h Net Happiness. @param {{joyousMin:number, ecstaticMin:number, angryMax:number}} b The lines.
+ * @returns {number} In [-happinessStagePush, 1].
+ */
+export function stageScore(h, b) {
+  if (!Number.isFinite(h)) return 0;
+  if (h < 0) {
+    const full = Number(CONFIG.happinessStageFullAt);
+    const push = Number(CONFIG.happinessStagePush);
+    return -(Number.isFinite(push) && push > 0 ? push : CONFIG.happyRepulsion)
+      * Math.min(1, -h / (Number.isFinite(full) && full >= 1 ? full : 10));
+  }
+  if (h <= b.joyousMin) return 0;
+  return Math.min(1, (h - b.joyousMin) / Math.max(1, b.ecstaticMin - b.joyousMin));
+}
+
+/**
+ * The stage model's direct push: what an unhappy settlement adds to its pressure to leave each turn, on top of the
+ * pull, while it has somewhere better to go. 0 at Happiness 0 or more, rising evenly to unhappyPressurePush at
+ * happinessStageFullAt below zero, and no more past it. The game's own Happiness, without the overcrowding credit.
+ * @param {number} h Net Happiness. @returns {number} Pressure a turn, 0 under the field model.
+ */
+export function unhappyPressure(h) {
+  if (CONFIG.happinessModel !== "stage" || !Number.isFinite(h) || h >= 0) return 0;
+  const most = Number(CONFIG.unhappyPressurePush);
+  if (!(most > 0)) return 0;
+  const full = Number(CONFIG.happinessStageFullAt);
+  return most * Math.min(1, -h / (Number.isFinite(full) && full >= 1 ? full : 10));
 }
 
 /**

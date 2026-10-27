@@ -90,6 +90,7 @@
         <Replace Tag="LOC_EMIG_EXPLAIN_CELEBRATION" Language="de_DE"><Text>Feiern</Text></Replace>
         <Replace Tag="LOC_EMIG_EXPLAIN_STAGE" Language="de_DE"><Text>Zufriedenheitsstufe</Text></Replace>
         <Replace Tag="LOC_EMIG_EXPLAIN_HAPPINESS_SHAPED" Language="de_DE"><Text>Gegen den Durchschnitt des Reiches</Text></Replace>
+        <Replace Tag="LOC_EMIG_EXPLAIN_HAPPINESS_OWN" Language="de_DE"><Text>Its own Happiness</Text></Replace>
         <Replace Tag="LOC_EMIG_EXPLAIN_CAP_TRIM" Language="de_DE"><Text>Obergrenze für Gebautes</Text></Replace>
         <Replace Tag="LOC_EMIG_EXPLAIN_FOOD" Language="de_DE"><Text>Nahrung</Text></Replace>
         <Replace Tag="LOC_EMIG_EXPLAIN_PRODUCTION" Language="de_DE"><Text>Produktion</Text></Replace>
@@ -390,6 +391,10 @@
         <Replace Tag="LOC_EMIG_HOMECOMING_SPLIT" Language="de_DE"><Text>{1_Home} ist wieder sicher. {2_Go} der Menschen, die von dort geflohen sind, kommen nach Hause, und {3_Stay} haben sich dort niedergelassen, wo sie hingegangen sind.</Text></Replace>
         <Replace Tag="LOC_EMIG_HOMECOMING_ALL_STAY" Language="de_DE"><Text>{1_Home} ist wieder sicher, aber die {2_Stay} Menschen, die von dort geflohen sind, haben sich dort niedergelassen, wo sie hingegangen sind. Beschleunigen kann sie trotzdem zurückholen.</Text></Replace>
         <Replace Tag="LOC_EMIG_HOMECOMING_DONE_GOING" Language="de_DE"><Text>Die letzten Heimkehrer nach {1_Home} sind zurück.</Text></Replace>
+        <Replace Tag="LOC_EMIG_RELIEF_LINE" Language="de_DE"><Text>People who left</Text></Replace>
+        <Replace Tag="LOC_BUILDING_EMIG_RELIEF_NAME" Language="de_DE"><Text>People who left</Text></Replace>
+        <Replace Tag="LOC_BUILDING_EMIG_RELIEF_DESCRIPTION" Language="de_DE"><Text>+1 Happiness for each person who left this settlement over unhappiness, until it grows back to the size it was when they left.</Text></Replace>
+        <Replace Tag="LOC_BUILDING_EMIG_RELIEF_TOOLTIP" Language="de_DE"><Text>+1 Happiness for each person who left this settlement over unhappiness, until it grows back to the size it was when they left.</Text></Replace>
         <Replace Tag="LOC_EMIG_DP_WAIT_STAYED" Language="de_DE"><Text>{1_Count} Menschen haben sich dort niedergelassen, wo sie hingegangen sind, und bleiben dort, solange du nicht zahlst, um sie zurückzuholen.</Text></Replace>
         <Replace Tag="LOC_EMIG_DP_WAIT_DECIDE" Language="de_DE"><Text>Sobald {1_Home} noch {2_Turns} Runden ruhig war, entscheiden die Menschen, die von dort geflohen sind, ob sie heimkehren. Je länger sie fort waren und je besser es ihnen dort geht, wo sie jetzt leben, desto mehr von ihnen bleiben.</Text></Replace>
         <Replace Tag="LOC_EMIG_DP_FREE_STAY" Language="de_DE"><Text>{1_Count} bleiben, wo sie sind</Text></Replace>
@@ -489,6 +494,7 @@
         <Replace Tag="LOC_EMIG_SC_TALLY_SUM" Language="de_DE"><Text>Gesamt</Text></Replace>
         <Replace Tag="LOC_EMIG_SC_LEDGER_TITLE_TIP" Language="de_DE"><Text>Klicke auf eine Zeile, um zu sehen, was dahintersteckt; klicke hier, um alle zu öffnen oder zu schließen.</Text></Replace>
         <Replace Tag="LOC_EMIG_LEDGER_HAPPY_NOTE" Language="de_DE"><Text>{1_H} hier, {2_Mean} im ganzen Reich</Text></Replace>
+        <Replace Tag="LOC_EMIG_LEDGER_HAPPY_NOTE_OWN" Language="de_DE"><Text>{1_H} here</Text></Replace>
         <Replace Tag="LOC_EMIG_LEDGER_POP_NOTE" Language="de_DE"><Text>{1_Pop} Menschen</Text></Replace>
         <Replace Tag="LOC_EMIG_LEDGER_PCT_NOTE" Language="de_DE"><Text>{1_Pct}% der Basis</Text></Replace>
         <Replace Tag="LOC_EMIG_LEDGER_TURNS_LEFT" Language="de_DE"><Text>noch {1_Turns} Runden</Text></Replace>
@@ -557,12 +563,6 @@
         <Replace Tag="LOC_EMIG_IN_COST_TAIL" Language="de_DE"><Text>Neuankömmlinge kosten dich jetzt {1_Gold} Gold und {2_Happy} Zufriedenheit pro Runde, während sie sich einleben.</Text></Replace>
         <Replace Tag="LOC_EMIG_T_CALLHOME_PEACE" Language="de_DE"><Text>Erinnere mich, wenn Menschen nach Hause kommen können</Text></Replace>
         <Replace Tag="LOC_EMIG_T_CALLHOME_PEACE_D" Language="de_DE"><Text>Sobald eine Siedlung, aus der deine Leute geflohen sind, lange genug ruhig war, dass sie zurückkommen können, und mindestens so viele deiner Leute vertrieben sind, wie die Schwelle verlangt, bietet ein kleines Pop-up an, den Tab „Siedlungen“ zu öffnen, wo du siehst, wo sie sind, und wählst, welche Siedlung ihre Leute zurückbekommt. Es kommt erst wieder, wenn anderthalbmal so viele vertrieben sind, nie innerhalb von 10 Runden nach dem letzten Mal, und seine Schaltfläche „Nicht mehr erinnern“ schaltet es für immer aus. Standardmäßig an; der Tab hat denselben Schalter.</Text></Replace>
-        <Replace Tag="LOC_EMIG_SETUP_AI_STRATEGY" Language="de_DE"><Text>Auswanderung: KI hält Städte zufrieden</Text></Replace>
-        <Replace Tag="LOC_EMIG_SETUP_AI_STRATEGY_DESC" Language="de_DE"><Text>Gibt KI-Zivilisationen eine frühere, sanftere Stadtstrategie „Haltet sie zufrieden“, damit eine KI-Stadt, die unzufrieden wird, Zufriedenheit baut, bevor die Menschen fortziehen. Die Strategie des Spiels selbst beginnt erst, wenn eine Stadt schon unzufrieden ist. Wird hier für das ganze Spiel gewählt.</Text></Replace>
-        <Replace Tag="LOC_EMIG_SETUP_AI_STRATEGY_ON" Language="de_DE"><Text>An</Text></Replace>
-        <Replace Tag="LOC_EMIG_SETUP_AI_STRATEGY_ON_DESC" Language="de_DE"><Text>KI-Städte beginnen mit dem Bau von Zufriedenheit, solange ihre Netto-Zufriedenheit noch ein wenig über null liegt.</Text></Replace>
-        <Replace Tag="LOC_EMIG_SETUP_AI_STRATEGY_OFF" Language="de_DE"><Text>Aus</Text></Replace>
-        <Replace Tag="LOC_EMIG_SETUP_AI_STRATEGY_OFF_DESC" Language="de_DE"><Text>Die KI behält nur die Strategien des Spiels selbst.</Text></Replace>
         <Replace Tag="LOC_EMIG_T_CALLHOME_AI" Language="de_DE"><Text>KI-Zivilisationen rufen Menschen heim</Text></Replace>
         <Replace Tag="LOC_EMIG_T_CALLHOME_AI_D" Language="de_DE"><Text>In ihrem eigenen Zug rufen KI-Zivilisationen ihre vertriebenen Menschen heim, sobald keine ihrer Siedlungen in Not ist, zum selben Preis, mit denselben Chancen und derselben Wartezeit wie du. Zuerst aus ihren eigenen Siedlungen; aus der Fremde nur, wenn sie noch das Gold oder den Einfluss dafür haben. Holt ein Ruf Menschen aus einer deiner Städte, bekommst du eine Meldung, die sagt, wer gerufen hat. Aus lässt die KI warten, bis die Menschen von selbst zurückfinden. Solange Menschen allein nach Hause finden, zahlt eine KI nur, um Menschen aus der Fremde zurückzurufen.</Text></Replace>
         <Replace Tag="LOC_EMIG_T_CALLHOME_EX" Language="de_DE"><Text>Chance je Punkt auf Rückkehr aus dem Ausland</Text></Replace>

@@ -436,6 +436,22 @@ export const CONFIG = {
   // field-relative, saturating model where happiness amplifies the economy (bounded), so a
   // happy-but-poor city can't vacuum the map and misery still strongly repels.
   happinessShaped: true,
+  // How a settlement's own Happiness counts in the shaped model. "field": against the mean of every simulated
+  // settlement. "stage": against the game's own stage bands for the age (GameInfo.HappinessStages), so a Happy
+  // settlement gets no push from Happiness, the push grows evenly below zero to its strongest (happyRepulsion) at
+  // happinessStageFullAt below zero, and the draw ramps through Joyous to full at Ecstatic. "stage" folds the stepped
+  // stage term (happinessStageWeight) into that ramp.
+  happinessModel: "stage",
+  happinessStageFullAt: 10, // Happiness below zero where the stage model pushes hardest (Unhappy runs 0 to -20)
+  // The stage model's strongest push. Deeper than the field model's happyRepulsion: a Happy destination draws nothing
+  // under the stage model, so the push alone has to make the gap an above-average destination made before.
+  happinessStagePush: 2.8,
+  // The stage model's direct push: pressure an unhappy settlement adds each turn on top of the pull, at full strength
+  // from happinessStageFullAt below zero (unhappyPressure). 0 turns it off.
+  unhappyPressurePush: 3,
+  // Under the stage model, a settlement that loses people over unhappiness gets +1 Happiness for each until it grows
+  // back to the size it was when they left (emigration-relief.js).
+  reliefEnabled: true,
   happyScale: 8, // tanh scale on (happiness − regional mean)
   // happyRepulsion/happyAmp/happyFloor are sized so the happiness term does not saturate the score;
   // suppressed yields carry most of an unhappy city's push. Paired with the yield weights above.

@@ -16,14 +16,6 @@
         <Criteria id="always">
             <AlwaysMet></AlwaysMet>
         </Criteria>
-        <!-- The AI keep-them-happy strategy rows load only while the game-setup option (config/emigration-setup.sql) is on. -->
-        <Criteria id="ai-strategy-on">
-            <ConfigurationValueMatches>
-                <Group>Game</Group>
-                <ConfigurationId>EMIG-AiStrategy</ConfigurationId>
-                <Value>EMIG_AI_STRATEGY_ON</Value>
-            </ConfigurationValueMatches>
-        </Criteria>
         <Criteria id="antiquity-age-current">
             <AgeInUse>AGE_ANTIQUITY</AgeInUse>
         </Criteria>
@@ -61,10 +53,6 @@
                 <LoadOrder>60</LoadOrder>
             </Properties>
             <Actions>
-                <UpdateDatabase>
-                    <!-- The game-setup option that switches the AI keep-them-happy strategy. -->
-                    <Item>config/emigration-setup.sql</Item>
-                </UpdateDatabase>
                 <UpdateText>
                     <Item>text/en_us/ModText.xml</Item>
                     <Item locale="de_DE">text/de_de/ModText.xml</Item>
@@ -276,6 +264,7 @@
                     <!-- People displaced inside their civ go home on their own once home is calm. -->
                     <Item>ui/emigration-homecoming.js</Item>
                     <Item>ui/emigration-homecoming-split.js</Item>
+                    <Item>ui/emigration-relief.js</Item>
                     <!-- The Displaced tab: where your people are, what a returnee is worth, the way home. -->
                     <Item>ui/emigration-displaced.js</Item>
                     <Item>ui/emigration-displaced-view.js</Item>
@@ -339,6 +328,8 @@
                     <Item>data/emigration-enclave-village-db.xml</Item>
                     <!-- The notification types ui/emigration-train.js raises in the game's notification train. -->
                     <Item>data/emigration-notifications.xml</Item>
+                    <!-- People who left over unhappiness: the hidden Happiness tiers (ui/emigration-relief.js). -->
+                    <Item>data/emigration-relief.sql</Item>
                 </UpdateDatabase>
                 <UpdateIcons>
                     <Item>data/emigration-policy-icons.xml</Item>
@@ -347,13 +338,13 @@
                 </UpdateIcons>
             </Actions>
         </ActionGroup>
-        <ActionGroup id="emigration-ai-strategy" scope="game" criteria="ai-strategy-on">
+        <ActionGroup id="emigration-ai-strategy" scope="game" criteria="always">
             <Properties>
                 <LoadOrder>50</LoadOrder>
             </Properties>
             <Actions>
                 <UpdateDatabase>
-                    <!-- One earlier, gentler "keep them happy" city strategy for the AI, behind the game-setup option. -->
+                    <!-- The AI's two city strategies: an earlier, gentler "keep them happy", and "hold your people". -->
                     <Item>data/emigration-ai-strategy.sql</Item>
                 </UpdateDatabase>
             </Actions>

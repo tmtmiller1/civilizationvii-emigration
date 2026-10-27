@@ -37,6 +37,7 @@ function testAmountToClose() {
 }
 
 function testPrescribe() {
+  CONFIG.happinessModel = "field"; // below the field's average, a Happy settlement's Happiness still counts
   const poor = sig("Rome", { food: 3, production: 2, happiness: 1 });
   const rich = sig("Ostia", { food: 9, production: 5, happiness: 6 }); // a modest neighbour: a gap a building can close
   const buildings = (y) => (y === "YIELD_FOOD" ? { name: "LOC_BUILDING_GRANARY_NAME", gives: 1 } : null);
@@ -55,6 +56,21 @@ function testPrescribe() {
   CONFIG.readoutPrescribe = false;
   assert.equal(prescribe(poor, ranked, null, buildings), null, "switched off");
   CONFIG.readoutPrescribe = true;
+  testPrescribeStage(rich, buildings);
+}
+
+/** Under the stage model Happiness only helps a settlement below 0: it's offered there and not to a Happy one. */
+function testPrescribeStage(rich, buildings) {
+  CONFIG.happinessModel = "stage";
+  const happy = sig("Rome", { food: 3, production: 2, happiness: 1 });
+  const unhappy = sig("Capua", { food: 3, production: 2, happiness: -6 });
+  const ranked = rankByProsperity([rich, happy, unhappy]);
+  const forHappy = prescribe(happy, ranked, null, buildings);
+  assert.ok(forHappy && !forHappy.options.some((o) => o.yield === "YIELD_HAPPINESS"),
+    "a Happy settlement isn't told to add Happiness: it already pushes nobody out");
+  const forUnhappy = prescribe(unhappy, ranked, null, buildings);
+  assert.ok(forUnhappy && forUnhappy.options.some((o) => o.yield === "YIELD_HAPPINESS"),
+    "an unhappy one is: back to 0 ends its push");
 }
 
 function testBuildingLookup() {

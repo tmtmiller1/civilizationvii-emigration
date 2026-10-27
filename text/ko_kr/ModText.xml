@@ -90,6 +90,7 @@
         <Replace Tag="LOC_EMIG_EXPLAIN_CELEBRATION" Language="ko_KR"><Text>축제</Text></Replace>
         <Replace Tag="LOC_EMIG_EXPLAIN_STAGE" Language="ko_KR"><Text>행복도 단계</Text></Replace>
         <Replace Tag="LOC_EMIG_EXPLAIN_HAPPINESS_SHAPED" Language="ko_KR"><Text>제국 평균 대비</Text></Replace>
+        <Replace Tag="LOC_EMIG_EXPLAIN_HAPPINESS_OWN" Language="ko_KR"><Text>Its own Happiness</Text></Replace>
         <Replace Tag="LOC_EMIG_EXPLAIN_CAP_TRIM" Language="ko_KR"><Text>건설물 효과 상한</Text></Replace>
         <Replace Tag="LOC_EMIG_EXPLAIN_FOOD" Language="ko_KR"><Text>식량</Text></Replace>
         <Replace Tag="LOC_EMIG_EXPLAIN_PRODUCTION" Language="ko_KR"><Text>생산력</Text></Replace>
@@ -390,6 +391,10 @@
         <Replace Tag="LOC_EMIG_HOMECOMING_SPLIT" Language="ko_KR"><Text>{1_Home}이(가) 다시 안전해졌습니다. 그곳을 떠났던 사람 가운데 {2_Go}명이 고향으로 돌아오고, {3_Stay}명은 간 곳에 정착했습니다.</Text></Replace>
         <Replace Tag="LOC_EMIG_HOMECOMING_ALL_STAY" Language="ko_KR"><Text>{1_Home}이(가) 다시 안전해졌지만, 그곳을 떠났던 {2_Stay}명은 간 곳에 정착했습니다. 재촉으로 아직 데려올 수 있습니다.</Text></Replace>
         <Replace Tag="LOC_EMIG_HOMECOMING_DONE_GOING" Language="ko_KR"><Text>{1_Home}(으)로 돌아오던 마지막 사람들이 도착했습니다.</Text></Replace>
+        <Replace Tag="LOC_EMIG_RELIEF_LINE" Language="ko_KR"><Text>People who left</Text></Replace>
+        <Replace Tag="LOC_BUILDING_EMIG_RELIEF_NAME" Language="ko_KR"><Text>People who left</Text></Replace>
+        <Replace Tag="LOC_BUILDING_EMIG_RELIEF_DESCRIPTION" Language="ko_KR"><Text>+1 Happiness for each person who left this settlement over unhappiness, until it grows back to the size it was when they left.</Text></Replace>
+        <Replace Tag="LOC_BUILDING_EMIG_RELIEF_TOOLTIP" Language="ko_KR"><Text>+1 Happiness for each person who left this settlement over unhappiness, until it grows back to the size it was when they left.</Text></Replace>
         <Replace Tag="LOC_EMIG_DP_WAIT_STAYED" Language="ko_KR"><Text>{1_Count}명은 간 곳에 정착했으며, 비용을 내고 데려오지 않으면 그곳에 머뭅니다.</Text></Replace>
         <Replace Tag="LOC_EMIG_DP_WAIT_DECIDE" Language="ko_KR"><Text>{1_Home}이(가) {2_Turns}턴 더 평온하면, 그곳을 떠났던 사람들이 고향으로 돌아올지 정합니다. 떠나 있던 기간이 길수록, 지금 사는 곳의 형편이 좋을수록 더 많이 머뭅니다.</Text></Replace>
         <Replace Tag="LOC_EMIG_DP_FREE_STAY" Language="ko_KR"><Text>{1_Count}명은 지금 있는 곳에 머묾</Text></Replace>
@@ -489,6 +494,7 @@
         <Replace Tag="LOC_EMIG_SC_TALLY_SUM" Language="ko_KR"><Text>합계</Text></Replace>
         <Replace Tag="LOC_EMIG_SC_LEDGER_TITLE_TIP" Language="ko_KR"><Text>줄을 클릭하면 그 뒤의 내용이 보입니다. 여기를 클릭하면 모두 펼치거나 접습니다.</Text></Replace>
         <Replace Tag="LOC_EMIG_LEDGER_HAPPY_NOTE" Language="ko_KR"><Text>이곳 {1_H}, 제국 전체 {2_Mean}</Text></Replace>
+        <Replace Tag="LOC_EMIG_LEDGER_HAPPY_NOTE_OWN" Language="ko_KR"><Text>{1_H} here</Text></Replace>
         <Replace Tag="LOC_EMIG_LEDGER_POP_NOTE" Language="ko_KR"><Text>{1_Pop}명</Text></Replace>
         <Replace Tag="LOC_EMIG_LEDGER_PCT_NOTE" Language="ko_KR"><Text>기본값의 {1_Pct}%</Text></Replace>
         <Replace Tag="LOC_EMIG_LEDGER_TURNS_LEFT" Language="ko_KR"><Text>{1_Turns}턴 남음</Text></Replace>
@@ -557,12 +563,6 @@
         <Replace Tag="LOC_EMIG_IN_COST_TAIL" Language="ko_KR"><Text>새 이주민은 이제 정착하는 동안 턴당 골드 {1_Gold}, 행복도 {2_Happy}이(가) 듭니다.</Text></Replace>
         <Replace Tag="LOC_EMIG_T_CALLHOME_PEACE" Language="ko_KR"><Text>주민이 돌아올 수 있으면 알리기</Text></Replace>
         <Replace Tag="LOC_EMIG_T_CALLHOME_PEACE_D" Language="ko_KR"><Text>당신의 주민이 떠난 정착지가 돌아갈 만큼 오래 평온했고, 쫓겨난 주민이 적어도 기준값만큼 되면 작은 팝업이 정착지 탭을 열자고 제안합니다. 그 탭에서 그들이 어디 있는지 보고 어느 정착지의 주민을 데려올지 고릅니다. 팝업은 쫓겨난 주민이 절반 이상 더 늘어났을 때만 다시 뜨고, 지난 팝업으로부터 10턴 안에는 뜨지 않으며, "다시 알리지 않기" 버튼으로 영구히 끌 수 있습니다. 기본으로 켜져 있고, 탭에도 같은 스위치가 있습니다.</Text></Replace>
-        <Replace Tag="LOC_EMIG_SETUP_AI_STRATEGY" Language="ko_KR"><Text>이주: AI가 도시를 행복하게 유지</Text></Replace>
-        <Replace Tag="LOC_EMIG_SETUP_AI_STRATEGY_DESC" Language="ko_KR"><Text>AI 문명에게 더 이르고 더 온건한 "행복하게 유지하기" 도시 전략을 줍니다. 그래서 불행해지기 시작한 AI 도시는 주민이 떠나기 전에 행복도를 짓습니다. 게임 자체의 전략은 도시가 이미 불행해진 뒤에야 시작됩니다. 여기서 고른 값이 게임 전체에 적용됩니다.</Text></Replace>
-        <Replace Tag="LOC_EMIG_SETUP_AI_STRATEGY_ON" Language="ko_KR"><Text>켬</Text></Replace>
-        <Replace Tag="LOC_EMIG_SETUP_AI_STRATEGY_ON_DESC" Language="ko_KR"><Text>AI 도시는 순 행복도가 아직 약간 플러스일 때부터 행복도를 짓기 시작합니다.</Text></Replace>
-        <Replace Tag="LOC_EMIG_SETUP_AI_STRATEGY_OFF" Language="ko_KR"><Text>끔</Text></Replace>
-        <Replace Tag="LOC_EMIG_SETUP_AI_STRATEGY_OFF_DESC" Language="ko_KR"><Text>AI는 게임 자체의 전략만 사용합니다.</Text></Replace>
         <Replace Tag="LOC_EMIG_T_CALLHOME_AI" Language="ko_KR"><Text>AI 문명이 주민을 고향으로 부름</Text></Replace>
         <Replace Tag="LOC_EMIG_T_CALLHOME_AI_D" Language="ko_KR"><Text>AI 문명은 자기 턴에, 자기 정착지 중 고통을 겪는 곳이 없으면 쫓겨난 주민을 고향으로 부릅니다. 가격, 확률, 휴지기는 당신과 같습니다. 자기 정착지에서 먼저 부르고, 해외에서는 골드나 영향력이 남아 있을 때만 부릅니다. 호출로 당신의 도시에서 사람들이 빠져나가면 누가 불렀는지 알리는 통지를 받습니다. 끄면 AI는 사람들이 스스로 돌아오기를 기다립니다. 주민이 스스로 고향을 찾아가는 동안에는 AI도 해외에서 부를 때만 비용을 냅니다.</Text></Replace>
         <Replace Tag="LOC_EMIG_T_CALLHOME_EX" Language="ko_KR"><Text>해외 포인트별 귀환 확률</Text></Replace>

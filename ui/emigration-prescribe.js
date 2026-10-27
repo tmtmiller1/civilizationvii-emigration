@@ -4,11 +4,14 @@
 // how much Food, Production or Happiness the settlement would need before nobody is drawn away, and which
 // building of this age gives that yield. The arithmetic is the prosperity model's own: a settlement loses
 // people while its best destination pulls harder than it holds (`bestDestination().adjusted` > 0), and raising
-// its own base score by that much closes the gap. Pure given its seams.
+// its own base score by that much closes the gap. Under the stage model an unhappy settlement also pushes its own
+// people out (unhappyPressure), and getting back to 0 Happiness ends that: when the pull left at 0 can't build the
+// pressure to the bar on its own, back to 0 is the Happiness on offer. Pure given its seams.
 
 import { CONFIG } from "/emigration/ui/emigration-config.js";
 import { bestDestination } from "/emigration/ui/emigration-pull.js";
-import { fieldContext, prosperity } from "/emigration/ui/emigration-prosperity.js";
+import { fieldContext, prosperity, unhappyPressure } from "/emigration/ui/emigration-prosperity.js";
+import { speedBar, speedDecay } from "/emigration/ui/emigration-game-speed.js";
 
 /** The yields a settlement can be told to raise, in the order they are offered. */
 export const FIX_YIELDS = ["YIELD_FOOD", "YIELD_PRODUCTION", "YIELD_HAPPINESS"];
@@ -38,6 +41,22 @@ export function amountToClose(sig, yieldKey, gap, ctx) {
     if (prosperity(s, ctx) - base >= gap) return k;
   }
   return 0;
+}
+
+/**
+ * For an unhappy settlement under the stage model: the Happiness that brings it back to 0, when the pull left there
+ * can't build the pressure to the bar by itself (it settles at gain / (1 - kept), so a gain at most bar × (1 - kept)
+ * never gets there).
+ * @param {*} sig @param {number} gap The pull. @param {*} ctx @returns {number} The amount, or 0 when it isn't enough.
+ */
+export function happinessToCalm(sig, gap, ctx) {
+  const h = Number(sig.happiness);
+  if (!(unhappyPressure(h) > 0)) return 0;
+  const k = Math.ceil(-h);
+  if (k > MAX_STEP) return 0;
+  const left = gap - (prosperity({ ...sig, happiness: h + k }, ctx) - prosperity(sig, ctx));
+  const steady = speedBar(CONFIG.emigrationBar) * (1 - speedDecay(CONFIG.pressureRetention));
+  return Math.pow(Math.max(0, left), CONFIG.deltaExponent) <= steady ? k : 0;
 }
 
 /**
@@ -109,10 +128,16 @@ function fixOptions(sig, ranked, gap, lookup) {
   /** @type {Fix["options"]} */
   const options = [];
   for (const y of FIX_YIELDS) {
-    const amount = amountToClose(sig, y, gap, ctx);
+    const amount = y === "YIELD_HAPPINESS" ? happinessAmount(sig, gap, ctx) : amountToClose(sig, y, gap, ctx);
     if (!(amount > 0)) continue;
     const b = lookup(y, age);
     options.push({ yield: y, amount, building: b ? b.name : null, buildingGives: b ? b.gives : 0 });
   }
   return options;
+}
+
+/** @param {*} sig @param {number} gap @param {*} ctx @returns {number} The smaller of the two Happiness fixes, or 0. */
+function happinessAmount(sig, gap, ctx) {
+  const amounts = [amountToClose(sig, "YIELD_HAPPINESS", gap, ctx), happinessToCalm(sig, gap, ctx)].filter((n) => n > 0);
+  return amounts.length ? Math.min(...amounts) : 0;
 }

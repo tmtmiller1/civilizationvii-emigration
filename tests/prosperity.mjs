@@ -9,6 +9,8 @@ import { CONFIG } from "/emigration/ui/emigration-config.js";
 // the hand-computed expectations valid and decouples these tests from future re-tuning. Individual
 // tests toggle happinessShaped on and restore it to this legacy baseline.
 CONFIG.happinessShaped = false;
+// These tests pin the field-relative shaped model; the stage model has its own (tests/happiness-stage.mjs).
+CONFIG.happinessModel = "field";
 CONFIG.overcrowdDiscount = 0;
 // The per-capita divisor and the built-environment term are pinned to their legacy/neutral values
 // for the same reason: these fixtures hand-compute `yields / population`, so a divisor exponent or
