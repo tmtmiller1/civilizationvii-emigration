@@ -43,10 +43,13 @@ Your saves and settings carry over from 3.6.
   one by one. "All civilizations" shows each civilization's causes and a table of its settlements.
 - **A forecast.** Under each settlement's pressure gauge: "About 3 people are likely to leave in the next 4 turns",
   or "Nobody is likely to leave soon".
-- **Close a settlement to newcomers.** One button on the card, for 1 Influence a turn, and arrivals go to your next
-  best settlement instead. AI civilizations do it too when a settlement is overwhelmed.
-- **People come home.** People driven from one of your settlements into another go back on their own once home is
-  calm, and settle the plot their people left. Hasten and Call from abroad bring them back sooner, for Gold or Influence.
+- **Dissuade newcomers.** One button on the card, with its price of 1 Influence a turn in the button. People who
+  would have moved there pick another of your settlements, another civilization's, or stay home. AI civilizations do
+  it too when a settlement is overwhelmed.
+- **People come home.** People driven from one of your settlements into another can go back on their own once home
+  is calm, and settle the plot their people left. Not all of them do: the longer they've been away, or the better off
+  they are where they live now, the more of them stay. Hasten and Call from abroad bring them back sooner, for Gold or
+  Influence.
 - **Wars that make sense for refugees.** Sieges that stall after three turns lose their impact on a settlement. People also flee fighting once it has lasted at least two turns instead of immediately. Refugees steer clear of a settlement that's under attack itself.
 - **The AI plays its side.** Two city strategies have AI cities build against losing people. AI civilizations get
   the free homecoming, call their people back from abroad, and pay the mod's prices with a discount for the game's
@@ -210,7 +213,7 @@ Compatible with Civilization VII 1.5.0.
 - **Integration:** newcomers assimilate over time; war with the homeland stops it and unrest slows it
 - **Return migration:** diasporas can return to peaceful, prosperous homelands
 - **The AI plays too:** AI civilizations choose their enclaves' stances, decide on refugees and call their people home from abroad through the same rules, at the player's prices less a discount for the game's difficulty; their displaced people come home on their own; and two city strategies ("keep them happy", "hold your people") have AI cities build against losing people
-- **Coming home:** people driven out of one of your settlements into another of yours come back on their own once it's calm, and settle the plot their people left; Hasten pays Gold or Influence to bring them sooner, and Call from abroad is the paid gamble for people in another civilization's cities, and each person you ask decides at the odds shown
+- **Coming home:** people who fled war, conquest or a disaster into another of your settlements can come back on their own once home is calm, and settle the plot their people left. Not all of them do: most go back after a short absence, fewer the longer they've been away or the better off they are where they live now, and the rest settle where they went; Hasten pays Gold or Influence to bring them sooner, and Call from abroad is the paid gamble for people in another civilization's cities, and each person you ask decides at the odds shown
 - **Cultural Enclaves:** lasting foreign communities become improvements on the map with the origin civilization's identity and yields; hover an enclave's tile to see its stage and where each of its yields comes from
 - **Put down roots:** enclave communities are less likely to return home
 - **Migration Chronicle:** major movements become history entries
@@ -220,7 +223,7 @@ Compatible with Civilization VII 1.5.0.
 
 - **Migration dashboard:** a card per settlement with who is arriving, who is leaving, who lives there and who is away, what drives the pressure and what would stop it, and a prosperity ledger; each civilization's causes and settlements; the animated network diagram, where a click on a city highlights just its migrant flows and a settlement can be dragged out of its civilization's circle
 - **Departure forecast:** under the pressure gauge on each settlement's card and in the city readout, "About 3 people are likely to leave in the next 4 turns", projected from how fast the pressure has been rising, or "Nobody is likely to leave soon"
-- **Close a settlement to newcomers:** a button on each of your settlements' cards, for 1 Influence a turn; a closed settlement doesn't take anyone in, arrivals go to your next best settlement, and people already on the road are re-aimed when they get there. AI civilizations close an overwhelmed settlement too, and pay the same upkeep
+- **Dissuade newcomers:** a button on each of your settlements' cards, with its price of 1 Influence a turn in the button; while it's on, people who would have moved there choose again by the usual pull: another of your settlements, another civilization's, or staying home when nowhere else is better. People already on the road still arrive. AI civilizations dissuade newcomers in an overwhelmed settlement too, and pay the same upkeep
 - **First-loss explainer:** off by default; on, one page the first time a settlement of yours loses a tile, saying what happened, where they went and why, what happens next and where to look
 - **Spoil Guard:** civilizations you haven't met stay hidden across the Emigration screens until you meet them; one checkbox; with Demographics installed, the stricter of the two guards wins
 - **Notifications in the game's own train:** the mod's notices sit beside End Turn as the game's do, plus a persistent log
@@ -931,7 +934,17 @@ contested names that card: a suspicion card falls hardest on the families, a pro
 
 ### 6j. Calling people home (`emigration-call-home.js`, `-call-home-action.js`, `-call-home-view.js`, `callHomeEnabled`)
 
-**Homecoming** (`emigration-homecoming.js`, "People find their own way home" in Advanced settings, on by default). People driven out of one settlement into another of the same civilization go back on their own. On each civilization's turn, a home settlement with no distress (war, siege, disaster, famine or unrest) for `homecomingCalmTurns` (3) turns in a row gets one of its people back every `homecomingEveryTurns` (4) turns, from the settlement holding the most of them, through the same move the paid call makes: a tile at the host is given up and a new one is settled at home, and the return is counted so the number away goes down. Nobody comes home to a settlement that was lost, is still in trouble, or that nobody left. Calm streaks and the last return per home are kept in the save. The Chronicle tells you when your people start coming home to a settlement and when the last of them is back; AI civilizations get the same returns without the lines. While homecoming is on, the call-home offer and the AI's paid calls are for people abroad only.
+**Homecoming** (`emigration-homecoming.js`, "People find their own way home" in Advanced settings, on by default). People who fled war, conquest or a disaster from one settlement into another of the same civilization can go back on their own. On each civilization's turn, a home settlement with no distress (war, siege, disaster, famine or unrest) for `homecomingCalmTurns` (3) turns in a row gets one of its people back every `homecomingEveryTurns` (4) turns, from the settlement holding the most of them, through the same move the paid call makes: a tile at the host is given up and a new one is settled at home, and the return is counted so the number away goes down. Nobody comes home to a settlement that was lost, is still in trouble, or that nobody left. Calm streaks and the last return per home are kept in the save.
+
+Not everyone goes back (`emigration-homecoming-split.js`). The first turn a home is calm long enough, each group of its
+people, one per settlement they live in now, decides once how many return. The share is `homecomingReturnShare` (80%)
+for people away up to `homecomingShareGraceTurns` (5) turns, `homecomingShareDropPerTurn` (2 points) less for each turn
+after that, never under `homecomingShareFloor` (30%), and times `homecomingHostBetterScale` (0.75) when the settlement
+they live in now has `homecomingHostBetterGap` (15) or more prosperity above home. The count is the share rounded with a
+seeded roll, so a reload decides the same way. Only those going back come on their own; the rest are shown as staying
+in the Left pane, and Hasten can still bring them. People driven out again later decide the next time home is calm. A
+save from before this rule is backdated from the flow history, so people long away count as long away. The Chronicle
+and a notice say how many are coming and how many stayed, and again when the last of those coming is back; AI civilizations get the same returns without the lines. While homecoming is on, the call-home offer and the AI's paid calls are for people abroad only.
 
 After fighting in a settlement's borders or a siege the wait is `homecomingCalmTurnsAfterWar` (10) calm turns instead, since a frontier settlement that was hit once is likely to be hit again (watched 2026-10-25: with the short wait, Pārsa took four people back and was lost with them in it).
 
@@ -1125,13 +1138,13 @@ displaced people decides whether to call them back, the way you would:
 
 "AI civilizations call people home" in Advanced settings switches this off.
 
-**Closing a settlement to newcomers (`emigration-intake-ai.js`).** On each pass, an AI civilization past its
-congestion bar (the headwind its refugee rule reads, 1 point) closes its unhappiest settlement that has been taking
+**Dissuading newcomers (`emigration-intake-ai.js`).** On each pass, an AI civilization past its
+congestion bar (the headwind its refugee rule reads, 1 point) dissuades newcomers in its unhappiest settlement that has been taking
 people in over the last three passes, if it isn't the capital, no more than a third of its settlements are closed
 already, and its treasury holds ten turns of upkeep. It closes one settlement a pass at most. A closed settlement
 stays closed at least five turns, then opens again once the headwind is under half the bar, the settlement is
 content, or Influence is down to three turns of upkeep. It pays the same 1 Influence a turn you do, less its
-difficulty discount. "AI civilizations close settlements to newcomers" in Advanced settings switches this off.
+difficulty discount. "AI civilizations dissuade newcomers" in Advanced settings switches this off.
 
 **Immigration stances (6b).** The AI slots the stances through its own planner (11.4). When a civilization you've
 met slots or drops one, you get a notice beside End Turn and a Chronicle line ("Persia closes its borders",

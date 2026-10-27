@@ -41,7 +41,9 @@ function world() {
     resolvable: () => (p) => !w.lost.has(p.home) && !w.lost.has(p.from),
     move: (pid, pair) => {
       w.moves.push([w.turn, pair.from, pair.home]);
-      pair.points -= 1;
+      // The homecoming moves copies of the pairs (only those going back); the live count is the world's.
+      const live = (w.pairs[pid] || []).find((p) => p.from === pair.from && p.home === pair.home);
+      (live || pair).points -= 1;
       return true;
     },
     turn: () => w.turn,
@@ -59,6 +61,10 @@ function reset() {
   CONFIG.homecomingCalmTurnsAfterWar = 10;
   CONFIG.homecomingEveryTurns = 4;
   CONFIG.homecomingBatchPer = 8;
+  // The tests before the split ran with everyone going back; they keep that, and the split has its own tests.
+  CONFIG.homecomingReturnShare = 1;
+  CONFIG.homecomingShareFloor = 1;
+  CONFIG.homecomingHostBetterScale = 1;
 }
 
 /** Run turns from the world's current turn, each civ once per turn. */
@@ -189,7 +195,7 @@ function testSaveAndReload() {
   assert.equal(w.moves.length, 2);
   assert.equal(w.reports.filter((r) => r[2] === "start").length, 1, "a reload doesn't announce the homecoming again");
   assert.deepEqual(hc.cleanHomecoming({ calm: { 0: { A: "2", B: "x" } }, last: 5, ran: { 0: 3, 1: null } }),
-    { calm: { 0: { A: 2 } }, last: {}, kind: {}, ran: { 0: 3 } }, "junk in the save is dropped");
+    { calm: { 0: { A: 2 } }, last: {}, kind: {}, ran: { 0: 3 }, split: {} }, "junk in the save is dropped");
 }
 
 testCalmStreaks();

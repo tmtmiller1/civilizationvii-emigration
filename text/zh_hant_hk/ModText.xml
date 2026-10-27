@@ -243,12 +243,12 @@
         <Replace Tag="LOC_EMIG_T_SRAMP_D" Language="zh_Hant_HK"><Text>圍城需持續多少回合才能達到其完整的移民壓力（突襲起步輕、逐步增強）。僅圍城模型使用。</Text></Replace>
         <Replace Tag="LOC_EMIG_T_SCAP" Language="zh_Hant_HK"><Text>圍城：戰爭中城市損失的最大比例</Text></Replace>
         <Replace Tag="LOC_EMIG_T_SCAP_D" Language="zh_Hant_HK"><Text>戰爭移民在停止前最多能帶走的城市人口（按圍城開始時規模的比例）。僅圍城模型使用。</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_INTAKE" Language="zh_Hant_HK"><Text>對新來者關閉聚落</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_INTAKE_D" Language="zh_Hant_HK"><Text>你的每個聚落在「聚落」分頁的卡片上都會多出一個「對新來者關閉」按鈕。關閉的聚落不接收任何人：到來者改去你次佳的聚落，已在路上的人會在抵達時改道。關閉此選項會隱藏該按鈕，並讓所有關閉的聚落重新開放，AI 的也一樣。</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_INTAKE_COST" Language="zh_Hant_HK"><Text>每個關閉的聚落每回合花費的影響力</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_INTAKE_COST_D" Language="zh_Hant_HK"><Text>每個對新來者關閉的聚落每回合花費的影響力，你和 AI 都一樣。影響力不夠時，付得起幾個就保持關閉幾個，其餘的重新開放。關閉此選項則關閉聚落不收費。</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_AI_INTAKE" Language="zh_Hant_HK"><Text>AI 文明會對新來者關閉聚落</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_AI_INTAKE_D" Language="zh_Hant_HK"><Text>超過擁擠上限的 AI 文明會關閉一個一直在接收人口、而且不滿的聚落，每回合一個，最多關閉其三分之一的聚落，前提是它的影響力足以支付十回合的維護費。五回合後，一旦壓力緩和、該聚落滿意或影響力不足，它就會重新開放一個。它從不關閉自己的首都。</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_INTAKE" Language="zh_Hant_HK"><Text>在聚落勸阻新來者</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_INTAKE_D" Language="zh_Hant_HK"><Text>Each of your settlements gets a "Dissuade newcomers" button on its Settlements card. While it's on, people looking for a new home pick somewhere else: another of your settlements, another civilization's, or they stay where they are. People already on the road still arrive. Off hides the button and welcomes newcomers back everywhere, in the AI's settlements too.</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_INTAKE_COST" Language="zh_Hant_HK"><Text>勸阻新來者每回合花費的影響力</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_INTAKE_COST_D" Language="zh_Hant_HK"><Text>每個聚落勸阻新來者每回合要花多少影響力，你和 AI 都一樣。影響力不夠時，付得起幾個聚落就有幾個繼續勸阻，其餘的重新歡迎新來者。關閉此選項則勸阻不收費。</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_AI_INTAKE" Language="zh_Hant_HK"><Text>AI 文明會勸阻新來者</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_AI_INTAKE_D" Language="zh_Hant_HK"><Text>超過擁擠上限的 AI 文明會在一個一直在接收人口、而且不滿的聚落勸阻新來者，每回合一個，最多為其三分之一的聚落這樣做，前提是它的影響力足以支付十回合的維護費。五回合後，一旦壓力緩和、該聚落滿意或影響力不足，它就會重新歡迎新來者。它從不在自己的首都這樣做。</Text></Replace>
         <Replace Tag="LOC_EMIG_T_DESTSAFE" Language="zh_Hant_HK"><Text>難民避開受攻擊的聚落</Text></Replace>
         <Replace Tag="LOC_EMIG_T_DESTSAFE_D" Language="zh_Hant_HK"><Text>自身陷於危機的聚落（戰鬥或災害超過逃離門檻，或正被夷平）在危機持續期間是弱得多的目的地，已在前往途中的人會被暫留，或改送往次佳的聚落。若沒有更安全的去處，人們仍會前往。圍城停滯時，懲罰解除。</Text></Replace>
         <Replace Tag="LOC_EMIG_T_DESTPEN" Language="zh_Hant_HK"><Text>受攻擊聚落的懲罰</Text></Replace>
@@ -376,7 +376,7 @@
         <Replace Tag="LOC_EMIG_T_CALLHOME" Language="zh_Hant_HK"><Text>召喚人民回國</Text></Replace>
         <Replace Tag="LOC_EMIG_T_CALLHOME_D" Language="zh_Hant_HK"><Text>提供一次付費召喚，按你選擇的人數，把流離失所的人帶回他們逃離的聚落。從你自己的聚落召回等同購買：要多少人就來多少人。從海外召回則無論結果如何都要付費，而每位被召喚的人可能響應，也可能不響應。</Text></Replace>
         <Replace Tag="LOC_EMIG_T_HOMECOMING" Language="zh_Hant_HK"><Text>人們自行回家</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_HOMECOMING_D" Language="zh_Hant_HK"><Text>從你的一個聚落被逐往你另一個聚落的人，在家園平靜幾個回合後便會自行回來，每次一人，並在那裡重建一個地塊。每個文明都一樣。開啟時，召喚人民回國只對海外的人提供。關閉則恢復對本國境內人民的付費召喚。</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_HOMECOMING_D" Language="zh_Hant_HK"><Text>因戰爭、征服或災害逃到你另一個聚落的人，會在家園平靜幾個回合後自行回來，每次幾個人。不是每個人都會回來：比例在下方設定，其餘的人就在原地定居。AI 文明遵循同樣的規則。聚落卡上的加速可以付費讓人們早些回來。關閉後，只有你付費時人們才會回來。</Text></Replace>
         <Replace Tag="LOC_EMIG_T_HOMECOMING_CALM" Language="zh_Hant_HK"><Text>人們回家前的平靜回合數</Text></Replace>
         <Replace Tag="LOC_EMIG_T_HOMECOMING_CALM_D" Language="zh_Hant_HK"><Text>聚落要連續多少回合沒有災害、饑荒和動亂，逃離它的人才會開始回來。任何麻煩都會重新開始計數。</Text></Replace>
         <Replace Tag="LOC_EMIG_T_HOMECOMING_CALMWAR" Language="zh_Hant_HK"><Text>戰鬥後的平靜回合數</Text></Replace>
@@ -385,6 +385,16 @@
         <Replace Tag="LOC_EMIG_T_HOMECOMING_BATCH_D" Language="zh_Hant_HK"><Text>每次回歸帶一人回家，每這麼多仍在外的人再多帶一人，所以失去二十人的聚落幾次回歸就能補滿，而不用八十回合。設為零表示每次只回一人。</Text></Replace>
         <Replace Tag="LOC_EMIG_T_HOMECOMING_EVERY" Language="zh_Hant_HK"><Text>回歸的間隔回合數</Text></Replace>
         <Replace Tag="LOC_EMIG_T_HOMECOMING_EVERY_D" Language="zh_Hant_HK"><Text>聚落平靜後，其人民每隔這麼多回合回家一次，從你收容他們最多的那個聚落回來。</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_HOMECOMING_SHARE" Language="zh_Hant_HK"><Text>回家的人所佔比例</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_HOMECOMING_SHARE_D" Language="zh_Hant_HK"><Text>逃離一個聚落的人在外不超過 5 回合時，家園平靜後有多少人會回去。之後每多一回合，回去的人就少 2%，最低到 30%；如果他們現在所住的聚落明顯比家鄉過得好，回去的人再少四分之一。其餘的人就在原地定居，加速仍可以把他們帶回來。</Text></Replace>
+        <Replace Tag="LOC_EMIG_HOMECOMING_SPLIT" Language="zh_Hant_HK"><Text>{1_Home}再度安全。逃離它的人當中有 {2_Go} 人正在回家，{3_Stay} 人已在他們去的地方定居下來。</Text></Replace>
+        <Replace Tag="LOC_EMIG_HOMECOMING_ALL_STAY" Language="zh_Hant_HK"><Text>{1_Home}再度安全，但逃離它的 {2_Stay} 人已在他們去的地方定居下來。加速仍可以把他們帶回來。</Text></Replace>
+        <Replace Tag="LOC_EMIG_HOMECOMING_DONE_GOING" Language="zh_Hant_HK"><Text>回{1_Home}的最後一批人已經到家了。</Text></Replace>
+        <Replace Tag="LOC_EMIG_DP_WAIT_STAYED" Language="zh_Hant_HK"><Text>{1_Count} 人已在他們去的地方定居下來，會一直留在那裡，除非你付費帶他們回來。</Text></Replace>
+        <Replace Tag="LOC_EMIG_DP_WAIT_DECIDE" Language="zh_Hant_HK"><Text>{1_Home}再平靜 {2_Turns} 回合後，逃離它的人會決定是否回家。他們在外越久、在現居地過得越好，留下的人就越多。</Text></Replace>
+        <Replace Tag="LOC_EMIG_DP_FREE_STAY" Language="zh_Hant_HK"><Text>{1_Count} 人留在原地</Text></Replace>
+        <Replace Tag="LOC_EMIG_DP_FREE_DECIDE" Language="zh_Hant_HK"><Text>之後他們決定是否回來</Text></Replace>
+        <Replace Tag="LOC_EMIG_DP_FREE_LAST" Language="zh_Hant_HK"><Text>最後一批約在 {1_Turns} 回合後</Text></Replace>
         <Replace Tag="LOC_EMIG_HOMECOMING_START_TITLE" Language="zh_Hant_HK"><Text>歸家之路</Text></Replace>
         <Replace Tag="LOC_EMIG_HOMECOMING_START" Language="zh_Hant_HK"><Text>{1_Home}再度安全，逃離它的人已開始回家。</Text></Replace>
         <Replace Tag="LOC_EMIG_HOMECOMING_DONE_TITLE" Language="zh_Hant_HK"><Text>終於到家</Text></Replace>
@@ -463,13 +473,14 @@
         <Replace Tag="LOC_EMIG_SC_PRESSURE_TIP_SCORE" Language="zh_Hant_HK"><Text>這個聚落的評分由甚麼構成：</Text></Replace>
         <Replace Tag="LOC_EMIG_SC_PRESSURE_TIP_PULL" Language="zh_Hant_HK"><Text>是甚麼把人吸引向{1_Dest}：</Text></Replace>
         <Replace Tag="LOC_EMIG_SC_PRESSURE_TIP" Language="zh_Hant_HK"><Text>移民壓力每回合隨着對這個聚落人民最強的吸引力累積，差距收窄時便消退。壓力滿了，就會有一批人離開。目前已滿 {1_Pct}%。</Text></Replace>
-        <Replace Tag="LOC_EMIG_SC_CLOSED" Language="zh_Hant_HK"><Text>對新來者關閉</Text></Replace>
-        <Replace Tag="LOC_EMIG_SC_CLOSE_INTAKE" Language="zh_Hant_HK"><Text>對新來者關閉</Text></Replace>
-        <Replace Tag="LOC_EMIG_SC_OPEN_INTAKE" Language="zh_Hant_HK"><Text>對新來者開放</Text></Replace>
-        <Replace Tag="LOC_EMIG_SC_CLOSE_INTAKE_TIP" Language="zh_Hant_HK"><Text>關閉期間沒有人會在此定居：到來者改去你次佳的聚落，這個聚落也不用為他們支付融入成本。無處可去的難民也不會被強行塞進來。</Text></Replace>
-        <Replace Tag="LOC_EMIG_SC_INTAKE_COST" Language="zh_Hant_HK"><Text>關閉期間每回合花費 {1_Cost} 影響力。</Text></Replace>
-        <Replace Tag="LOC_EMIG_SC_INTAKE_SHORT" Language="zh_Hant_HK"><Text>影響力不足：關閉每回合要花 {1_Cost}，而我們只有 {2_Have}。</Text></Replace>
-        <Replace Tag="LOC_EMIG_INTAKE_REOPENED" Language="zh_Hant_HK"><Text>影響力不足，無法讓{1_Names}繼續對新來者關閉。它已重新開放。</Text></Replace>
+        <Replace Tag="LOC_EMIG_SC_CLOSED" Language="zh_Hant_HK"><Text>正在勸阻新來者</Text></Replace>
+        <Replace Tag="LOC_EMIG_SC_CLOSE_INTAKE" Language="zh_Hant_HK"><Text>勸阻新來者</Text></Replace>
+        <Replace Tag="LOC_EMIG_SC_OPEN_INTAKE" Language="zh_Hant_HK"><Text>歡迎新來者</Text></Replace>
+        <Replace Tag="LOC_EMIG_SC_CLOSE_INTAKE_TIP" Language="zh_Hant_HK"><Text>People looking for a new home pick somewhere else: another of your settlements, another civilization's, or they stay where they are. People already on the road still arrive, and this settlement doesn't pay integration costs for anyone who chose elsewhere.</Text></Replace>
+        <Replace Tag="LOC_EMIG_SC_INTAKE_PAYING" Language="zh_Hant_HK"><Text>每回合支付 {1_Cost} 影響力。</Text></Replace>
+        <Replace Tag="LOC_EMIG_SC_INTAKE_A_TURN" Language="zh_Hant_HK"><Text>/回合</Text></Replace>
+        <Replace Tag="LOC_EMIG_SC_INTAKE_SHORT" Language="zh_Hant_HK"><Text>影響力不足：勸阻新來者每回合要花 {1_Cost}，而我們只有 {2_Have}。</Text></Replace>
+        <Replace Tag="LOC_EMIG_INTAKE_REOPENED" Language="zh_Hant_HK"><Text>影響力不足，無法繼續在{1_Names}勸阻新來者。那裡又歡迎新來者了。</Text></Replace>
         <Replace Tag="LOC_EMIG_SC_OPEN_INTAKE_TIP" Language="zh_Hant_HK"><Text>新來者再度在此定居。已在路上的人下回合抵達。</Text></Replace>
         <Replace Tag="LOC_EMIG_SC_SIEGE_STALLED" Language="zh_Hant_HK"><Text>圍城停滯：圍城者沒有進攻，所以在他們再次進攻之前，圍城不再增加壓力。</Text></Replace>
         <Replace Tag="LOC_EMIG_SC_PULLED" Language="zh_Hant_HK"><Text>被吸引向</Text></Replace>
@@ -819,7 +830,7 @@
         <Replace Tag="LOC_PEDIA_EMIG_OVERVIEW_TITLE" Language="zh_Hant_HK"><Text>移民</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIG_OVERVIEW_BODY" Language="zh_Hant_HK"><Text>移民會在聚落之間移動人口。每回合，人們離開不幸福、困頓或飽受戰火的聚落，前往更幸福、更繁榮的聚落，既在你的文明之內，也跨越邊境。[n][n]繁榮模型按幸福度、產出和處境為每座城市評分，並按距離加權，使遷徙保持在區域之內。文明在新來者安頓期間要支付融入成本。[n][n]每個聚落都記錄其居民源自哪些文明，並由族群構成鏡頭顯示在地圖上。新來者逐漸接受接納方的身分，離散族群在故土復甦後返鄉，而移民編年史則把那些大浪潮記為歷史。[n][n]從你的一個聚落被逐往你另一個聚落的人，在家園平靜後會自行回家；遷徙儀表板的「聚落」分頁顯示每個聚落有誰在外、人們為何離開它、甚麼能留住他們，以及提早帶他們回來要花多少。[n][n]避開侵略者、邊境政策、災害、族群融入、回歸遷徙和難民抉擇預設全部開啟；每一項都可以在「選項、附加內容、移民」中關閉。</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIG_FAQ_TITLE" Language="zh_Hant_HK"><Text>常見問題</Text></Replace>
-        <Replace Tag="LOC_PEDIA_EMIG_FAQ_BODY" Language="zh_Hant_HK"><Text>是甚麼在驅動遷徙。大部分都可以在「選項、附加內容、移民」中調校，本章節的其他頁面有完整版本。[n][n]✓ 你的文明和其他每個主要文明都會移動人口，無論是否已遇見。[n]✗ 城邦、小型文明和獨立勢力既不送出也不接收人口。[n]✓ 推力：不幸福、產出低、戰爭破壞、圍城（包括城邦或獨立勢力的攻擊）、掠奪、饑荒、瘟疫、災害和過度擁擠。[n]✓ 拉力：繁榮、高幸福度、親移民立場、開放邊境和鄰近。[n]✓ 移民要花一段隨距離增長的時間在路上，接納方則支付暫時的融入成本。戰爭只能靠攻佔才能清空一座城市。[n]✓ 每個聚落每回合最多獲得和失去固定數量的人，按強度預設縮放。超出上限的到來者在途中等待，而無處落腳的難民會死在路上。[n]✓ 城鎮與城市一樣參與，人們既在你自己的聚落之間移動，也跨越邊境。[n]✗ 你不能挑選或安置個別移民；流動跟隨產出、安全和立場。「新來者如何定居」決定到來者落在哪裡，「對新來者關閉」則讓一個聚落置身事外。[n]✗ 一個文明不可能吸走整張地圖的人：聚落是相對於世界平均來評判的，新到的人會遇上擁擠的逆風，而已經領先的文明會遇上反滾雪球的逆風。[n]✓ 修復被掠奪的地塊會止住它造成的壓力，聚落因此不再流失人口，但修復永遠不會補回人口點。要讓飽受戰火的聚落復原，最快的辦法是和平（戰鬥的壓力兩三回合內消退）、修復，以及幸福度，那是最大的吸引力。[n][n]AI 文明玩的是同一套系統。模組新增的兩個城市策略（讓他們開心、留住你的人民）讓 AI 城市在人們離開之前建設幸福度、食物和生產力；AI 文明透過模組自己的規則選擇飛地立場、決定難民去留並從海外召喚人民回國，價格與你相同，再按遊戲難度打折；它們流離失所的人民會像你的一樣自行回家；而當你已遇見的文明開放或關閉邊境時，會有通知告訴你。基礎遊戲檔案保持原樣。未遇見的文明會被模擬，但在你遇見它們之前保持隱藏。</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIG_FAQ_BODY" Language="zh_Hant_HK"><Text>是甚麼在驅動遷徙。大部分都可以在「選項、附加內容、移民」中調校，本章節的其他頁面有完整版本。[n][n]✓ 你的文明和其他每個主要文明都會移動人口，無論是否已遇見。[n]✗ 城邦、小型文明和獨立勢力既不送出也不接收人口。[n]✓ 推力：不幸福、產出低、戰爭破壞、圍城（包括城邦或獨立勢力的攻擊）、掠奪、饑荒、瘟疫、災害和過度擁擠。[n]✓ 拉力：繁榮、高幸福度、親移民立場、開放邊境和鄰近。[n]✓ 移民要花一段隨距離增長的時間在路上，接納方則支付暫時的融入成本。戰爭只能靠攻佔才能清空一座城市。[n]✓ 每個聚落每回合最多獲得和失去固定數量的人，按強度預設縮放。超出上限的到來者在途中等待，而無處落腳的難民會死在路上。[n]✓ 城鎮與城市一樣參與，人們既在你自己的聚落之間移動，也跨越邊境。[n]✗ 你不能挑選或安置個別移民；流動跟隨產出、安全和立場。「新來者如何定居」決定到來者落在哪裡，「勸阻新來者」則讓一個聚落置身事外。[n]✗ 一個文明不可能吸走整張地圖的人：聚落是相對於世界平均來評判的，新到的人會遇上擁擠的逆風，而已經領先的文明會遇上反滾雪球的逆風。[n]✓ 修復被掠奪的地塊會止住它造成的壓力，聚落因此不再流失人口，但修復永遠不會補回人口點。要讓飽受戰火的聚落復原，最快的辦法是和平（戰鬥的壓力兩三回合內消退）、修復，以及幸福度，那是最大的吸引力。[n][n]AI 文明玩的是同一套系統。模組新增的兩個城市策略（讓他們開心、留住你的人民）讓 AI 城市在人們離開之前建設幸福度、食物和生產力；AI 文明透過模組自己的規則選擇飛地立場、決定難民去留並從海外召喚人民回國，價格與你相同，再按遊戲難度打折；它們流離失所的人民會像你的一樣自行回家；而當你已遇見的文明開放或關閉邊境時，會有通知告訴你。基礎遊戲檔案保持原樣。未遇見的文明會被模擬，但在你遇見它們之前保持隱藏。</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIG_PROSPERITY_TITLE" Language="zh_Hant_HK"><Text>繁榮與遷徙</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIG_PROSPERITY_BODY" Language="zh_Hant_HK"><Text>每個聚落都依據其人均產出，尤其是其淨幸福度，獲得繁榮評分。即便在和平時期，不幸的城市也會持續將人口流失給更幸福、更富庶的城市，而針對規模本身的一點小懲罰，則防止繁榮的城市淪為無底的磁石。[n][n]人們偏好就近的去處，因此遷徙是在區域內向外擴散，而非跨越地圖跳躍。戰爭、圍城、饑荒、動亂與災害都會大幅壓低城市的繁榮，使其化為難民之源。</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIG_REFUGEES_TITLE" Language="zh_Hant_HK"><Text>戰爭與難民</Text></Replace>
@@ -1090,7 +1101,7 @@
         <Replace Tag="LOC_EMIG_FORECAST_LEAVE" Language="zh_Hant_HK"><Text>接下來 {2_Turns} 回合約有 {1_Count} 人可能離開</Text></Replace>
         <Replace Tag="LOC_EMIG_FORECAST_CRISIS" Language="zh_Hant_HK"><Text>人們正在逃離；人數取決於危機，而不是壓力</Text></Replace>
         <Replace Tag="LOC_EMIG_FORECAST_STABLE" Language="zh_Hant_HK"><Text>短期內應該沒有人會離開</Text></Replace>
-        <Replace Tag="LOC_EMIG_RO_CLOSED" Language="zh_Hant_HK"><Text>對新來者關閉：重新開放之前沒有人會在此定居</Text></Replace>
+        <Replace Tag="LOC_EMIG_RO_CLOSED" Language="zh_Hant_HK"><Text>Dissuading newcomers: people looking for a new home pick somewhere else</Text></Replace>
         <Replace Tag="LOC_EMIG_RO_SIEGE_STALLED" Language="zh_Hant_HK"><Text>圍城停滯：圍城者沒有進攻，所以在他們再次進攻之前，沒有人會因圍城離開或死去</Text></Replace>
         <Replace Tag="LOC_EMIG_RO_WARN_HOLDING" Language="zh_Hant_HK"><Text>難民正在此聚落重新安置</Text></Replace>
         <Replace Tag="LOC_EMIG_RO_WARN_TRAPPED" Language="zh_Hant_HK"><Text>面臨風險：被困而無處可逃{1_Why}</Text></Replace>
@@ -2078,7 +2089,7 @@
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_ARRIVALS_CHAPTER_ARRIVING_TITLE" Language="zh_Hant_HK"><Text>抵達</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_ARRIVALS_CHAPTER_ARRIVING_PARA_1" Language="zh_Hant_HK"><Text>其他文明會自行安置抵達者。對於你的城市，則由「新來者如何定居」設定（選項、附加內容、移民、進階設定、遷入與遷出）決定結果：[BLIST][LI][B]詢問我[/B]（預設）：接收城市會彈出「新來者」或「難民」視窗，讓你選擇地塊、交由城市決定，或稍後再處理。三個開關決定哪些類型的抵達需要詢問；預設只有難民會詢問，移民與返鄉者則會立即安置。[LI][B]自動[/B]：城市立即安置該人口點，就像城市成長時一樣。[LI][B]移民單位[/B]：新來者會以移民單位的形式出現在城市旁，由你安排移居。未安置的移民單位每回合都需支付維護費。[LI][B]關閉[/B]：由遊戲自身的「增長城市」提示要求你安置該人口點。[/LIST]</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_ARRIVALS_CHAPTER_ARRIVING_PARA_2" Language="zh_Hant_HK"><Text>「難民」彈窗會說明抵達者從何處逃來、逃離了甚麼，並附上一句以其民族口吻說出的引文（見「流離者之聲」）。來自你尚未遇見之文明的難民只會被描述為流離失所者。</Text></Replace>
-        <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_ARRIVALS_CHAPTER_ARRIVING_PARA_3" Language="zh_Hant_HK"><Text>你的每個聚落在「聚落」分頁的卡片上都有一個「對新來者關閉」按鈕。關閉的聚落不接收任何人：到來者改去你次佳的聚落，已在路上的人會在抵達時改道，關閉的聚落也不用支付融入成本。保持關閉期間每回合花費 1 影響力，付不起時就會重新開放。無處可去的難民也不會被強行塞進來。「對新來者開放」可撤銷關閉。AI 文明同樣會關閉聚落：超過擁擠上限的 AI 會關閉一個一直在接收人口、而且不滿的聚落，支付同樣的維護費，並在壓力緩和後重新開放。</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_ARRIVALS_CHAPTER_ARRIVING_PARA_3" Language="zh_Hant_HK"><Text>Each of your settlements has a "Dissuade newcomers" button on its Settlements card, with its price in the button. While it's on, people who would have moved there choose again by the same pull as everyone else: another of your settlements, another civilization's, or staying where they are when nowhere else is better. You lose the ones who go abroad or stay home. People already on the road still arrive. It costs 1 Influence a turn, and when you can't pay, newcomers are welcome there again. "Welcome newcomers" undoes it. AI civilizations do the same: one past its congestion bar dissuades newcomers in an unhappy settlement that has been taking people in, pays the same upkeep, and welcomes them again once the pressure eases.</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_ARRIVALS_CHAPTER_RESETTLE_TITLE" Language="zh_Hant_HK"><Text>等待定居的難民</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_ARRIVALS_CHAPTER_RESETTLE_PARA_1" Language="zh_Hant_HK"><Text>預設情況下，每五名戰爭與災害難民中有一名會在抵達時定居。其餘的人會進入目的地的等候名單，並在接下來的回合中陸續定居。幸福、開放且不擁擠的接收地會讓他們更快定居；反移民立場則會減慢速度。接收地須為仍在等候的人支付維護費。如果他們所逃離的危機蔓延至新城市，等候中的難民會先行離開。城市概覽和城市詳情面板會顯示有多少人正在等候。</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_ARRIVALS_CHAPTER_COST_TITLE" Language="zh_Hant_HK"><Text>接納人民的代價</Text></Replace>
@@ -2099,7 +2110,9 @@
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_CALLHOME_CHAPTER_CONTENT_PARA_1" Language="zh_Hant_HK"><Text>從你的一個聚落被逐出的人，仍與它保持聯繫。「聚落」分頁上那個聚落卡的「離開」窗格列出所有在外的人：有多少人、現在住在哪裡、從何時起、他們離開時拆毀的地塊、一位回歸者在家鄉值多少（那裡一個鄉村地塊的產出）、他們何時自行回家，以及兩個付費提早帶他們回來的按鈕。你已不再持有的聚落也會列出，其人民會留在原地。</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_CALLHOME_CHAPTER_CONTENT_PARA_2" Language="zh_Hant_HK"><Text>當你的人民逃離的聚落平靜得足以讓他們回去，而且至少有五名人民從你仍持有的聚落流離失所時，一個小彈窗會提議開啟「聚落」分頁、等待，或停止提醒你。只有當流離失所的人數再多出一半且過了十回合，它才會再出現。「選項、附加內容、移民」下的「流離失所提醒」是同一個開關，門檻則是一項進階設定。</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_CALLHOME_CHAPTER_HOMECOMING_TITLE" Language="zh_Hant_HK"><Text>自行回家</Text></Replace>
-        <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_CALLHOME_CHAPTER_HOMECOMING_PARA_1" Language="zh_Hant_HK"><Text>從你的一個聚落被逐往你另一個聚落的人，在家園安全後會自己回去。家鄉連續 3 回合沒有戰爭、圍城、災害、饑荒或動亂後，每 4 回合回來一人，每 8 名仍在外的人再多回一人，並在他們的族人離開時留下的那塊地仍然空着時定居在那裡，否則定居在聚落另一塊空地上。若麻煩是邊境內的戰鬥或圍城，則要等 10 個平靜回合，因為被打過一次的邊疆聚落很可能再被打。編年史和「結束回合」旁的通知會告訴你他們何時開始回家、最後一人何時回來。AI 文明也一樣。進階設定中的「人們自行回家」存放這些數字和一個關閉開關。</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_CALLHOME_CHAPTER_HOMECOMING_PARA_1" Language="zh_Hant_HK"><Text>因戰爭、征服或災害逃到你另一個聚落的人，可以在家園安全後自行回家。因不滿而離開、或被另一個聚落吸引走的人，會留在他們定居的地方；去了另一個文明的人也一樣，除非你從海外召喚他們。家園必須連續 3 回合保持平靜，沒有戰爭、圍城、災害、饑荒、動亂或厭戰；如果邊境內發生過戰鬥或圍城，則要平靜 10 回合，因為被打過一次的邊疆聚落很可能再被打。</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_CALLHOME_CHAPTER_HOMECOMING_PARA_2" Language="zh_Hant_HK"><Text>不是每個人都會回去。家園平靜後，每一批人只決定一次有多少人回來。在外不超過 5 回合時，80% 的人會回去。之後每多一回合，回去的人就少 2%，最低到 30%；如果他們現在所住的聚落明顯比家鄉過得好，回去的人再少四分之一。其餘的人就在原地定居，「離開」窗格會把他們顯示為留下。付費加速仍可以把他們帶回來。之後再次被逐出的人，會在家園下一次平靜時再作決定。</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_CALLHOME_CHAPTER_HOMECOMING_PARA_3" Language="zh_Hant_HK"><Text>每 4 回合，回家的人當中有一人到家，每 8 名仍在路上的人再多回一人；他們會在族人離開時留下的那塊地仍然空着時定居在那裡，否則定居在聚落另一塊空地上。編年史和「結束回合」旁的通知會告訴你有多少人回來、多少人留下，最後一批到家時還會再告訴你一次。AI 文明遵循同樣的規則。進階設定中的「人們自行回家」存放這些數字和一個關閉開關。</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_CALLHOME_CHAPTER_OWN_TITLE" Language="zh_Hant_HK"><Text>加速</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_CALLHOME_CHAPTER_OWN_PARA_1" Language="zh_Hant_HK"><Text>加速支付 [icon:YIELD_GOLD] 金幣或 [icon:YIELD_DIPLOMACY] 影響力，把住在你文明其他地方的人現在就帶回來，而不用分散在接下來的回合。付了多少人就來多少人，從最大的群體開始。卡上會寫明回歸者在家鄉耕作的地塊、他們在現居地放棄的地塊、每人的淨值，以及這筆費用讓他們提早多少回合回來；把游標移到價格按鈕上可查看完整帳目。在你的邊境之內，回歸是用一個地塊換另一個地塊，所以這筆費用買的是時間。每個聚落有自己的冷卻時間，所以加速一個聚落不會鎖住其他聚落。</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_CALLHOME_CHAPTER_ABROAD_TITLE" Language="zh_Hant_HK"><Text>從海外召喚</Text></Replace>

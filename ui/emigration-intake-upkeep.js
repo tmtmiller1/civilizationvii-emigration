@@ -179,7 +179,8 @@ function defaultPay(pid, n) {
 
 /** @param {string[]} names @param {((msg:string)=>void)|undefined} notify */
 function reportOpened(names, notify) {
-  const msg = loc("LOC_EMIG_INTAKE_REOPENED", "Not enough Influence to keep {1_Names} closed to newcomers. It's open again.",
+  const msg = loc("LOC_EMIG_INTAKE_REOPENED",
+    "Not enough Influence to keep dissuading newcomers in {1_Names}. They're welcome there again.",
     names.join(", "));
   dlog("intake upkeep: reopened " + names.join(", "));
   if (notify) notify(msg);

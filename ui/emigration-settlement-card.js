@@ -168,7 +168,7 @@ function attractHalf(c, m, deps) {
   const head = halfHead(loc("LOC_EMIG_SC_ATTRACT", "Arriving"), loc("LOC_EMIG_SC_ATTRACT_SUB", "that came here this age"),
     deps.dirTotal(c.in));
   if (c.pressure && c.pressure.closed) {
-    head.children[0].appendChild(el("span", "emig-sc-closed", loc("LOC_EMIG_SC_CLOSED", "Closed to newcomers")));
+    head.children[0].appendChild(el("span", "emig-sc-closed", loc("LOC_EMIG_SC_CLOSED", "Dissuading newcomers")));
   }
   half.appendChild(head);
   const drawn = block(loc("LOC_EMIG_SC_DRAWN_FROM", "Attracting from"));
@@ -191,9 +191,9 @@ function attractHalf(c, m, deps) {
 }
 
 /**
- * The per-settlement intake switch (risks 2.4): "Close to newcomers" on an open settlement of the player's,
- * "Open to newcomers" on a closed one, in the card's standard button. Null when the option is off or the
- * entry carries no city key (a civilization's card, a displaced-only card).
+ * The per-settlement intake switch (risks 2.4): "Dissuade newcomers" with its price on an open settlement of the
+ * player's, "Welcome newcomers" on one that dissuades them, in the card's standard button. Null when the option is
+ * off or the entry carries no city key (a civilization's card, a displaced-only card).
  * @param {*} p The pressure entry ({cityKey, closed}) or null. @param {CardDeps} deps @returns {HTMLElement|null}
  */
 function intakeButton(p, deps) {
@@ -204,7 +204,7 @@ function intakeButton(p, deps) {
   const closed = !!p.closed;
   const cost = Number(p.intakeCost) || 0;
   const short = !closed && cost > 0 && Number(p.influence) < cost; // can't cover a turn: greyed, as a price is
-  const btn = intakeBtn(closed, short);
+  const btn = intakeBtn(closed, short, cost);
   btn.title = intakeTip(closed, short, cost, Number(p.influence));
   if (!short) {
     btn.addEventListener("click", () => {
@@ -213,16 +213,29 @@ function intakeButton(p, deps) {
     });
   }
   wrap.appendChild(btn);
-  if (cost > 0) {
-    wrap.appendChild(el("div", "emig-sc-dim", loc("LOC_EMIG_SC_INTAKE_COST", "Costs {1_Cost} Influence a turn while closed.", cost)));
+  if (closed && cost > 0) {
+    wrap.appendChild(el("div", "emig-sc-dim", loc("LOC_EMIG_SC_INTAKE_PAYING", "Paying {1_Cost} Influence a turn.", cost)));
   }
   return wrap;
 }
 
-/** @param {boolean} closed @param {boolean} short @returns {HTMLElement} The button, labelled for its state. */
-function intakeBtn(closed, short) {
-  return el("div", "emig-dp-btn" + (closed ? " emig-sc-intake-closed" : "") + (short ? " off" : ""),
-    closed ? loc("LOC_EMIG_SC_OPEN_INTAKE", "Open to newcomers") : loc("LOC_EMIG_SC_CLOSE_INTAKE", "Close to newcomers"));
+/**
+ * The button, labelled for its state. "Dissuade newcomers" carries its price inside, the Influence icon and the
+ * amount a turn, the way Hasten's buttons carry theirs; "Welcome newcomers" undoes it.
+ * @param {boolean} closed @param {boolean} short @param {number} cost Influence a turn. @returns {HTMLElement}
+ */
+function intakeBtn(closed, short, cost) {
+  const b = el("div", "emig-dp-btn" + (closed ? " emig-sc-intake-closed" : "") + (short ? " off" : ""));
+  if (closed) {
+    b.textContent = loc("LOC_EMIG_SC_OPEN_INTAKE", "Welcome newcomers");
+    return b;
+  }
+  b.appendChild(el("span", "emig-sc-intake-lbl", loc("LOC_EMIG_SC_CLOSE_INTAKE", "Dissuade newcomers")));
+  if (cost > 0) {
+    b.appendChild(chip("YIELD_DIPLOMACY", cost, true));
+    b.appendChild(el("span", "emig-sc-intake-per", loc("LOC_EMIG_SC_INTAKE_A_TURN", "a turn")));
+  }
+  return b;
 }
 
 /**
@@ -232,13 +245,15 @@ function intakeBtn(closed, short) {
  */
 function intakeTip(closed, short, cost, have) {
   if (short) {
-    return loc("LOC_EMIG_SC_INTAKE_SHORT", "Not enough Influence: closing costs {1_Cost} a turn and we have {2_Have}.",
+    return loc("LOC_EMIG_SC_INTAKE_SHORT",
+      "Not enough Influence: dissuading newcomers costs {1_Cost} a turn and we have {2_Have}.",
       cost, Math.floor(have));
   }
   return closed
     ? loc("LOC_EMIG_SC_OPEN_INTAKE_TIP", "Newcomers settle here again. Arrivals already on the road land next turn.")
-    : loc("LOC_EMIG_SC_CLOSE_INTAKE_TIP", "Nobody settles here while it is closed: arrivals go to your next best "
-      + "settlement, and this one pays no integration cost for them. Refugees with nowhere else to go are not forced in.");
+    : loc("LOC_EMIG_SC_CLOSE_INTAKE_TIP", "People looking for a new home pick somewhere else: another of your "
+      + "settlements, another civilization's, or they stay where they are. People already on the road still arrive, "
+      + "and this settlement doesn't pay integration costs for anyone who chose elsewhere.");
 }
 
 /**
@@ -601,6 +616,9 @@ export const SETTLEMENT_CSS =
   ".emig-sc-decide{margin-top:0.1rem;align-items:flex-start;}" +
   ".emig-sc-intake{margin-top:0.35rem;}" +
   ".emig-sc-intake .emig-dp-btn.off{opacity:0.45;cursor:default;}" +
+  ".emig-sc-intake .emig-dp-btn{display:flex;flex-direction:row;align-items:center;}" +
+  ".emig-sc-intake .emig-y{margin-left:0.4rem;}" +
+  ".emig-sc-intake-per{margin-left:0.25rem;}" +
   ".emig-sc-closed{margin-left:0.5rem;padding:0.05rem 0.4rem;border:1px solid rgba(194,91,84,0.9);border-radius:0.2rem;" +
   "color:#e8b4ae;font-size:0.72rem;}" +
   ".emig-sc-half.arrived .emig-sc-blk:first-child{margin-top:0;}" +

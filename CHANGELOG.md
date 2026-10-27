@@ -5,9 +5,7 @@ All notable changes to the **Emigration** mod for Civilization VII. Follows
 The Steam Workshop change note for each release is generated from the matching
 section below by `release.sh`.
 
-## [Unreleased]
-
-## [4.0.0] - 2026-10-26
+## [4.0.0] - 2026-10-27
 
 The Emigration screen is rebuilt around your settlements, displaced people come home on their own, wars treat
 refugees more sensibly, and the AI plays its side of the system. Your saves and settings carry over.
@@ -29,20 +27,26 @@ refugees more sensibly, and the AI plays its side of the system. Your saves and 
   the next 4 turns", worked out from how fast the pressure has been rising, or "Nobody is likely to leave soon".
   A settlement losing people to war or disaster says they're fleeing now. It's a projection, not a promise.
   Advanced settings has the switch and the horizon (3, 5 or 8 turns).
-- "Close to newcomers" on each of your settlements' cards. A closed settlement doesn't take anyone in or pay
-  integration costs for them: arrivals go to your next best settlement, and people already on the road are re-aimed
-  when they get there. Refugees with nowhere else to go still find somewhere. It costs 1 Influence a turn while it
-  stays closed; when the treasury can't cover it, the settlement opens again and a notice says so. "Open to
-  newcomers" undoes it. AI civilizations close settlements too. An AI civilization past its congestion bar closes an
-  unhappy settlement that has been taking people in (never its capital), pays the same upkeep, and opens it again
-  once the pressure eases. Advanced settings has the cost (0 makes it free) and the AI's switch.
+- "Dissuade newcomers" on each of your settlements' cards, with its price in the button: the Influence icon and 1 a
+  turn. While it's on, people who would have moved there choose again by the usual pull: another of your
+  settlements, another civilization's, or staying home when nowhere else is better, so you can lose them. People
+  already on the road still arrive. When the treasury can't cover the Influence, the settlement welcomes newcomers
+  again and a notice says so. "Welcome newcomers" undoes it, and the card says what it's paying while it's on. AI
+  civilizations dissuade newcomers too: one past its congestion bar does it in an unhappy settlement that has been
+  taking people in (never its capital), pays the same upkeep, and stops once the pressure eases. Advanced settings
+  has the cost (0 makes it free) and the AI's switch.
 - "Your settlements | All civilizations" and "By pressure | By name" at the top of the tab. All civilizations shows
   each civilization's causes and a table of its settlements with their origins, Mix, Character, enclave and
   pressure to leave.
-- People driven out of one of your settlements into another of yours go home on their own. Once home has been calm
-  for 3 turns (10 after fighting or a siege), they come back a few at a time and settle the plot their people left
-  when it's still free. The Chronicle and a "People are coming home" notice say when it starts and when the last
-  is back. AI civilizations get the same.
+- People driven out of one of your settlements into another of yours can go home on their own, and not all of them
+  do. Once home has been calm for 3 turns (10 after fighting or a siege), each group of them decides once how many
+  go back: 80% after an absence of up to 5 turns, 2% fewer for each turn after that, down to 30%, and a quarter
+  fewer when the settlement they live in now is clearly better off than home. Those going back come a few at a time
+  and settle the plot their people left when it's still free. The rest settle where they went; the Left pane shows
+  them as staying, and Hasten can still bring them. The Chronicle and a "People are coming home" notice say how many
+  are coming and how many stayed, and again when the last of them is back. People driven out again later decide the
+  next time home is calm. AI civilizations follow the same rule. "Share who come home" in Advanced settings sets the
+  80%. In a save from before 4.0, people already away are counted from the turn they fled.
 - Hasten and Call from abroad are buttons on the card, priced in Gold or Influence. The card shows what the fee
   buys: what a returnee works at home against what they work where they are, and how many turns sooner they're
   back. A price you can't cover is greyed out, with the shortfall on hover.
@@ -54,8 +58,8 @@ refugees more sensibly, and the AI plays its side of the system. Your saves and 
   single page says what happened, where the people went and why, what happens next and where to look, and the
   Chronicle keeps it as "The First to Leave". Turn it on with "First-loss explainer" in the options.
 - The city readout says what would stop people leaving ("What would stop it: +3 Food or +2 Happiness here
-  (Granary gives +1 Food)"), what newcomers cost you a turn, "Siege stalled" when a siege has stopped, and "Closed
-  to newcomers" when you've closed the settlement.
+  (Granary gives +1 Food)"), what newcomers cost you a turn, "Siege stalled" when a siege has stopped, and
+  "Dissuading newcomers" while you're dissuading them.
 - A notice and a Chronicle line when a civilization you've met opens or closes its borders ("Persia closes its
   borders").
 - Spoil Guard, in place of the old visibility dropdown. It's on by default and hides civilizations you haven't met

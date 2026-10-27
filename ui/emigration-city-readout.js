@@ -179,7 +179,7 @@ function standingLines(s) {
       "Siege stalled: the besiegers aren't attacking, so nobody leaves or dies for the siege until they do"));
   }
   if (s.closedToNewcomers) {
-    out.push(loc("LOC_EMIG_RO_CLOSED", "Closed to newcomers: nobody settles here until it opens again"));
+    out.push(loc("LOC_EMIG_RO_CLOSED", "Dissuading newcomers: people looking for a new home pick somewhere else"));
   }
   return out;
 }

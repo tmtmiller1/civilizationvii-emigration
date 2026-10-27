@@ -3,16 +3,16 @@ Generated from CHANGELOG.md by scripts/steam-changelog.mjs; release.sh uploads t
 To fix an old Workshop entry, paste the text under its ==== line into that entry's Edit box on the change-notes page.
 A block edited by hand is kept as-is. Delete a block to regenerate it from CHANGELOG.md.
 
-==== 4.0.0 | 2026-10-26 | src 5c4487920a5e | gen 59ba377714f4 ====
-[b]Version 4.0.0 · 26 October 2026[/b]
+==== 4.0.0 | 2026-10-27 | src 6c9f38cbe50a | gen 59ba377714f4 ====
+[b]Version 4.0.0 · 27 October 2026[/b]
 The Emigration screen is rebuilt around your settlements, displaced people come home on their own, wars treat refugees more sensibly, and the AI plays its side of the system. Your saves and settings carry over.
 
 [b]Added[/b]
 • The Settlements tab is the dashboard, and the screen opens on it. Each settlement gets a card with four panes (Arriving, Leaving, Arrived, Left) with the prosperity score between them, listing its terms.
 • A departure forecast under the pressure gauge and in the city readout: “About 3 people are likely to leave in the next 4 turns”, or “Nobody is likely to leave soon”.
-• “Close to newcomers” on each settlement's card, for 1 Influence a turn. A closed settlement doesn't take anyone in or pay integration costs; arrivals go to your next best settlement. AI civilizations close an overwhelmed settlement too, and pay the same upkeep.
+• “Dissuade newcomers” on each settlement's card, for 1 Influence a turn. People who would have moved there choose again: another of your settlements, another civilization's, or staying home, so you can lose them. People already on the road still arrive. AI civilizations dissuade newcomers in an overwhelmed settlement too, and pay the same upkeep.
 • “All civilizations” shows each civilization's causes and a table of its settlements.
-• People driven from one of your settlements into another go home on their own once home is calm, and settle the plot their people left. AI civilizations get the same.
+• People driven from one of your settlements into another can go home on their own once home is calm, and settle the plot their people left. Not all of them do: the longer they've been away, or the better off they are where they live now, the more of them stay. AI civilizations follow the same rule.
 • Hasten and Call from abroad are buttons on the card, priced in Gold or Influence, with what the fee buys shown beside them.
 • A small reminder with a homecoming quote replaces the call-home pop-up.
 • A first-loss explainer for new players, off by default.

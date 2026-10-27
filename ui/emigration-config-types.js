@@ -177,6 +177,12 @@
  * @property {number} homecomingCalmTurnsAfterWar The same after fighting in its borders or a siege.
  * @property {number} homecomingEveryTurns Turns between returns to the same home settlement.
  * @property {number} homecomingBatchPer Each return brings one home plus one for every this many still away.
+ * @property {number} homecomingReturnShare Share of a group who go back after a short absence.
+ * @property {number} homecomingShareGraceTurns Turns away before the share starts to fall.
+ * @property {number} homecomingShareDropPerTurn How much the share falls for each turn away after the grace.
+ * @property {number} homecomingShareFloor The lowest the share falls with time away.
+ * @property {number} homecomingHostBetterScale The share's multiplier when the host is clearly better off.
+ * @property {number} homecomingHostBetterGap Prosperity above home that makes a host clearly better off.
  * @property {boolean} readoutPrescribe The city readout says what yields would stop people leaving.
  * @property {number} aiDifficultyDiscountPerLevel AI price discount per Gold handicap level of the game's difficulty.
  * @property {number} antiDrainWeight Penalty on cross-civ outflow from a civ below the drain threshold (0 = off).

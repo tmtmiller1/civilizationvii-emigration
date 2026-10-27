@@ -199,6 +199,7 @@ export const TUNABLES = [
   { key: "homecomingCalmTurns", group: "callhome", type: "choice", values: [1, 2, 3, 5, 8], format: "turns", label: "LOC_EMIG_T_HOMECOMING_CALM", desc: "LOC_EMIG_T_HOMECOMING_CALM_D" },
   { key: "homecomingCalmTurnsAfterWar", group: "callhome", type: "choice", values: [3, 5, 8, 10, 15, 20], format: "turns", label: "LOC_EMIG_T_HOMECOMING_CALMWAR", desc: "LOC_EMIG_T_HOMECOMING_CALMWAR_D" },
   { key: "homecomingBatchPer", group: "callhome", type: "choice", values: [4, 6, 8, 12, 999], choiceLabels: ["4", "6", "8", "12", "LOC_EMIG_CHOICE_NEVER"], label: "LOC_EMIG_T_HOMECOMING_BATCH", desc: "LOC_EMIG_T_HOMECOMING_BATCH_D" },
+  { key: "homecomingReturnShare", group: "callhome", type: "choice", values: [0.5, 0.65, 0.8, 0.9, 1], format: "frac", label: "LOC_EMIG_T_HOMECOMING_SHARE", desc: "LOC_EMIG_T_HOMECOMING_SHARE_D" },
   { key: "homecomingEveryTurns", group: "callhome", type: "choice", values: [2, 3, 4, 6, 8], format: "turns", label: "LOC_EMIG_T_HOMECOMING_EVERY", desc: "LOC_EMIG_T_HOMECOMING_EVERY_D" },
   { key: "callHomeEnabled", group: "callhome", type: "bool", label: "LOC_EMIG_T_CALLHOME", desc: "LOC_EMIG_T_CALLHOME_D" },
   { key: "callHomeOfferWhenCalm", group: "callhome", type: "bool", label: "LOC_EMIG_T_CALLHOME_PEACE", desc: "LOC_EMIG_T_CALLHOME_PEACE_D" },

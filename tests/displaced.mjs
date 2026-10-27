@@ -57,7 +57,7 @@ function testModel() {
   assert.deepEqual(rows.map((r) => [r.home, r.total, r.held]), [["Rome", 14, true], ["Capua", 2, false]],
     "one row per home, most away first; a lost home is marked");
   const rome = rows[0];
-  assert.deepEqual(rome.internal, [{ from: "Ostia", points: 9, tile: null }, { from: "Ravenna", points: 3, tile: null }],
+  assert.deepEqual(rome.internal, [{ from: "Ostia", points: 9, stay: 0, tile: null }, { from: "Ravenna", points: 3, stay: 0, tile: null }],
     "each host carries what a tile there yields, when it can be read");
   assert.deepEqual(rome.abroad, [{ from: "Athens", host: 4, civ: "Greece", points: 2 }]);
   assert.equal(rome.since, 71);
@@ -97,7 +97,10 @@ function testLines() {
   assert.equal(abroadText(rome.abroadCall),
     "Call 2 from abroad: 18% each, about 0.4 expected to come, for 255 Gold or 51 Influence. "
     + "That's about 708 Gold or 142 Influence for each person who comes.");
-  const soon = displacedModel(ME, seams({ homecoming: () => ({ calm: 1, needed: 10, every: 4, last: null, turn: 5 }) }))[0];
+  // Everyone in these groups has already decided to go back (an earlier calm spell), so the old pacing holds.
+  const allGoing = () => ({ "Ostia|Rome|0": { go: 9, stay: 0 }, "Ravenna|Rome|0": { go: 3, stay: 0 } });
+  const soon = displacedModel(ME, seams({ split: allGoing,
+    homecoming: () => ({ calm: 1, needed: 10, every: 4, last: null, turn: 5 }) }))[0];
   assert.equal(waitText(soon), "Free, once Rome has been calm for 9 more turns; then 2 come home every 4 turns, all of them in about 41 turns.");
   const now = displacedModel(ME, seams({ homecoming: () => ({ calm: 3, needed: 3, every: 4, last: null, turn: 5 }) }))[0];
   assert.equal(waitText(now), "Free: 2 come home next turn, and the last in about 32 turns.");
@@ -105,12 +108,46 @@ function testLines() {
   assert.deepEqual(freeLines(rome), ["next 2 in 2 turns", "all in about 34 turns"]);
   assert.deepEqual(freeLines(soon), ["calm in 9 more turns", "then 2 every 4 turns", "all in about 41 turns"]);
   assert.deepEqual(freeLines(now), ["next 2 next turn", "all in about 32 turns"]);
+  testSplitLines();
   CONFIG.homecomingEnabled = false;
   const off = displacedModel(ME, seams())[0];
   assert.equal(off.wait, null);
   assert.equal(waitText(off), "People at home only come back when called.");
   assert.deepEqual(freeLines(off), ["only when called"]);
   CONFIG.homecomingEnabled = true;
+}
+
+/** Groups that haven't decided, that have partly settled, and that have all settled where they went. */
+function testSplitLines() {
+  const calmLater = () => ({ calm: 1, needed: 10, every: 4, last: null, turn: 5 });
+  const deciding = displacedModel(ME, seams({ homecoming: calmLater }))[0];
+  assert.equal(deciding.deciding, true, "nobody has decided before home is calm");
+  assert.equal(waitText(deciding), "Once Rome has been calm for 9 more turns, the people who fled it decide whether "
+    + "to come home. The longer they've been away, and the better off they are where they live now, the more of them stay.");
+  assert.deepEqual(freeLines(deciding), ["calm in 9 more turns", "then they decide whether to return"]);
+
+  const partSplit = () => ({ "Ostia|Rome|0": { go: 6, stay: 3 }, "Ravenna|Rome|0": { go: 1, stay: 2 } });
+  const part = displacedModel(ME, seams({ split: partSplit }))[0];
+  assert.equal(part.settled, 5, "three in Ostia and two in Ravenna stay");
+  assert.equal(part.deciding, false);
+  assert.deepEqual(part.internal.map((p) => p.stay), [3, 2]);
+  assert.equal(part.wait.batch, 1, "seven still coming: one a return");
+  assert.deepEqual(freeLines(part), ["next 1 in 2 turns", "the last in about 26 turns", "5 staying where they are"]);
+  assert.match(waitText(part), /5 of them have settled where they went and will stay unless you pay to bring them back\.$/);
+  assert.ok(part.hasten, "Hasten still offers to bring people back");
+
+  const allStay = () => ({ "Ostia|Rome|0": { go: 0, stay: 9 }, "Ravenna|Rome|0": { go: 0, stay: 3 } });
+  const stayed = displacedModel(ME, seams({ split: allStay }))[0];
+  assert.equal(stayed.wait, null, "nobody is coming, so there's no timing");
+  assert.deepEqual(freeLines(stayed), ["12 staying where they are"]);
+  assert.equal(waitText(stayed), "12 of them have settled where they went and will stay unless you pay to bring them back.");
+  assert.ok(stayed.hasten, "Hasten can still bring the settled back");
+
+  // A paid call brought four of Ostia's people home: they come off those going back first.
+  const fewer = displacedModel(ME, seams({ split: partSplit, candidates: () => ({
+    internal: [{ from: "Ostia", home: "Rome", host: ME, points: 5 }, { from: "Ravenna", home: "Rome", host: ME, points: 3 }],
+    external: [] }) }))[0];
+  assert.deepEqual(fewer.internal.map((p) => p.stay), [3, 2], "the settled stay settled");
 }
 
 testModel();

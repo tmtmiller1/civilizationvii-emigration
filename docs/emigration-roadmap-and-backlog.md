@@ -3682,3 +3682,126 @@ What changed on the way, and what was seen:
   Persia's ninth (64 to 93) and an independent's (from 105). The old condition never fired in two games.
 - **An AI closing a settlement, not seen.** In the same game no AI civilization reached its congestion bar (0.46 at
   most) and its cities ran +6 to +106 happiness, so the rule never had a settlement to close. It ran each turn.
+
+## 66. Not everyone comes home, Dissuade newcomers, and two balance reads (2026-10-27)
+
+- **The homecoming split** (`emigration-homecoming-split.js`, the owner's ask: "not everyone would return"). When a
+  home is calm long enough, each group of its people decides once how many go back: 80% after up to 5 turns away,
+  2 points less a turn after that, 30% at the least, times 0.75 when the host has 15 or more prosperity above home.
+  The rest stay; Hasten can still bring them. People displaced later decide the next time home is calm. A save
+  without the split (including one from before homecoming) backdates each group from the flow history once.
+- **Watched** on the WashingtonAnt130 save (no homecoming state in it, so the backdating ran): the book's `seen`
+  turns came from the history (Pittsburgh's people from Boston since 90, one new group since 131). Over eight
+  driven turns the AI and the player decided: Boston 11 go back and 12 stay, White Oak 3 and 4, Shomron 2 and 3,
+  Yetakapewaki 0 and 2, Uliastai (Mongolia) 1 and 5, Matara (Aksum) 9 and 11. Only those going came home. Boston's
+  Left pane read "next 2 in 2 turns · the last in about 30 turns · 12 staying where they are", its hover "Free: the
+  next 2 come home in 2 turns, and the last in about 30 turns. 12 people have settled where they went and will stay
+  unless you pay to bring them back." Yetakapewaki read "2 staying where they are" with Hasten still offered.
+  Prosperity in that game ran from about -12 to 34, so the 15 gap only catches the wide ones (Aksum 33.7 against
+  Matara 6.4).
+- **A fix found on the way:** the plain-text composer (`msgText`) turned numbers into strings before the game saw
+  them, so a key's plural rule always took the singular ("3 person who fled it is coming home"). Numbers pass
+  through as numbers now; watched composing "3 people ... are" and "1 person ... is". The shipped plural keys go
+  through `loc` with numbers, so they were never affected.
+- **"Dissuade newcomers"** replaces "Close to newcomers" (the owner's ask), with the price in the button: the
+  Influence icon, the amount, "a turn". "Welcome newcomers" undoes it and the card says "Paying 1 Influence a
+  turn." Watched on WashingtonExp106 (Gobir), both states. The rule is unchanged: the settlement takes nobody in.
+
+### The cost of dissuading newcomers: Influence, Culture, or both
+
+Read on the Washington saves. Per turn, Antiquity 138 and Exploration 106:
+
+| | Antiquity Influence | Antiquity Culture | Exploration Influence | Exploration Culture |
+| --- | --- | --- | --- | --- |
+| The player | +8 (bank 18) | +110 | +86 (bank 1,860) | +350 |
+| AI civilizations | +9 to +19 | +21 to +80 | +5 to +39 | +44 to +172 |
+
+Towns make 1 to 7 Culture each; the settlements people want to dissuade are mostly towns. A newcomer adds about 3.3
+load-turns, so about 5 Gold and 1.7 Happiness over their settling-in (Gold times 0.5 to 2 for wealth), and closing
+also gives up the population they'd bring.
+
+- The flat 1 Influence bites early and fades: an eighth of the player's Antiquity income, about 1% in Exploration,
+  and a fifth of the poorest AI's (Bulgaria +5). It's harshest where it matters least.
+- A Culture cost would need to be a share of the settlement's own Culture to scale, and towns make so little that a
+  quarter of it is 0 to 2. It would be close to free in towns and costly only in a capital. It would also have to be
+  a script deduction, since a data modifier can't read the mod's switch, so it wouldn't show in the yield breakdown.
+- Both together adds a second line to one button without making either bite.
+- Recommended: keep Influence alone and scale it with the civilization's income, for example 5% of Influence a turn
+  per settlement, at least 1 (the player 1 in Antiquity and 4 in Exploration, the poorest AI 1). Open: whether
+  "Dissuade" should also soften the rule from a block to a strong pull penalty, which would match the word.
+
+### Talent Attraction
+
+The card is `EFFECT_CITY_ADJUST_YIELD_PER_POPULATION`, +1 Science per 5 Population in each settlement (per 4 in
+Modern), rural and urban, with -2 Gold a settlement (-3 in Modern). Computed for WashingtonExp106 from city sizes:
+
+| | Settlements | Population | Science income | Card's Science | Card's Gold | Gold income |
+| --- | --- | --- | --- | --- | --- | --- |
+| The player (card slotted) | 18 | 317 | 261 | +56 | -36 | 1,146 |
+| AI civilizations | 5 to 10 | 61 to 155 | 6 to 164 | +10 to +26 | -10 to -20 | 86 to 303 |
+
+The game's own cards in the same slot: Enlightenment +2 Science per specialist, Social Science (Modern) +3 per
+specialist, Prognosis +2 Science on Science buildings for -4 Gold, Rationalism +15% Science in cities of your
+religion (about +39 here).
+
+- For a large empire in Exploration it's the strongest Science card on offer: about a fifth of the player's
+  Science for 3% of their Gold. The Gold is flat per settlement, so it stops mattering as the treasury grows.
+- It pays on all population, newcomers or not, so it's a Science-per-population card more than a migration one.
+- In Modern, at 25 to 40 Population a settlement, it's +6 to +10 a settlement, in line with Social Science.
+- Options: count urban population only (the player's urban share was 132 of 287, so about half the Science, near
+  Rationalism); a higher divisor (1 per 8 in Exploration); or a Gold cost that grows with population. Tying it to
+  newcomers only would need a script grant outside the yield breakdown. Recommended: urban only, the divisor kept.
+
+## 67. Newcomers settling in: a settlement-level cost the game itself applies (probe, 2026-10-27)
+
+The owner chose to replace the civilization-wide assimilation fee (about 5 Gold and 1.7 Happiness per newcomer,
+charged through `Players.grantYield`, outside every yield breakdown) with a cost in the settlement where the newcomers
+land: Happiness, and Food so they slow growth the way grown population would. The question for this probe was whether
+a script can put such a cost into the game's own numbers, so the yield breakdown shows it and the AI reacts to it.
+
+What a script can create is limited to `CREATE_ELEMENT` kinds UNIT, CITY, DISTRICT and CONSTRUCTIBLE (the tuner's
+list), and the compiled DB has no requirement that reads a count a script sets. Cultural Diffusion
+(`BUILDING_CD_FLIP_*`) and Partisans (`BUILDING_PARTISANS_MUSTER`) already place a free hidden building in a city
+center (`CanBeHidden`, `IGNORE_DISTRICT_PLACEMENT_CAP`, owned by a trait nobody has), but only for the same turn. The
+probe tried standing ones.
+
+Setup: five probe buildings in a data file loaded only into the live Mods copy (removed afterwards), placed with
+`CREATE_ELEMENT` as the local player in WashingtonExp106 (turn 106), read through `city.Yields.getNetYield`,
+`city.Growth` and the breakdown tree from `city.Yields.getYields()`.
+
+| Route | Settlement | Before | After | Breakdown line |
+| --- | --- | --- | --- | --- |
+| Happiness upkeep (`Constructible_Maintenances`, 3) | Philadelphia | +2 | -1 | "Building Maintenance", the building's name |
+| Negative yields (`Constructible_YieldChanges`, -3 / -4) | Yetakapewaki | +1 / 40 Food | -2 / 36 | "From Buildings", the building's name, -3 |
+| City modifier (`EFFECT_CITY_ADJUST_YIELD`, -3 / -4, Tooltip) | Kukiya | 40 / 34 Food | 37 / 30 | "Deductions", the modifier's Tooltip text |
+| Same, an AI town | Charax Spasinu (Abbasid) | 8.8 / 17.1 | 5.8 / 13.1 | same |
+| Growth (`EFFECT_CITY_ADJUST_GROWTH`, -50%) | Gobir | 449 Food, 10 turns | 674, 17 turns | not read |
+| Food upkeep (`Constructible_Maintenances`, Food 4) | Kumbi Saleh | 27 | 27 | none: no effect |
+
+- A second copy of one building type never lands in the same city (`MultiplePerCity` set, two requests, then one
+  more on its own): a count needs one building type per tier.
+- Removing a building gives the yield back (Philadelphia 6 to 9), and a same-turn swap of one tier for another lands
+  cleanly (Kukiya MOD out, YIELD in, net unchanged).
+- The effects held through turn ends. Philadelphia's deficit carried the game's own "Income Penalty from Unhappiness":
+  -5% at -1, -20% at -4 the turn after, Production 11.4 to 7.2.
+- The next-growth threshold isn't set by population: Tadmekka at pop 3 and Gobir at pop 9 both needed 449 Food.
+  Newcomers arrive without making the next growth dearer, so the slowdown has to come from the mod.
+- Not settled: whether a standing hidden building shows on the map (the capture was taken mid-disaster pop-up and
+  wasn't centered), and whether it appears in the city's building list.
+
+Calibration, from 10 turns driven on each save and the settlements' net Happiness at load:
+
+| Save | Settlements | Happiness quartiles | Moves in 10 turns | Top destinations (10 turns) |
+| --- | --- | --- | --- | --- |
+| WashingtonAnt130 | 53 | -1 / +4 / +10 | 64 | Pikawiiki 14, Khuduu Aral 7, Cilakofa 7, Washington 5 |
+| WashingtonExp106 | 78 | player median +21, AI medians +8 to +21 | 135 | Preslav 19, Tadmekka 11, London 11, Kanchipuram 11 |
+
+The moves are counted at departure from the `MIGRATION ... moved from ... to ...` log lines, and include refugees.
+At 1 Happiness and 1 Food per newcomer for a settling period of T turns, a settlement carries about
+(arrivals a turn) × T of each: a magnet 1 to 2 a turn, most settlements 0 to 0.6.
+
+## 68. Can a player explain it back? (review, 2026-10-27)
+
+The owner's goal after section 67: mechanics a player can understand, not only fewer of them. The review is in
+[emigration-understandability-review.md](emigration-understandability-review.md): five tests, the patterns that fail
+them, a table by mechanic, and an order of work. Nothing in it is built or decided.

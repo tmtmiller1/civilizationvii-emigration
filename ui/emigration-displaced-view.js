@@ -67,7 +67,33 @@ export function whereText(r) {
  */
 export function waitText(r) {
   const w = r.wait;
-  if (!w) return loc("LOC_EMIG_DP_HOMECOMING_OFF", "People at home only come back when called.");
+  const stayed = stayedText(r);
+  if (!w) return stayed || loc("LOC_EMIG_DP_HOMECOMING_OFF", "People at home only come back when called.");
+  return [comingText(r, w), stayed].filter(Boolean).join(" ");
+}
+
+/**
+ * The sentence on those who settled where they went, or "" when nobody has.
+ * @param {import("/emigration/ui/emigration-displaced.js").DisplacedRow} r @returns {string}
+ */
+function stayedText(r) {
+  if (!CONFIG.homecomingEnabled || !(r.settled > 0)) return "";
+  return loc("LOC_EMIG_DP_WAIT_STAYED",
+    "{1_Count} of them have settled where they went and will stay unless you pay to bring them back.", r.settled);
+}
+
+/**
+ * The sentence on the free homecoming of those still coming, or still deciding.
+ * @param {import("/emigration/ui/emigration-displaced.js").DisplacedRow} r
+ * @param {NonNullable<import("/emigration/ui/emigration-displaced.js").DisplacedRow["wait"]>} w @returns {string}
+ */
+function comingText(r, w) {
+  if (w.calm < w.needed && r.deciding) {
+    return loc("LOC_EMIG_DP_WAIT_DECIDE",
+      "Once {1_Home} has been calm for {2_Turns} more turns, the people who fled it "
+      + "decide whether to come home. The longer they've been away, and the better off they are where they live now, "
+      + "the more of them stay.", r.home, w.nextIn);
+  }
   if (w.calm < w.needed) {
     return loc("LOC_EMIG_DP_WAIT_CALM",
       "Free, once {1_Home} has been calm for {2_Turns} more turns; then {4_Batch} come home every {3_Every} turns, all of them in about {5_All} turns.",
@@ -222,13 +248,37 @@ function chips(per, signed) {
  */
 export function freeLines(r) {
   const w = r.wait;
-  if (!w) return [loc("LOC_EMIG_DP_FREE_OFF", "only when called")];
+  const stay = CONFIG.homecomingEnabled && r.settled > 0
+    ? loc("LOC_EMIG_DP_FREE_STAY", "{1_Count} staying where they are", r.settled) : "";
+  if (!w) return [stay || loc("LOC_EMIG_DP_FREE_OFF", "only when called")];
+  const out = [firstFreeLine(w)];
+  if (w.calm < w.needed && r.deciding) out.push(loc("LOC_EMIG_DP_FREE_DECIDE", "then they decide whether to return"));
+  else out.push(...pacedLines(w, !!stay));
+  if (stay) out.push(stay);
+  return out;
+}
+
+/**
+ * The first short line: how long until home is calm, or until the next batch.
+ * @param {NonNullable<import("/emigration/ui/emigration-displaced.js").DisplacedRow["wait"]>} w @returns {string}
+ */
+function firstFreeLine(w) {
+  if (w.calm < w.needed) return loc("LOC_EMIG_DP_FREE_CALM", "calm in {1_Turns} more turns", w.nextIn);
+  if (w.nextIn <= 0) return loc("LOC_EMIG_DP_FREE_NEXT_NOW", "next {1_Batch} next turn", w.batch);
+  return loc("LOC_EMIG_DP_FREE_NEXT", "next {1_Batch} in {2_Turns} turns", w.batch, w.nextIn);
+}
+
+/**
+ * The pace of those already going back: the batches once home is calm, and when the last arrives.
+ * @param {NonNullable<import("/emigration/ui/emigration-displaced.js").DisplacedRow["wait"]>} w
+ * @param {boolean} someStay Whether some have settled, so "all" would overstate it. @returns {string[]}
+ */
+function pacedLines(w, someStay) {
   const out = [];
-  if (w.calm < w.needed) out.push(loc("LOC_EMIG_DP_FREE_CALM", "calm in {1_Turns} more turns", w.nextIn));
-  else if (w.nextIn <= 0) out.push(loc("LOC_EMIG_DP_FREE_NEXT_NOW", "next {1_Batch} next turn", w.batch));
-  else out.push(loc("LOC_EMIG_DP_FREE_NEXT", "next {1_Batch} in {2_Turns} turns", w.batch, w.nextIn));
   if (w.calm < w.needed) out.push(loc("LOC_EMIG_DP_FREE_THEN", "then {1_Batch} every {2_Every} turns", w.batch, w.every));
-  out.push(loc("LOC_EMIG_DP_FREE_ALL", "all in about {1_Turns} turns", w.allIn));
+  out.push(someStay
+    ? loc("LOC_EMIG_DP_FREE_LAST", "the last in about {1_Turns} turns", w.allIn)
+    : loc("LOC_EMIG_DP_FREE_ALL", "all in about {1_Turns} turns", w.allIn));
   return out;
 }
 

@@ -190,7 +190,9 @@ export function msgText(node) {
   if ("cap" in o) return capFirst(msgText(o.cap));
   if ("bare" in o) return stripThe(msgText(o.bare));
   if ("n" in o) return groupNum(o.n);
-  return loc(o.k, o.f, ...(o.a || []).map(msgText));
+  // Numbers stay numbers, so the key's plural rules see one ("3 people", not "3 person").
+  const arg = (/** @type {*} */ a) => (typeof a === "number" && isFinite(a) ? a : msgText(a));
+  return loc(o.k, o.f, ...(o.a || []).map(arg));
 }
 
 /** Packed-form operator for each wrapping node. */

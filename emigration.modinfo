@@ -275,6 +275,7 @@
                     <Item>ui/emigration-call-home-ai.js</Item>
                     <!-- People displaced inside their civ go home on their own once home is calm. -->
                     <Item>ui/emigration-homecoming.js</Item>
+                    <Item>ui/emigration-homecoming-split.js</Item>
                     <!-- The Displaced tab: where your people are, what a returnee is worth, the way home. -->
                     <Item>ui/emigration-displaced.js</Item>
                     <Item>ui/emigration-displaced-view.js</Item>

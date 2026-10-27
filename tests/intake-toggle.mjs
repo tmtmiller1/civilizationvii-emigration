@@ -1,9 +1,10 @@
 // intake-toggle.mjs
 //
 // The per-settlement intake switch (risks 2.4, plan 7.3): a city its owner closed is never chosen as a
-// destination, the planning pass and the real pass agree, an arrival due at a city that closed while it travelled
-// is re-aimed at the civilization's next open settlement (population conserved), a city that changed hands reopens
-// by itself, the setting round-trips through the persisted state, and the option switch reopens everything.
+// destination, the planning pass and the real pass agree, people already on the road still arrive, people who
+// would have gone there choose another civilization's settlement or stay home by the usual pull, a city that changed
+// hands reopens by itself, the setting round-trips through the persisted state, and the option switch reopens
+// everything.
 
 import assert from "node:assert/strict";
 import { CONFIG } from "/emigration/ui/emigration-config.js";
@@ -114,7 +115,8 @@ const total = (cities) => cities.reduce((n, c) => n + c.ruralPopulation, 0);
   setCityClosed("2:2", false);
 }
 
-// C: an arrival due at a city that closed while it travelled lands in the civilization's next open settlement.
+// C: people already on the road when a settlement starts dissuading newcomers still arrive there; new departures
+// choose somewhere else.
 {
   pinBaseConfig();
   Object.assign(CONFIG, { transitLagTurns: 4, transitHexPerTurn: 5 });
@@ -126,20 +128,48 @@ const total = (cities) => cities.reduce((n, c) => n + c.ruralPopulation, 0);
   installWorld({ 1: major([poor, rich, second]) });
   const depart = runPass().filter((m) => m.phase === "depart");
   assert.ok(depart.length >= 1 && depart[0].destName === rich.name, "C: the departure aims at the richest city");
-  const before = total([poor, rich, second]) + depart.length;
-  const richBefore = rich.ruralPopulation; // the open city took an instant move this turn; none after it closes
-  setCityClosed("1:2", true); // closes while they are on the road
+  const before = total([poor, rich, second]) + loadState().transit.length;
+  const richBefore = rich.ruralPopulation;
+  setCityClosed("1:2", true); // starts dissuading while they are on the road
   globalThis.Game.turn = 100;
-  const arrive = runPass().filter((m) => m.phase === "arrive");
-  assert.equal(arrive.length, 0, "C: the arrival is held a turn while it is re-aimed");
-  globalThis.Game.turn = 101;
-  const landed = runPass().filter((m) => m.phase === "arrive");
-  assert.ok(landed.length >= 1, "C: it lands the next turn");
-  assert.ok(landed.every((m) => m.destName === second.name), "C: in the open settlement of the same civilization");
-  assert.equal(rich.ruralPopulation, richBefore, "C: the closed city took nobody after closing");
-  assert.equal(total([poor, rich, second]) + loadState().transit.length, before,
-    "C: population conserved across the reroute (one more point is still on the road)");
+  const moves = runPass();
+  const landed = moves.filter((m) => m.phase === "arrive");
+  assert.ok(landed.length >= 1, "C: the traveller arrives");
+  assert.ok(landed.every((m) => m.destName === rich.name), "C: where they set out for");
+  assert.ok(rich.ruralPopulation > richBefore, "C: the dissuading settlement took the traveller in");
+  assert.ok(moves.filter((m) => m.phase !== "arrive").every((m) => m.destName !== rich.name),
+    "C: nobody new sets out for it");
+  assert.equal(total([poor, rich, second]) + loadState().transit.length, before, "C: population conserved");
   setCityClosed("1:2", false);
+}
+
+// E: when the dissuading settlement was the best place, people choose by the usual pull among the rest: another
+// civilization's settlement when it beats home, or nowhere, staying home, when nothing does.
+function dissuadedBest(abroadFood) {
+  pinBaseConfig();
+  installConfigStore();
+  globalThis.Game = { turn: 1 };
+  const home = makeCity(1, 1, { name: "Home", population: 10, rural: 10, yields: { YIELD_FOOD: 100 } });
+  const rich = makeCity(1, 2, { name: "Rich", population: 2, rural: 2, yields: { YIELD_FOOD: 1000 } });
+  const worse = makeCity(1, 3, { name: "Worse", population: 2, rural: 2, yields: { YIELD_FOOD: 10 } });
+  const abroad = makeCity(2, 1, { name: "Abroad", population: 2, rural: 2, yields: { YIELD_FOOD: abroadFood } });
+  installWorld({ 1: major([home, rich, worse]), 2: major([abroad]) });
+  setCityClosed("1:2", true);
+  const moves = [];
+  for (let i = 0; i < 4; i++) {
+    globalThis.Game.turn = 2 + i;
+    moves.push(...runPass().filter((m) => m.phase !== "arrive" && m.srcName === "Home"));
+  }
+  setCityClosed("1:2", false);
+  return { moves, home };
+}
+{
+  const decent = dissuadedBest(600);
+  assert.ok(decent.moves.length >= 1, "E: people still leave when another civilization's settlement beats home");
+  assert.ok(decent.moves.every((m) => m.destName === "Abroad"), "E: they go there, not to the worse settlement");
+  const poorer = dissuadedBest(20);
+  assert.equal(poorer.moves.length, 0, "E: with nothing better than home, they stay");
+  assert.equal(poorer.home.ruralPopulation >= 10, true, "E: home keeps its people");
 }
 
 // D: a city that changed hands reopens by itself; the state round-trips; the option switch reopens everything.

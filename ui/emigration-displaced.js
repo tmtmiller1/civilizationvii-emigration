@@ -11,7 +11,8 @@ import { CONFIG } from "/emigration/ui/emigration-config.js";
 import { CALL_HOME_CURRENCY, CALL_HOME_SCOPE, callHomeCandidates, callHomeChance, callHomeCost }
   from "/emigration/ui/emigration-call-home.js";
 import { callHomeCooldownLeft, callHomeResolvable } from "/emigration/ui/emigration-call-home-action.js";
-import { homecomingStatus, batchFor } from "/emigration/ui/emigration-homecoming.js";
+import { homecomingStatus, homecomingSplitOf, batchFor } from "/emigration/ui/emigration-homecoming.js";
+import { groupStatus } from "/emigration/ui/emigration-homecoming-split.js";
 import { migrationFlowHistory } from "/emigration/ui/emigration-migration-stats.js";
 import { isRefugeeCause } from "/emigration/ui/emigration-causes.js";
 import { listDepartureTiles } from "/emigration/ui/emigration-departure-tile.js";
@@ -34,6 +35,8 @@ export const TILE_YIELDS = ["YIELD_FOOD", "YIELD_PRODUCTION", "YIELD_GOLD", "YIE
  *   (per settlement for the internal call).
  * @property {(host:number)=>string} [civ] A host civ's name.
  * @property {(pid:number, home:string)=>{t:string, p:number}[]} [lostTiles] The tiles departures tore down.
+ * @property {(pid:number)=>import("/emigration/ui/emigration-homecoming-split.js").SplitBook} [split] Who of each
+ *   group goes back and who stays.
  */
 
 /**
@@ -41,8 +44,11 @@ export const TILE_YIELDS = ["YIELD_FOOD", "YIELD_PRODUCTION", "YIELD_GOLD", "YIE
  * @property {string} home
  * @property {boolean} held Whether we still hold it.
  * @property {number} total Population points away from it.
- * @property {{from:string, points:number, tile:Record<string, number>|null}[]} internal In our own settlements, with
- *   what a rural tile there yields (what a returnee leaves behind).
+ * @property {{from:string, points:number, stay:number, tile:Record<string, number>|null}[]} internal In our own
+ *   settlements, with how many of them have settled there for good and what a rural tile there yields (what a
+ *   returnee leaves behind).
+ * @property {number} settled How many of those in our own settlements have settled where they are.
+ * @property {boolean} deciding Whether some in our own settlements haven't decided yet whether to go back.
  * @property {{from:string, host:number, civ:string, points:number}[]} abroad Under other rulers.
  * @property {number|null} since The turn people first fled it, when known.
  * @property {{type:string, count:number}[]} lost The improvements departures tore down, most first.
@@ -59,7 +65,7 @@ function withDefaults(d) {
   return {
     candidates: (pid) => callHomeCandidates(pid), resolvable: callHomeResolvable, homecoming: homecomingStatus,
     firstTurns: liveFirstTurns, tileYields: liveTileYields, cooldown: callHomeCooldownLeft, civ: civName,
-    lostTiles: lostTilesFor, ...(d || {})
+    lostTiles: lostTilesFor, split: homecomingSplitOf, ...(d || {})
   };
 }
 
@@ -207,18 +213,14 @@ export function displacedModel(pid, deps) {
   const row = (/** @type {string} */ home) => {
     let r = rows.get(home);
     if (!r) {
-      r = { home, held: true, total: 0, internal: [], abroad: [], since: null, lost: [], wait: null, tile: null,
-        hasten: null, abroadCall: null };
+      r = { home, held: true, total: 0, internal: [], abroad: [], settled: 0, deciding: false, since: null, lost: [],
+        wait: null, tile: null, hasten: null, abroadCall: null };
       rows.set(home, r);
     }
     return r;
   };
-  for (const p of cands.internal) {
-    const r = row(p.home);
-    r.internal.push({ from: p.from, points: p.points, tile: d.tileYields(pid, p.from) });
-    r.total += p.points;
-    if (!ok(p)) r.held = false;
-  }
+  const book = d.split(pid);
+  for (const p of cands.internal) addInternal(row(p.home), p, groupStatus(book, p), d.tileYields(pid, p.from), ok);
   for (const p of cands.external) {
     const r = row(p.home);
     r.abroad.push({ from: p.from, host: p.host, civ: d.civ(p.host) || "", points: p.points });
@@ -228,6 +230,20 @@ export function displacedModel(pid, deps) {
   const cap = Math.max(1, Math.floor(Number(CONFIG.callHomeMaxPointsPerAttempt) || 1));
   for (const r of rows.values()) finishRow(r, pid, first, cap, d);
   return [...rows.values()].sort((a, b) => b.total - a.total || a.home.localeCompare(b.home));
+}
+
+/**
+ * Count one group in our own settlements into its home's row.
+ * @param {DisplacedRow} r @param {*} p The pair. @param {{stay:number, undecided:number}} g Its split.
+ * @param {Record<string, number>|null} tile What a rural tile where they live yields.
+ * @param {(pair:*)=>boolean} ok Whether both cities still stand.
+ */
+function addInternal(r, p, g, tile, ok) {
+  r.internal.push({ from: p.from, points: p.points, stay: g.stay, tile });
+  r.total += p.points;
+  r.settled += g.stay;
+  if (g.undecided > 0) r.deciding = true;
+  if (!ok(p)) r.held = false;
 }
 
 /**
@@ -246,7 +262,8 @@ function finishRow(r, pid, first, cap, d) {
     r.tile = { perTile, total: Math.round(TILE_YIELDS.reduce((n, y) => n + (perTile[y] || 0), 0) * 10) / 10 };
   }
   if (own > 0) {
-    if (CONFIG.homecomingEnabled) r.wait = waitFor(d.homecoming(pid, r.home), own);
+    const coming = own - (CONFIG.homecomingEnabled ? r.settled : 0);
+    if (CONFIG.homecomingEnabled && coming > 0) r.wait = waitFor(d.homecoming(pid, r.home), coming);
     const n = Math.min(cap, own);
     r.hasten = {
       n, gold: callHomeCost(n, CALL_HOME_SCOPE.INTERNAL, CALL_HOME_CURRENCY.GOLD),

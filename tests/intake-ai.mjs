@@ -79,7 +79,7 @@ const reads = (over = {}) => ({ congestion: 1.5, balance: 100, upkeep: 1, turn: 
   assert.deepEqual(r2.opened, ["C11"], "the one the treasury can't cover opens");
   assert.equal(isCityClosed({ key: "0:10", owner: 0 }), true);
   assert.equal(isCityClosed({ key: "0:11", owner: 0 }), false);
-  assert.match(notes[0], /^Not enough Influence to keep C11 closed to newcomers\. It's open again\.$/);
+  assert.match(notes[0], /^Not enough Influence to keep dissuading newcomers in C11\. They're welcome there again\.$/);
   // Free: no charge.
   CONFIG.cityIntakeInfluence = 0;
   paid.length = 0;

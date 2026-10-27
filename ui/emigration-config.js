@@ -281,6 +281,16 @@ export const CONFIG = {
   homecomingCalmTurnsAfterWar: 10, // the same after fighting in its borders or a siege (a frontier city gets hit again)
   homecomingEveryTurns: 4, // turns between returns to the same home settlement
   homecomingBatchPer: 8, // each return brings one home, plus one for every this many still away
+  // Not everyone goes back (emigration-homecoming-split.js). Once home is calm, each group decides once: this share
+  // goes back after an absence of up to homecomingShareGraceTurns, homecomingShareDropPerTurn less for each turn
+  // after, never under homecomingShareFloor; times homecomingHostBetterScale when the settlement they live in now is
+  // homecomingHostBetterGap or more prosperity above home. The rest settle where they are.
+  homecomingReturnShare: 0.8,
+  homecomingShareGraceTurns: 5,
+  homecomingShareDropPerTurn: 0.02,
+  homecomingShareFloor: 0.3,
+  homecomingHostBetterScale: 0.75,
+  homecomingHostBetterGap: 15,
   readoutPrescribe: true, // the city readout says how much Food, Production or Happiness would stop people leaving
   aiDifficultyDiscountPerLevel: 0.04, // the AI's call-home and refugee prices drop this much per Gold handicap level
 

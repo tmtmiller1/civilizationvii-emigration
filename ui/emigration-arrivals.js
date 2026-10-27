@@ -80,8 +80,8 @@ function deferArrival(e, state, now) {
 
 
 /**
- * Where an arrival due at a city that closed to newcomers while it travelled goes instead: the most populous
- * settlement of the same civilization that is open, not in crisis, and can take a point this turn.
+ * Where an arrival due at a city that turned unsafe while it travelled goes instead: the most populous settlement
+ * of the same civilization that isn't dissuading newcomers, isn't in crisis, and can take a point this turn.
  * @param {Transit} e The arrival. @param {Map<string, *>} byKey Live ranking by key.
  * @param {InboundCtx|undefined} ctx The inbound context.
  * @returns {*|null} The new destination's signal, or null when there is none.
@@ -106,10 +106,9 @@ function canTakeRerouted(d, e, ctx) {
 }
 
 /**
- * The outcome for an arrival whose destination closed to newcomers (or turned unsafe) in transit: re-aimed at
- * the best open settlement of the same civilization and landed next turn (a deferral, so the retry window still
- * bounds it),
- * or, with nowhere else to go, deferred like a capped arrival until the window runs out.
+ * The outcome for an arrival whose destination turned unsafe in transit: re-aimed at the most populous
+ * settlement of the same civilization that can take it, landed next turn (a deferral, so the retry window still
+ * bounds it), or, with nowhere else to go, deferred like a capped arrival until the window runs out.
  * @param {Transit} e The arrival. @param {Map<string, *>} byKey Live ranking by key.
  * @param {InboundCtx|undefined} ctx The inbound context. @param {boolean} expired Past the retry window.
  * @returns {{action:"defer"|"die", dieKind:"capped"}} The outcome.
@@ -121,7 +120,7 @@ function closedOutcome(e, byKey, ctx, expired) {
     e.destOwner = alt.owner;
     e.destName = cityName(alt.city);
     e.destLoc = settlementLoc(alt.city);
-    dlog("arrivals: " + e.srcName + " rerouted to " + e.destName + " (destination closed to newcomers)");
+    dlog("arrivals: " + e.srcName + " rerouted to " + e.destName + " (destination in crisis)");
   }
   return { action: expired ? "die" : "defer", dieKind: "capped" };
 }
@@ -150,7 +149,10 @@ function heldForSafety(destSig, expired) {
 function resolveArrival(e, byKey, ctx, expired, now) {
   const destSig = byKey.get(e.destKey);
   if (!destSig) return { action: "die", dieKind: "razed" }; // razed/captured en route → perished in transit
-  if (isCityClosed(destSig) || heldForSafety(destSig, expired)) return closedOutcome(e, byKey, ctx, expired);
+  // Dissuading newcomers changes where people choose to go (the planning pass skips the settlement, so they pick
+  // another of the owner's, another civilization's, or stay home); people already on the road still arrive. Only
+  // a destination that turned unsafe holds or re-aims them.
+  if (heldForSafety(destSig, expired)) return closedOutcome(e, byKey, ctx, expired);
   // At the destination's inbound cap, or it momentarily can't accept a point: retry a few turns, then
   // perish (expired) rather than ever force past the cap: a refugee who can't find room dies waiting.
   if (!canReceiveInbound(e.destKey, ctx)) return { action: expired ? "die" : "defer", dieKind: "capped" };
