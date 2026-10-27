@@ -1,8 +1,8 @@
 // ai-difficulty.mjs
 //
 // The AI's price discount for the game's difficulty (emigration-ai-difficulty.js): the game's Gold handicap level
-// for the difficulty in play, times the setting, off the mod's prices for AI civilizations. Deity (level 5) at the
-// default 4% a level is 20% off, matching the base game's Gold scaling there.
+// step for the difficulty in play, times the setting, off the mod's prices for AI civilizations. Deity (step 5) at
+// the default 4% a step is 20% off.
 
 import assert from "node:assert/strict";
 
@@ -10,11 +10,22 @@ const { CONFIG } = await import("/emigration/ui/emigration-config.js");
 const d = await import("/emigration/ui/emigration-ai-difficulty.js");
 const { CALL_HOME_SCOPE, CALL_HOME_CURRENCY, callHomeCost } = await import("/emigration/ui/emigration-call-home.js");
 
+// The game's own Gold rows (base-standard difficulties.xml, 1.5.0): a percentage, not a step count. Read as raw
+// numbers they put King and up on the half-price floor; ranked, they give Settler 0 ... Deity 5.
 const rows = [
-  { DifficultyType: "DIFFICULTY_SETTLER", HandicapSystemType: "HANDICAP_GOLD", HandicapLevel: 0 },
-  { DifficultyType: "DIFFICULTY_DEITY", HandicapSystemType: "HANDICAP_GOLD", HandicapLevel: 5 },
+  { DifficultyType: "DIFFICULTY_SETTLER", HandicapSystemType: "HANDICAP_GOLD", HandicapLevel: -20 },
+  { DifficultyType: "DIFFICULTY_PRINCE", HandicapSystemType: "HANDICAP_GOLD", HandicapLevel: 0 },
+  { DifficultyType: "DIFFICULTY_KING", HandicapSystemType: "HANDICAP_GOLD", HandicapLevel: 20 },
+  { DifficultyType: "DIFFICULTY_EMPEROR", HandicapSystemType: "HANDICAP_GOLD", HandicapLevel: 40 },
+  { DifficultyType: "DIFFICULTY_IMMORTAL", HandicapSystemType: "HANDICAP_GOLD", HandicapLevel: 60 },
+  { DifficultyType: "DIFFICULTY_DEITY", HandicapSystemType: "HANDICAP_GOLD", HandicapLevel: 80 },
   { DifficultyType: "DIFFICULTY_DEITY", HandicapSystemType: "HANDICAP_COMBAT", HandicapLevel: 8 }
 ];
+assert.equal(d.goldHandicapLevel("DIFFICULTY_PRINCE", rows), 1, "Prince is one step up from Settler");
+assert.equal(d.goldHandicapLevel("DIFFICULTY_KING", rows), 2, "King is two steps, not 20");
+// Another mod's extra difficulty between King and Emperor moves the ladder: Deity becomes step 6.
+assert.equal(d.goldHandicapLevel("DIFFICULTY_DEITY",
+  [...rows, { DifficultyType: "DIFFICULTY_MOD_EXTRA", HandicapSystemType: "HANDICAP_GOLD", HandicapLevel: 30 }]), 6);
 assert.equal(d.goldHandicapLevel("DIFFICULTY_DEITY", rows), 5, "the Gold system's level, not another system's");
 assert.equal(d.goldHandicapLevel("DIFFICULTY_SETTLER", rows), 0);
 assert.equal(d.goldHandicapLevel("DIFFICULTY_UNKNOWN", rows), 0, "unknown: no discount");

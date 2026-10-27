@@ -4,7 +4,8 @@
 // game's difficulty. The game gives the AI more Gold on harder settings through its handicap tables, but the
 // mod's prices are the human's, so at Deity the mod is harder on the AI than the base game is. The scale is
 // 1 minus `aiDifficultyDiscountPerLevel` per level of the game's Gold handicap for the difficulty in play
-// (StandardHandicaps: Settler 0 ... Deity 5), read once per game. Unreadable means no discount.
+// (its step among the StandardHandicaps Gold rows: Settler 0 ... Deity 5), read once per game. Unreadable means no
+// discount.
 
 import { CONFIG } from "/emigration/ui/emigration-config.js";
 import { registerCacheReset } from "/emigration/ui/emigration-cache-reset.js";
@@ -39,21 +40,32 @@ export function difficultyType(read) {
 }
 
 /**
- * The Gold handicap level of a difficulty, from the game's StandardHandicaps rows; 0 when unknown.
+ * The step of a difficulty on the game's Gold handicap ladder, 0 for the easiest; 0 when unknown. The game stores
+ * the Gold handicap as a percentage (base-standard difficulties.xml: Settler -20, Prince 0 ... Deity 80), not a step
+ * count, so the difficulty's place among the Gold rows is read instead of its number: Settler 0 ... Deity 5, and a
+ * mod that adds or reorders difficulties moves the ladder with it.
  * @param {string} difficulty A DifficultyType. @param {*[]} [rows] Test seam: the StandardHandicaps rows.
  * @returns {number}
  */
 export function goldHandicapLevel(difficulty, rows) {
   try {
     const list = rows || (typeof GameInfo !== "undefined" ? GameInfo.StandardHandicaps : []);
+    /** @type {number[]} */
+    const levels = [];
+    let mine = null;
     for (const r of list) {
-      if (r.DifficultyType !== difficulty || r.HandicapSystemType !== SYSTEM) continue;
-      return Math.max(0, Number(r.HandicapLevel) || 0);
+      if (r.HandicapSystemType !== SYSTEM) continue;
+      const v = Number(r.HandicapLevel);
+      if (!Number.isFinite(v)) continue;
+      if (!levels.includes(v)) levels.push(v);
+      if (r.DifficultyType === difficulty) mine = v;
     }
+    if (mine === null) return 0;
+    levels.sort((a, b) => a - b);
+    return levels.indexOf(mine);
   } catch (_) {
-    /* unreadable */
+    return 0;
   }
-  return 0;
 }
 
 /**
