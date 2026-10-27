@@ -150,7 +150,9 @@ const total = (cities) => cities.reduce((n, c) => n + c.ruralPopulation, 0);
   assert.equal(isCityClosed({ key: "1:2", owner: 1 }), true);
   assert.equal(isCityClosed({ key: "1:2", owner: 2 }), false, "D: a captured city (new owner) reopens");
   const raw = JSON.parse(globalThis.Configuration.getGame().getValue("EmigrationState_v1"));
-  assert.deepEqual(raw.data.cities, { "1:2": { closed: true, owner: 1 } }, "D: persisted with the owner");
+  assert.deepEqual(Object.keys(raw.data.cities), ["1:2"]);
+  assert.equal(raw.data.cities["1:2"].owner, 1, "D: persisted with the owner");
+  assert.equal(typeof raw.data.cities["1:2"].since, "number", "D: and the turn it was closed");
   // A hand-edited or older blob: junk rows drop, an open row drops, a closed row without an owner reads it off the key.
   saveState({ sources: {}, monoTurn: 3, transit: [], cities: { "1:5": { closed: true }, "1:6": { closed: false }, "x": 1 } });
   const s = loadState();

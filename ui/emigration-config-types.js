@@ -231,6 +231,8 @@
  * @property {number} siegeFloor Escalation at siege tenure 1 (fraction of full).
  * @property {number} siegeRampTurns Turns of sustained siege to reach full escalation.
  * @property {boolean} cityIntakeToggleEnabled The per-settlement "Close to newcomers" switch.
+ * @property {number} cityIntakeInfluence Influence a closed settlement costs a turn (0 = free).
+ * @property {boolean} aiIntakeEnabled AI civilizations close settlements to newcomers by a rule.
  * @property {number} siegeLossCapPct Max fraction of onset population lost to war.
  * @property {boolean} destinationSafetyEnabled Refugees avoid a destination in acute crisis.
  * @property {number} crisisDestPenalty The penalty per threshold's worth a destination sits over its flee threshold.

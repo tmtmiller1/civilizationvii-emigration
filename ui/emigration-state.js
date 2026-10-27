@@ -28,10 +28,10 @@ let _closed = new Map();
  * The player's per-city intake settings: a city its owner closed takes no newcomers. Only closed cities are
  * kept; the owner at closing time is stored so a city that changes hands reopens by itself.
  * @param {*} cities Candidate cities map.
- * @returns {Record<string, {closed:boolean, owner:number}>} Normalized map.
+ * @returns {Record<string, {closed:boolean, owner:number, since?:number}>} Normalized map.
  */
 function normalizeCitiesMap(cities) {
-  /** @type {Record<string, {closed:boolean, owner:number}>} */
+  /** @type {Record<string, {closed:boolean, owner:number, since?:number}>} */
   const out = {};
   if (!cities || typeof cities !== "object") return out;
   let n = 0;
@@ -47,22 +47,28 @@ function normalizeCitiesMap(cities) {
 
 /**
  * @param {string} key City key. @param {*} value Candidate row.
- * @returns {{closed:boolean, owner:number}|null} The normalized row, or null when it isn't a closed city.
+ * @returns {{closed:boolean, owner:number, since?:number}|null} The normalized row, or null when it isn't closed.
  */
 function normalizeCityEntry(key, value) {
   if (typeof key !== "string" || !key.length || !value || typeof value !== "object") return null;
-  if (/** @type {*} */ (value).closed !== true) return null;
-  const owner = finiteNumberOr(/** @type {*} */ (value).owner, Number(key.split(":")[0]));
-  return isFinite(owner) ? { closed: true, owner } : null;
+  const v = /** @type {*} */ (value);
+  if (v.closed !== true) return null;
+  const owner = finiteNumberOr(v.owner, Number(key.split(":")[0]));
+  if (!isFinite(owner)) return null;
+  /** @type {{closed:boolean, owner:number, since?:number}} */
+  const row = { closed: true, owner };
+  if (Number.isFinite(Number(v.since))) row.since = Number(v.since);
+  return row;
 }
 
-/** @param {Record<string, {closed:boolean, owner:number}>} cities The normalized map. */
+/** @param {Record<string, {closed:boolean, owner:number, since?:number}>} cities The normalized map. */
 function rememberClosed(cities) {
   _closed = new Map(Object.keys(cities).map((k) => [k, cities[k].owner]));
 }
 
 /**
- * Whether a destination is closed to newcomers by its owner. False when the toggle is off, the city was never
+ * Whether a destination is closed to newcomers by its owner (the player, or an AI civilization by the rule in
+ * emigration-intake-ai.js). False when the toggle is off, the city was never
  * closed, or it has changed hands since (the owner at closing time no longer holds it).
  * @param {{key?:string, owner?:number}|null|undefined} dest A city signal (key and owner).
  * @returns {boolean} True when closed.
@@ -81,7 +87,7 @@ export function isCityClosed(dest) {
 export function setCityClosed(cityKey, on) {
   if (typeof cityKey !== "string" || !cityKey.length) return;
   const state = loadState();
-  if (on) state.cities[cityKey] = { closed: true, owner: Number(cityKey.split(":")[0]) };
+  if (on) state.cities[cityKey] = { closed: true, owner: Number(cityKey.split(":")[0]), since: gameTurn() };
   else delete state.cities[cityKey];
   saveState(state);
 }
@@ -279,7 +285,8 @@ function normalizeTransitList(transit) {
  * @property {Record<string, {pressure:number, cooldown:number}>} sources Per-source state.
  * @property {number} monoTurn Monotonic scaling turn (never resets at age boundaries).
  * @property {Transit[]} transit In-flight lagged migrations awaiting arrival.
- * @property {Record<string, {closed:boolean, owner:number}>} cities Per-city intake settings (closed cities only).
+ * @property {Record<string, {closed:boolean, owner:number, since?:number}>} cities Per-city intake settings (closed
+ *   cities only), with the turn each was closed.
  */
 
 /**

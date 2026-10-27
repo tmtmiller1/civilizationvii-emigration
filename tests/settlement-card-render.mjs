@@ -85,8 +85,8 @@ const entry = (pressure) => ({ name: "Shomron", town: false, in: empty, out: emp
   assert.ok(t.includes("Close to newcomers"), "the switch offers to close an open settlement");
   assert.ok(!t.some((x) => /Siege stalled/.test(x)), "no stalled line for a live siege");
   assert.ok(!t.includes("Closed to newcomers"), "no closed tag while open");
-  const btn = byClass(card, "emig-filter-btn")[0];
-  assert.ok(btn && !btn.className.includes("active"), "the switch is drawn flat while open");
+  const btn = byClass(card, "emig-dp-btn")[0];
+  assert.ok(btn && !btn.className.includes("emig-sc-intake-closed"), "the card's standard button, unmarked while open");
   btn.click();
   assert.deepEqual(toggles, [["1:4", true], "after"], "clicking closes the settlement and redraws");
 }
@@ -100,8 +100,8 @@ const entry = (pressure) => ({ name: "Shomron", town: false, in: empty, out: emp
   assert.ok(!t.some((x) => /likely to leave/.test(x)), "no forecast line without a forecast");
   assert.ok(t.includes("Open to newcomers"), "the switch offers to open");
   assert.ok(t.some((x) => /^Siege stalled: the besiegers aren't attacking/.test(x)), "the stalled line under the gauge");
-  const btn = byClass(card, "emig-filter-btn")[0];
-  assert.ok(btn.className.includes("active"), "the switch is drawn active while closed");
+  const btn = byClass(card, "emig-dp-btn")[0];
+  assert.ok(btn.className.includes("emig-sc-intake-closed"), "marked while closed");
   btn.click();
   assert.deepEqual(toggles, [["1:4", false], "after"]);
 }
@@ -114,6 +114,23 @@ const entry = (pressure) => ({ name: "Shomron", town: false, in: empty, out: emp
   const calm = settlementCard(entry({ bar: 0.1, flag: "", cityKey: "1:4", owner: 1,
     forecast: { stable: true, turns: 0, people: 0, rate: 0 } }), null, null, deps);
   assert.ok(texts(calm).includes("Nobody is likely to leave soon"), "the stable wording");
+}
+
+// The price under the switch, and the switch greyed with the shortfall on hover when a turn can't be covered.
+{
+  toggles.length = 0;
+  const priced = settlementCard(entry({ bar: 0.2, flag: "", cityKey: "1:4", owner: 1, closed: false, intakeCost: 1, influence: 40 }),
+    null, null, deps);
+  assert.ok(texts(priced).includes("Costs 1 Influence a turn while closed."), "the price under the button");
+  const short = settlementCard(entry({ bar: 0.2, flag: "", cityKey: "1:4", owner: 1, closed: false, intakeCost: 2, influence: 1.6 }),
+    null, null, deps);
+  const btn = byClass(short, "emig-dp-btn")[0];
+  assert.ok(btn.className.split(" ").includes("off"), "greyed when the treasury can't cover a turn");
+  assert.equal(btn.title, "Not enough Influence: closing costs 2 a turn and we have 1.");
+  btn.click();
+  assert.deepEqual(toggles, [], "and it doesn't close anything");
+  const free = settlementCard(entry({ bar: 0.2, flag: "", cityKey: "1:4", owner: 1, closed: false, intakeCost: 0 }), null, null, deps);
+  assert.ok(!texts(free).some((t) => /Influence a turn/.test(t)), "no price line when closing is free");
 }
 
 // No switch without the dep (option off) or without a city key (a civilization's card, a displaced-only card).

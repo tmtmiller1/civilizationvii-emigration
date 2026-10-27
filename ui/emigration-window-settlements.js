@@ -7,6 +7,9 @@
 import { ownerCitySnapshots } from "/emigration/ui/emigration-city-readout-data.js";
 import { civAdjective } from "/emigration/ui/emigration-naming.js";
 import { loc } from "/emigration/ui/emigration-loc.js";
+import { callHomeBalance } from "/emigration/ui/emigration-call-home-action.js";
+import { CALL_HOME_CURRENCY } from "/emigration/ui/emigration-call-home.js";
+import { intakeUpkeep } from "/emigration/ui/emigration-intake-upkeep.js";
 
 /** @param {Map<string, *>} map @param {string} city */
 function cityEntry(map, city) {
@@ -117,13 +120,15 @@ function pressureEntry(s) {
 
 /**
  * The settlement's standing switches and projections: the stalled siege, the intake switch, the forecast.
- * @param {*} s A CitySnapshot. @returns {*} {stalled, cityKey, owner, closed, forecast}.
+ * @param {*} s A CitySnapshot. @returns {*} {stalled, cityKey, owner, closed, intakeCost, influence, forecast}.
  */
 function standingOf(s) {
   return {
     stalled: !!s.siegeStalled, // besieged by units that aren't attacking: the siege has stopped counting
     cityKey: s.cityKey || "", owner: s.owner, // for the card's own buttons (Close to newcomers)
     closed: !!s.closedToNewcomers,
+    intakeCost: intakeUpkeep(), // Influence a turn while closed, and what the treasury holds, for the button
+    influence: typeof s.owner === "number" ? callHomeBalance(s.owner, CALL_HOME_CURRENCY.INFLUENCE) : Infinity,
     forecast: s.forecast || null // when the pressure is likely to reach the bar, and how many go
   };
 }

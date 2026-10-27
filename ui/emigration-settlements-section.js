@@ -21,6 +21,7 @@ export function settlementsSection(d) {
     ? diverseCityRows(d.diversity || [], { cosmo: !!CONFIG.cosmopolitanismScore }) : [];
   return {
     title: loc("LOC_EMIG_VIEW_SEC_SETTLEMENTS", "Settlements"), kind: "cityflows", cities: d.myCities || [],
-    civCards: buildCivFlows(d.flows || [], d.civs || [], d.eventsByOwner), ...displacedExtras(d), diversity
+    civCards: buildCivFlows(d.flows || [], d.civs || [], d.eventsByOwner, d.intra || []),
+    ...displacedExtras(d), diversity
   };
 }

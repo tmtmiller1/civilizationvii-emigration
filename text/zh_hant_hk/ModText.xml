@@ -244,7 +244,11 @@
         <Replace Tag="LOC_EMIG_T_SCAP" Language="zh_Hant_HK"><Text>圍城：戰爭中城市損失的最大比例</Text></Replace>
         <Replace Tag="LOC_EMIG_T_SCAP_D" Language="zh_Hant_HK"><Text>戰爭移民在停止前最多能帶走的城市人口（按圍城開始時規模的比例）。僅圍城模型使用。</Text></Replace>
         <Replace Tag="LOC_EMIG_T_INTAKE" Language="zh_Hant_HK"><Text>對新來者關閉聚落</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_INTAKE_D" Language="zh_Hant_HK"><Text>你的每個聚落在「聚落」卡上都有一個「對新來者關閉」按鈕。關閉的聚落不接收任何人：到來者會改去你次佳的聚落，已在路上的人則在抵達時重新導向。關閉此項會隱藏按鈕，並重新開放所有聚落。</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_INTAKE_D" Language="zh_Hant_HK"><Text>你的每個聚落在「聚落」分頁的卡片上都會多出一個「對新來者關閉」按鈕。關閉的聚落不接收任何人：到來者改去你次佳的聚落，已在路上的人會在抵達時改道。關閉此選項會隱藏該按鈕，並讓所有關閉的聚落重新開放，AI 的也一樣。</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_INTAKE_COST" Language="zh_Hant_HK"><Text>每個關閉的聚落每回合花費的影響力</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_INTAKE_COST_D" Language="zh_Hant_HK"><Text>每個對新來者關閉的聚落每回合花費的影響力，你和 AI 都一樣。影響力不夠時，付得起幾個就保持關閉幾個，其餘的重新開放。關閉此選項則關閉聚落不收費。</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_AI_INTAKE" Language="zh_Hant_HK"><Text>AI 文明會對新來者關閉聚落</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_AI_INTAKE_D" Language="zh_Hant_HK"><Text>超過擁擠上限的 AI 文明會關閉一個一直在接收人口、而且不滿的聚落，每回合一個，最多關閉其三分之一的聚落，前提是它的影響力足以支付十回合的維護費。五回合後，一旦壓力緩和、該聚落滿意或影響力不足，它就會重新開放一個。它從不關閉自己的首都。</Text></Replace>
         <Replace Tag="LOC_EMIG_T_DESTSAFE" Language="zh_Hant_HK"><Text>難民避開受攻擊的聚落</Text></Replace>
         <Replace Tag="LOC_EMIG_T_DESTSAFE_D" Language="zh_Hant_HK"><Text>自身陷於危機的聚落（戰鬥或災害超過逃離門檻，或正被夷平）在危機持續期間是弱得多的目的地，已在前往途中的人會被暫留，或改送往次佳的聚落。若沒有更安全的去處，人們仍會前往。圍城停滯時，懲罰解除。</Text></Replace>
         <Replace Tag="LOC_EMIG_T_DESTPEN" Language="zh_Hant_HK"><Text>受攻擊聚落的懲罰</Text></Replace>
@@ -463,6 +467,9 @@
         <Replace Tag="LOC_EMIG_SC_CLOSE_INTAKE" Language="zh_Hant_HK"><Text>對新來者關閉</Text></Replace>
         <Replace Tag="LOC_EMIG_SC_OPEN_INTAKE" Language="zh_Hant_HK"><Text>對新來者開放</Text></Replace>
         <Replace Tag="LOC_EMIG_SC_CLOSE_INTAKE_TIP" Language="zh_Hant_HK"><Text>關閉期間沒有人會在此定居：到來者改去你次佳的聚落，這個聚落也不用為他們支付融入成本。無處可去的難民也不會被強行塞進來。</Text></Replace>
+        <Replace Tag="LOC_EMIG_SC_INTAKE_COST" Language="zh_Hant_HK"><Text>關閉期間每回合花費 {1_Cost} 影響力。</Text></Replace>
+        <Replace Tag="LOC_EMIG_SC_INTAKE_SHORT" Language="zh_Hant_HK"><Text>影響力不足：關閉每回合要花 {1_Cost}，而我們只有 {2_Have}。</Text></Replace>
+        <Replace Tag="LOC_EMIG_INTAKE_REOPENED" Language="zh_Hant_HK"><Text>影響力不足，無法讓{1_Names}繼續對新來者關閉。它已重新開放。</Text></Replace>
         <Replace Tag="LOC_EMIG_SC_OPEN_INTAKE_TIP" Language="zh_Hant_HK"><Text>新來者再度在此定居。已在路上的人下回合抵達。</Text></Replace>
         <Replace Tag="LOC_EMIG_SC_SIEGE_STALLED" Language="zh_Hant_HK"><Text>圍城停滯：圍城者沒有進攻，所以在他們再次進攻之前，圍城不再增加壓力。</Text></Replace>
         <Replace Tag="LOC_EMIG_SC_PULLED" Language="zh_Hant_HK"><Text>被吸引向</Text></Replace>
@@ -490,6 +497,7 @@
         <Replace Tag="LOC_EMIG_SC_NO_MODEL" Language="zh_Hant_HK"><Text>評分會在本回合的遷徙結算後出現。</Text></Replace>
         <Replace Tag="LOC_EMIG_CF_NOBODY_AWAY" Language="zh_Hant_HK"><Text>無人在外</Text></Replace>
         <Replace Tag="LOC_EMIG_CF_OWN_FROM" Language="zh_Hant_HK"><Text>來自我們自己的聚落</Text></Replace>
+        <Replace Tag="LOC_EMIG_CF_OWN_BETWEEN" Language="zh_Hant_HK"><Text>本國聚落之間</Text></Replace>
         <Replace Tag="LOC_EMIG_CF_OWN_TO" Language="zh_Hant_HK"><Text>前往我們自己的聚落</Text></Replace>
         <Replace Tag="LOC_EMIG_DP_COL_SETTLEMENT" Language="zh_Hant_HK"><Text>聚落</Text></Replace>
         <Replace Tag="LOC_EMIG_DP_COL_AWAY" Language="zh_Hant_HK"><Text>流離失所</Text></Replace>
@@ -1082,7 +1090,7 @@
         <Replace Tag="LOC_EMIG_FORECAST_LEAVE" Language="zh_Hant_HK"><Text>接下來 {2_Turns} 回合約有 {1_Count} 人可能離開</Text></Replace>
         <Replace Tag="LOC_EMIG_FORECAST_CRISIS" Language="zh_Hant_HK"><Text>人們正在逃離；人數取決於危機，而不是壓力</Text></Replace>
         <Replace Tag="LOC_EMIG_FORECAST_STABLE" Language="zh_Hant_HK"><Text>短期內應該沒有人會離開</Text></Replace>
-        <Replace Tag="LOC_EMIG_RO_CLOSED" Language="zh_Hant_HK"><Text>對新來者關閉：在你重新開放之前，沒有人會在此定居</Text></Replace>
+        <Replace Tag="LOC_EMIG_RO_CLOSED" Language="zh_Hant_HK"><Text>對新來者關閉：重新開放之前沒有人會在此定居</Text></Replace>
         <Replace Tag="LOC_EMIG_RO_SIEGE_STALLED" Language="zh_Hant_HK"><Text>圍城停滯：圍城者沒有進攻，所以在他們再次進攻之前，沒有人會因圍城離開或死去</Text></Replace>
         <Replace Tag="LOC_EMIG_RO_WARN_HOLDING" Language="zh_Hant_HK"><Text>難民正在此聚落重新安置</Text></Replace>
         <Replace Tag="LOC_EMIG_RO_WARN_TRAPPED" Language="zh_Hant_HK"><Text>面臨風險：被困而無處可逃{1_Why}</Text></Replace>
@@ -2070,7 +2078,7 @@
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_ARRIVALS_CHAPTER_ARRIVING_TITLE" Language="zh_Hant_HK"><Text>抵達</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_ARRIVALS_CHAPTER_ARRIVING_PARA_1" Language="zh_Hant_HK"><Text>其他文明會自行安置抵達者。對於你的城市，則由「新來者如何定居」設定（選項、附加內容、移民、進階設定、遷入與遷出）決定結果：[BLIST][LI][B]詢問我[/B]（預設）：接收城市會彈出「新來者」或「難民」視窗，讓你選擇地塊、交由城市決定，或稍後再處理。三個開關決定哪些類型的抵達需要詢問；預設只有難民會詢問，移民與返鄉者則會立即安置。[LI][B]自動[/B]：城市立即安置該人口點，就像城市成長時一樣。[LI][B]移民單位[/B]：新來者會以移民單位的形式出現在城市旁，由你安排移居。未安置的移民單位每回合都需支付維護費。[LI][B]關閉[/B]：由遊戲自身的「增長城市」提示要求你安置該人口點。[/LIST]</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_ARRIVALS_CHAPTER_ARRIVING_PARA_2" Language="zh_Hant_HK"><Text>「難民」彈窗會說明抵達者從何處逃來、逃離了甚麼，並附上一句以其民族口吻說出的引文（見「流離者之聲」）。來自你尚未遇見之文明的難民只會被描述為流離失所者。</Text></Replace>
-        <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_ARRIVALS_CHAPTER_ARRIVING_PARA_3" Language="zh_Hant_HK"><Text>你的每個聚落在「聚落」卡上都有一個「對新來者關閉」按鈕。關閉的聚落不接收任何人：到來者會改去你次佳的聚落，已在路上的人在抵達時重新導向，而關閉的聚落也不用支付融入成本。無處可去的難民也不會被強行塞進來。「對新來者開放」會把它反過來，而進階設定中的「對新來者關閉聚落」會隱藏這個按鈕。</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_ARRIVALS_CHAPTER_ARRIVING_PARA_3" Language="zh_Hant_HK"><Text>你的每個聚落在「聚落」分頁的卡片上都有一個「對新來者關閉」按鈕。關閉的聚落不接收任何人：到來者改去你次佳的聚落，已在路上的人會在抵達時改道，關閉的聚落也不用支付融入成本。保持關閉期間每回合花費 1 影響力，付不起時就會重新開放。無處可去的難民也不會被強行塞進來。「對新來者開放」可撤銷關閉。AI 文明同樣會關閉聚落：超過擁擠上限的 AI 會關閉一個一直在接收人口、而且不滿的聚落，支付同樣的維護費，並在壓力緩和後重新開放。</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_ARRIVALS_CHAPTER_RESETTLE_TITLE" Language="zh_Hant_HK"><Text>等待定居的難民</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_ARRIVALS_CHAPTER_RESETTLE_PARA_1" Language="zh_Hant_HK"><Text>預設情況下，每五名戰爭與災害難民中有一名會在抵達時定居。其餘的人會進入目的地的等候名單，並在接下來的回合中陸續定居。幸福、開放且不擁擠的接收地會讓他們更快定居；反移民立場則會減慢速度。接收地須為仍在等候的人支付維護費。如果他們所逃離的危機蔓延至新城市，等候中的難民會先行離開。城市概覽和城市詳情面板會顯示有多少人正在等候。</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_ARRIVALS_CHAPTER_COST_TITLE" Language="zh_Hant_HK"><Text>接納人民的代價</Text></Replace>
@@ -2159,7 +2167,7 @@
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_VOICES_CHAPTER_SCRIPTS_PARA_1" Language="zh_Hant_HK"><Text>出自外語來源的引文會在譯文旁顯示原文。拉丁字母的原文會完整呈現，從古英語、古諾斯語到越南語、土耳其語，以及亞述銘文中經轉寫的阿卡德語。阿拉伯文、希伯來文、希臘文、西里爾字母、衣索比亞文、亞美尼亞文、喬治亞文、蒙古文、印度及東南亞各種文字的原文只顯示譯文，因為遊戲的字型缺少這些文字；中文原文則直接呈現。</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_ABOUT_TITLE" Language="zh_Hant_HK"><Text>關於移民模組</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_ABOUT_CHAPTER_CONTENT_PARA_1" Language="zh_Hant_HK"><Text>移民是一個使用者介面模組。每回合它讀取世界的狀態，再透過遊戲自己的指令把人口、地塊、產出和影響力寫回去。它自己的資料庫列新增了政策卡、通知類型、這個文明百科章節，以及兩個遊戲 AI 可以啟用的城市策略；基礎遊戲的規則和檔案保持原樣。它從第一回合起就模擬每一個仍然存在的主要文明，無論是否已遇見。「常見問題」頁面是驅動遷徙因素的簡短版本。</Text></Replace>
-        <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_ABOUT_CHAPTER_CONTENT_PARA_2" Language="zh_Hant_HK"><Text>版本 3.7.0，適用於《文明帝國 VII》1.5.0。介面提供十二種語言。原始碼、附有每一條公式的完整文件，以及每句引文來源的記錄，都在 GitHub 上：github.com/tmtmiller1/civilizationvii-emigration。</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_ABOUT_CHAPTER_CONTENT_PARA_2" Language="zh_Hant_HK"><Text>版本 4.0.0，適用於《文明帝國 VII》1.5.0。介面提供十二種語言。原始碼、附有每一條公式的完整文件，以及每句引文來源的記錄，都在 GitHub 上：github.com/tmtmiller1/civilizationvii-emigration。</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_ABOUT_CHAPTER_HUMAN_TITLE" Language="zh_Hant_HK"><Text>數字背後的人</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_ABOUT_CHAPTER_HUMAN_PARA_1" Language="zh_Hant_HK"><Text>本模組將遷徙與流離失所轉化為遊戲系統。現實中，人們離開家園最常是因為戰爭、迫害、災害或困苦。本模組將難民呈現為有血有肉的人，盡可能讓流離失所者以他們自己傳世的話語發聲，並將受災城市的損失計為死亡。作者每逢本模組的里程碑都會向難民救援機構捐款。如果你有能力，請考慮支持聯合國難民署（UNHCR）、國際救援委員會、無國界醫生、國際難民援助計劃，或當地的難民及互助團體。</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_ABOUT_CHAPTER_CREDITS_TITLE" Language="zh_Hant_HK"><Text>製作人員</Text></Replace>

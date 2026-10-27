@@ -436,9 +436,14 @@ export const CONFIG = {
   happyMultMax: 1.8,
 
   // The per-settlement intake switch (risks 2.4): a settlement its owner closed takes no newcomers; arrivals go
-  // to the next best destination, and one already on the road is re-aimed when it lands. The AI never closes a
-  // city. Off hides the button and reopens every settlement.
+  // to the next best destination, and one already on the road is re-aimed when it lands. AI civilizations close
+  // settlements by the rule in emigration-intake-ai.js. Off hides the button and reopens every settlement.
   cityIntakeToggleEnabled: true,
+  // Influence a closed settlement costs a turn (0 = free). Without a cost, closing was a free copy of the
+  // Anti-Immigration Stance's inbound half, which costs Influence and a policy slot.
+  cityIntakeInfluence: 1,
+  // AI civilizations close settlements to newcomers by the rule in emigration-intake-ai.js, and pay the upkeep.
+  aiIntakeEnabled: true,
 
   // Destination safety (2026-10-26: New York took four turns of war refugees while itself besieged, and one crisis
   // move in six landed in a city in crisis). A destination in acute crisis loses crisisDestPenalty for each

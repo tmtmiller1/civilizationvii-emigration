@@ -444,24 +444,62 @@ function mergeCauses(a, b) {
 }
 
 /**
+ * Each civilization's moves between its own settlements, summed.
+ * @param {{civId:number, people:number, points:number}[]|undefined} intra The intra-civ moves.
+ * @returns {Map<number, {people:number, points:number}>}
+ */
+function internalTotals(intra) {
+  /** @type {Map<number, {people:number, points:number}>} */
+  const by = new Map();
+  for (const m of intra || []) {
+    if (!(m && m.people > 0)) continue;
+    const t = by.get(m.civId) || { people: 0, points: 0 };
+    t.people += m.people;
+    t.points += m.points || 0;
+    by.set(m.civId, t);
+  }
+  return by;
+}
+
+/**
+ * Put a civilization's internal moves into both of its pies as one slice in its own colour.
+ * @param {*} inn The arrivals direction. @param {*} out The departures direction. @param {number} pid The civ.
+ * @param {{people:number, points:number}|undefined} t Its internal totals.
+ */
+function addInternalSlice(inn, out, pid, t) {
+  if (!t) return;
+  const name = loc("LOC_EMIG_CF_OWN_BETWEEN", "Between its own settlements");
+  for (const dir of [inn, out]) {
+    dir.civs.push({ id: pid, name, people: t.people, points: t.points });
+    dir.civs.sort((/** @type {*} */ a, /** @type {*} */ b) => b.people - a.people);
+  }
+}
+
+/**
  * Per-civilization Causes-tab entries: a card for every in-play civ with migration/death activity.
- * The cause list uses the civ's real per-cause tallies (emigration + immigration); the pies come from
- * the cross-civ flow edges.
+ * The cause list uses the civ's per-cause tallies (emigration + immigration); the pies come from the cross-civ
+ * flow edges plus one slice for the moves between the civ's own settlements, so the pies and the bars agree.
  * @param {*[]} flows Named flow edges.
  * @param {*[]} civs Per-civ ledger rows ({pid, name, in, out, deaths, byCause, inByCause}).
  * @param {Record<number, Record<string, {people:number, deaths:number}>>} [eventsByOwner] Per-civ
  *   specific events behind its causes, for the drill-down.
+ * @param {{civId:number, people:number, points:number}[]} [intra] Moves between a civ's own settlements.
  * @returns {*[]} Entries [{name, in, out, causes, events}], busiest first.
  */
-export function buildCivFlows(flows, civs, eventsByOwner) {
+export function buildCivFlows(flows, civs, eventsByOwner, intra) {
   const { names, map } = indexFlowsByCiv(flows);
   const events = eventsByOwner || {};
   const empty = { civs: {}, causes: {} };
+  const internal = internalTotals(intra);
   // Every civilization keeps a card, flows or none: its settlements list hangs under it (2026-10-26).
   return (civs || [])
     .map((r) => {
       const f = map.get(r.pid) || { in: empty, out: empty };
+      const inn = flowDir(f.in, names);
       const out = flowDir(f.out, names);
+      // Moves between the civilization's own settlements, a slice in both pies: the cause bars count them, so a
+      // civilization whose people only moved inside its borders showed a lone "Died" wedge and "No arrivals yet".
+      addInternalSlice(inn, out, r.pid, internal.get(r.pid));
       // Deaths are population lost with no destination, show them as a "Died" wedge in the
       // Emigrants ("left for/died") pie, so a civ whose loss was deaths isn't a blank pie.
       if ((r.deaths || 0) > 0) {
@@ -469,7 +507,7 @@ export function buildCivFlows(flows, civs, eventsByOwner) {
         out.civs.sort((a, b) => b.people - a.people);
       }
       return {
-        name: r.name, in: flowDir(f.in, names), out,
+        name: r.name, in: inn, out,
         causes: mergeCauses(r.byCause, r.inByCause), events: events[r.pid] || null,
         _total: (r.in || 0) + (r.out || 0) + (r.deaths || 0)
       };

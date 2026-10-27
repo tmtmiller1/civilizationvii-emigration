@@ -32,7 +32,8 @@ import { tickRefugeeBurden } from "/emigration/ui/emigration-refugee-burden.js";
 import { raidOf } from "/emigration/ui/emigration-raid.js";
 import { recordWarDeclared, recordPeace } from "/emigration/ui/emigration-war.js";
 import { hasOpenBordersDeal } from "/emigration/ui/emigration-geography.js";
-import { reportPassFeedback, reportInboundFeedback, reportPressureCues } from "/emigration/ui/emigration-feedback.js";
+import { reportPassFeedback, reportInboundFeedback, reportPressureCues, toast } from "/emigration/ui/emigration-feedback.js";
+import { intakePass } from "/emigration/ui/emigration-intake-upkeep.js";
 import { installEmigrationEvents } from "/emigration/ui/emigration-events.js";
 import { installCityReadout } from "/emigration/ui/emigration-city-readout.js";
 import { installEmigrationConsole, openEmigrationScreen } from "/emigration/ui/emigration-screen.js";
@@ -207,6 +208,7 @@ function accountPass(migrations) {
   appendConquests(migrations, conquests);
   recordMigrations(migrations);
   recordPassCounters(migrations); // P0.4 balance counters (voluntary/crisis/deaths)
+  intakePass(signals, (msg) => toast(msg, undefined, false)); // closed settlements: the AI's choices, the upkeep
   reportPressureCues(takePressureCues()); // P0.3 low-key "rising pressure" cues
   return migrations;
 }

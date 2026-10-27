@@ -267,7 +267,11 @@
         <Row Tag="LOC_EMIG_T_SCAP"><Text>Siege: most of a city lost to war</Text></Row>
         <Row Tag="LOC_EMIG_T_SCAP_D"><Text>The most of a city's population (as a fraction of its size when the siege began) that war-driven emigration can take before it stops. Only used by the siege model.</Text></Row>
         <Row Tag="LOC_EMIG_T_INTAKE"><Text>Close a settlement to newcomers</Text></Row>
-        <Row Tag="LOC_EMIG_T_INTAKE_D"><Text>Each of your settlements gets a "Close to newcomers" button on its Settlements card. A closed settlement takes nobody in: arrivals go to your next best settlement, and one already on the road is re-aimed when it lands. Off hides the button and reopens every settlement.</Text></Row>
+        <Row Tag="LOC_EMIG_T_INTAKE_D"><Text>Each of your settlements gets a "Close to newcomers" button on its Settlements card. A closed settlement takes nobody in: arrivals go to your next best settlement, and one already on the road is re-aimed when it lands. Off hides the button and opens every closed settlement again, the AI's too.</Text></Row>
+        <Row Tag="LOC_EMIG_T_INTAKE_COST"><Text>Influence a turn for a closed settlement</Text></Row>
+        <Row Tag="LOC_EMIG_T_INTAKE_COST_D"><Text>What each settlement closed to newcomers costs in Influence each turn, for you and the AI alike. When the treasury runs short, as many as it can pay for stay closed and the rest open again. Off makes closing free.</Text></Row>
+        <Row Tag="LOC_EMIG_T_AI_INTAKE"><Text>AI civilizations close settlements to newcomers</Text></Row>
+        <Row Tag="LOC_EMIG_T_AI_INTAKE_D"><Text>An AI civilization past its congestion bar closes an unhappy settlement that has been taking people in, one a turn and at most a third of its settlements, while it holds ten turns of upkeep. It opens one again after five turns once the pressure eases, the settlement is content, or its Influence runs low. It never closes its capital.</Text></Row>
         <Row Tag="LOC_EMIG_T_DESTSAFE"><Text>Refugees avoid a settlement under attack</Text></Row>
         <Row Tag="LOC_EMIG_T_DESTSAFE_D"><Text>A settlement in a crisis of its own (fighting or disaster over the flee threshold, or being razed) is a much weaker destination while it lasts, and an arrival on the road to it is held or sent to the next best settlement instead. With nowhere safer, people still go. A stalled siege lifts the penalty.</Text></Row>
         <Row Tag="LOC_EMIG_T_DESTPEN"><Text>Penalty for a settlement under attack</Text></Row>
@@ -489,6 +493,9 @@
         <Row Tag="LOC_EMIG_SC_CLOSE_INTAKE"><Text>Close to newcomers</Text></Row>
         <Row Tag="LOC_EMIG_SC_OPEN_INTAKE"><Text>Open to newcomers</Text></Row>
         <Row Tag="LOC_EMIG_SC_CLOSE_INTAKE_TIP"><Text>Nobody settles here while it is closed: arrivals go to your next best settlement, and this one pays no integration cost for them. Refugees with nowhere else to go are not forced in.</Text></Row>
+        <Row Tag="LOC_EMIG_SC_INTAKE_COST"><Text>Costs {1_Cost} Influence a turn while closed.</Text></Row>
+        <Row Tag="LOC_EMIG_SC_INTAKE_SHORT"><Text>Not enough Influence: closing costs {1_Cost} a turn and we have {2_Have}.</Text></Row>
+        <Row Tag="LOC_EMIG_INTAKE_REOPENED"><Text>Not enough Influence to keep {1_Names} closed to newcomers. It's open again.</Text></Row>
         <Row Tag="LOC_EMIG_SC_OPEN_INTAKE_TIP"><Text>Newcomers settle here again. Arrivals already on the road land next turn.</Text></Row>
         <Row Tag="LOC_EMIG_SC_SIEGE_STALLED"><Text>Siege stalled: the besiegers aren't attacking, so the siege adds no pressure until they do.</Text></Row>
         <Row Tag="LOC_EMIG_SC_PULLED"><Text>Pulled toward</Text></Row>
@@ -516,6 +523,7 @@
         <Row Tag="LOC_EMIG_SC_NO_MODEL"><Text>Scores appear after this turn's migration pass.</Text></Row>
         <Row Tag="LOC_EMIG_CF_NOBODY_AWAY"><Text>Nobody away</Text></Row>
         <Row Tag="LOC_EMIG_CF_OWN_FROM"><Text>From our own settlements</Text></Row>
+        <Row Tag="LOC_EMIG_CF_OWN_BETWEEN"><Text>Between its own settlements</Text></Row>
         <Row Tag="LOC_EMIG_CF_OWN_TO"><Text>To our own settlements</Text></Row>
         <Row Tag="LOC_EMIG_DP_COL_SETTLEMENT"><Text>Settlement</Text></Row>
         <Row Tag="LOC_EMIG_DP_COL_AWAY"><Text>Displaced</Text></Row>
@@ -1551,10 +1559,10 @@
             <Text>No migration events yet; they appear here as people move, with the full detail of each.</Text>
         </Row>
         <Row Tag="LOC_EMIG_RO_FORECAST"><Text>Forecast: {1_Line}</Text></Row>
-        <Row Tag="LOC_EMIG_FORECAST_LEAVE"><Text>About {1_Count} people are likely to leave in the next {2_Turns} turns</Text></Row>
+        <Row Tag="LOC_EMIG_FORECAST_LEAVE"><Text>About {1_Count} {1_Count: plural 1?person is; other?people are;} likely to leave in the next {2_Turns} {2_Turns: plural 1?turn; other?turns;}</Text></Row>
         <Row Tag="LOC_EMIG_FORECAST_CRISIS"><Text>People are fleeing now; how many depends on the crisis, not the pressure</Text></Row>
         <Row Tag="LOC_EMIG_FORECAST_STABLE"><Text>Nobody is likely to leave soon</Text></Row>
-        <Row Tag="LOC_EMIG_RO_CLOSED"><Text>Closed to newcomers: nobody settles here until you open it again</Text></Row>
+        <Row Tag="LOC_EMIG_RO_CLOSED"><Text>Closed to newcomers: nobody settles here until it opens again</Text></Row>
         <Row Tag="LOC_EMIG_RO_SIEGE_STALLED"><Text>Siege stalled: the besiegers aren't attacking, so nobody leaves or dies for the siege until they do</Text></Row>
         <Row Tag="LOC_EMIG_RO_WARN_HOLDING">
             <Text>Refugees resettling in this settlement</Text>
@@ -2645,7 +2653,7 @@
         <Row Tag="LOC_EMIG_T_FIRSTLOSS_D"><Text>One page, the first time a settlement of yours loses a tile to emigration: what happened, where they went and why, what happens next and where to look, with the settlement's fix line. Once per game; switching it on later shows it at the next tile loss unless it has shown already.</Text></Row>
         <Row Tag="LOC_EMIG_FL_EYEBROW"><Text>Emigration</Text></Row>
         <Row Tag="LOC_EMIG_FL_TITLE"><Text>People Have Left {1_City}</Text></Row>
-        <Row Tag="LOC_EMIG_FL_LEFT"><Text>{1_Count} people left {2_City} this turn.</Text></Row>
+        <Row Tag="LOC_EMIG_FL_LEFT"><Text>{1_Count} {1_Count: plural 1?person; other?people;} left {2_City} this turn.</Text></Row>
         <Row Tag="LOC_EMIG_FL_TILE"><Text>They tore down the {1_Tile} they worked on the way out; the plot is yours to settle again.</Text></Row>
         <Row Tag="LOC_EMIG_FL_GONE_ABROAD"><Text>They have gone to {1_Dest}, a settlement of the {2_Civ}, because of {3_Reason}.</Text></Row>
         <Row Tag="LOC_EMIG_FL_GONE_HOME"><Text>They have gone to {1_Dest}, because of {2_Reason}.</Text></Row>

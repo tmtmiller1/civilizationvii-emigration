@@ -166,6 +166,8 @@ export const TUNABLES = [
   { key: "antiDrainThreshold", group: "brakes", type: "choice", values: [0.6, 0.8, 1], format: "frac", label: "LOC_EMIG_T_ANTIDRAINTHRESH", desc: "LOC_EMIG_T_ANTIDRAINTHRESH_D" },
   // Arrivals & departures
   { key: "cityIntakeToggleEnabled", group: "arrivals", type: "bool", label: "LOC_EMIG_T_INTAKE", desc: "LOC_EMIG_T_INTAKE_D" },
+  { key: "cityIntakeInfluence", group: "arrivals", type: "choice", values: [0, 1, 2, 3], special: {"0": "LOC_EMIG_CHOICE_OFF"}, label: "LOC_EMIG_T_INTAKE_COST", desc: "LOC_EMIG_T_INTAKE_COST_D" },
+  { key: "aiIntakeEnabled", group: "arrivals", type: "bool", label: "LOC_EMIG_T_AI_INTAKE", desc: "LOC_EMIG_T_AI_INTAKE_D" },
   { key: "departureRemovesTile", group: "arrivals", type: "bool", label: "LOC_EMIG_T_DEPTILE", desc: "LOC_EMIG_T_DEPTILE_D" },
   { key: "arrivalPlacement", group: "arrivals", type: "choice", values: [0, 1, 2, 3], choiceLabels: ["LOC_EMIG_CHOICE_OFF", "LOC_EMIG_CHOICE_ARR_AUTO", "LOC_EMIG_CHOICE_ARR_ASK", "LOC_EMIG_CHOICE_ARR_UNIT"], label: "LOC_EMIG_T_ARRPLACE", desc: "LOC_EMIG_T_ARRPLACE_D" },
   { key: "arrivalPreferSpecialists", group: "arrivals", type: "bool", label: "LOC_EMIG_T_ARRSPEC", desc: "LOC_EMIG_T_ARRSPEC_D" },

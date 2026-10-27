@@ -7,7 +7,7 @@
         <SpecialThanks>killmeplease, Tomahawk, Mk Z, and Tim_The_Texan's "Emigration" mod for Civilization V (the Prosperity model this adapts).</SpecialThanks>
         <Package>EmigrationMod</Package>
         <PackageSortIndex>1000</PackageSortIndex>
-        <Version>3.7.0</Version>
+        <Version>4.0.0</Version>
     </Properties>
     <Dependencies>
         <Mod id="base-standard" title="LOC_MODULE_BASE_STANDARD_NAME" />
@@ -285,6 +285,8 @@
                     <Item>ui/emigration-settlement-ledger.js</Item>
                     <Item>ui/emigration-forecast.js</Item>
                     <Item>ui/emigration-first-loss.js</Item>
+                    <Item>ui/emigration-intake-ai.js</Item>
+                    <Item>ui/emigration-intake-upkeep.js</Item>
                     <Item>ui/emigration-settlements-section.js</Item>
                     <Item>ui/emigration-quarter-decision.js</Item>
                     <Item>ui/emigration-pass-signals.js</Item>

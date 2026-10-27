@@ -72,3 +72,24 @@ testReceivedRefugeesAttributed();
 testBothDirectionsPresent();
 testUnmetAndDiedShown();
 console.log("causes-civs harness passed");
+
+// Moves between a civilization's own settlements are a slice in both of its pies (2026-10-26: a French game whose
+// people only moved inside its borders showed a lone "Died" wedge under 69,000 people of cause bars, and "No
+// arrivals yet"). The slice carries the civ's own id, so it takes its colour, and sorts by size with the rest.
+{
+  const intra = [
+    { civId: 3, fromCity: "Paris", toCity: "Lille", people: 500, points: 3 },
+    { civId: 3, fromCity: "Lille", toCity: "Nantes", people: 200, points: 1 },
+    { civId: 5, fromCity: "A", toCity: "B", people: 10, points: 0 }
+  ];
+  const cards = new Map(buildCivFlows(flows, civs, eventsByOwner, intra).map((c) => [c.name, c]));
+  const idle = cards.get("Idle");
+  assert.deepEqual(idle.out.civs.map((c) => [c.id, c.name, c.people, c.points]), [[3, "Between its own settlements", 700, 4]]);
+  assert.deepEqual(idle.in.civs.map((c) => [c.id, c.people]), [[3, 700]], "the same moves are its arrivals");
+  const himiko = cards.get("Himiko");
+  assert.deepEqual(himiko.out.civs.map((c) => c.name), ["Unmet", "Died", "Between its own settlements"],
+    "sorted by size beside the cross-border flows and the deaths");
+  const prussia = buildCivFlows(flows, civs, eventsByOwner).find((c) => c.name === "Prussian");
+  assert.ok(!prussia.out.civs.some((c) => c.name === "Between its own settlements"), "no slice without internal moves");
+  console.log("causes-civs internal slice passed");
+}

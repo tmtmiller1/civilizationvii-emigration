@@ -192,27 +192,53 @@ function attractHalf(c, m, deps) {
 
 /**
  * The per-settlement intake switch (risks 2.4): "Close to newcomers" on an open settlement of the player's,
- * "Open to newcomers" on a closed one, in the Scaled | Civ button style. Null when the option is off or the
+ * "Open to newcomers" on a closed one, in the card's standard button. Null when the option is off or the
  * entry carries no city key (a civilization's card, a displaced-only card).
  * @param {*} p The pressure entry ({cityKey, closed}) or null. @param {CardDeps} deps @returns {HTMLElement|null}
  */
 function intakeButton(p, deps) {
   const toggle = deps.toggleIntake;
   if (!toggle || !p || !p.cityKey) return null;
-  const wrap = el("div", "emig-sc-intake");
+  // The card's standard button, as Hasten, the prices and "Decide their stance" draw it.
+  const wrap = el("div", "emig-dp-act emig-sc-decide emig-sc-intake");
   const closed = !!p.closed;
-  const btn = el("div", "emig-filter-btn" + (closed ? " active" : ""),
+  const cost = Number(p.intakeCost) || 0;
+  const short = !closed && cost > 0 && Number(p.influence) < cost; // can't cover a turn: greyed, as a price is
+  const btn = intakeBtn(closed, short);
+  btn.title = intakeTip(closed, short, cost, Number(p.influence));
+  if (!short) {
+    btn.addEventListener("click", () => {
+      toggle(p.cityKey, !closed);
+      if (deps.after) deps.after();
+    });
+  }
+  wrap.appendChild(btn);
+  if (cost > 0) {
+    wrap.appendChild(el("div", "emig-sc-dim", loc("LOC_EMIG_SC_INTAKE_COST", "Costs {1_Cost} Influence a turn while closed.", cost)));
+  }
+  return wrap;
+}
+
+/** @param {boolean} closed @param {boolean} short @returns {HTMLElement} The button, labelled for its state. */
+function intakeBtn(closed, short) {
+  return el("div", "emig-dp-btn" + (closed ? " emig-sc-intake-closed" : "") + (short ? " off" : ""),
     closed ? loc("LOC_EMIG_SC_OPEN_INTAKE", "Open to newcomers") : loc("LOC_EMIG_SC_CLOSE_INTAKE", "Close to newcomers"));
-  btn.title = closed
+}
+
+/**
+ * The intake switch's hover.
+ * @param {boolean} closed @param {boolean} short Can't cover a turn. @param {number} cost @param {number} have
+ * @returns {string}
+ */
+function intakeTip(closed, short, cost, have) {
+  if (short) {
+    return loc("LOC_EMIG_SC_INTAKE_SHORT", "Not enough Influence: closing costs {1_Cost} a turn and we have {2_Have}.",
+      cost, Math.floor(have));
+  }
+  return closed
     ? loc("LOC_EMIG_SC_OPEN_INTAKE_TIP", "Newcomers settle here again. Arrivals already on the road land next turn.")
     : loc("LOC_EMIG_SC_CLOSE_INTAKE_TIP", "Nobody settles here while it is closed: arrivals go to your next best "
       + "settlement, and this one pays no integration cost for them. Refugees with nowhere else to go are not forced in.");
-  btn.addEventListener("click", () => {
-    toggle(p.cityKey, !closed);
-    if (deps.after) deps.after();
-  });
-  wrap.appendChild(btn);
-  return wrap;
 }
 
 /**
@@ -574,6 +600,7 @@ export const SETTLEMENT_CSS =
   "background:linear-gradient(180deg,rgba(224,138,127,0.10),rgba(224,138,127,0.04));}" +
   ".emig-sc-decide{margin-top:0.1rem;align-items:flex-start;}" +
   ".emig-sc-intake{margin-top:0.35rem;}" +
+  ".emig-sc-intake .emig-dp-btn.off{opacity:0.45;cursor:default;}" +
   ".emig-sc-closed{margin-left:0.5rem;padding:0.05rem 0.4rem;border:1px solid rgba(194,91,84,0.9);border-radius:0.2rem;" +
   "color:#e8b4ae;font-size:0.72rem;}" +
   ".emig-sc-half.arrived .emig-sc-blk:first-child{margin-top:0;}" +

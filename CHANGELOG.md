@@ -7,155 +7,107 @@ section below by `release.sh`.
 
 ## [Unreleased]
 
-The Settlements tab becomes the dashboard, displaced people come home on their own, and the AI plays its side.
+## [4.0.0] - 2026-10-26
+
+The Emigration screen is rebuilt around your settlements, displaced people come home on their own, wars treat
+refugees more sensibly, and the AI plays its side of the system. Your saves and settings carry over.
 
 ### Added
-- The Settlements tab is a dashboard, and the screen opens on it. Each of your settlements is one framed card with
-  four panes. Arriving: a pie of where arrivals came from, "Attracting from" (the settlements whose best destination
-  this is, with the pull and its two biggest reasons) and "To attract more" ("Add +2 Happiness by building: Arena
-  (+4)", the game's town-to-city Food link when Food is the answer, and the Pro-Immigration Stance as a step: the
-  civic to complete, the card to slot, or slotted). Leaving: a pie of the pressure's drivers, the pressure to leave
-  as a five-step gauge (Negligible to Critical) whose hover says how it builds and drains, "Pulled toward" (the three
-  strongest destinations, yours or a rival's, with the pull and why) and "What would help" (the same lever, and the
-  Anti-Immigration Stance as a step). Arrived: a "Who lives here" pie by origin, your own people among them, the
-  settlement's Mix ("American majority") and Character ("Homogeneous") with the rules on hover, and its foreign
-  community's standing (the enclave's stage, its next step, what holds it back, and the button that raises a waiting
-  stance decision). Left: the people away from this settlement, where they live and since when, the tiles their
-  departure tore down, what a returnee is worth, when they come home on their own, and the Hasten and Call from
-  abroad buttons. A prosperity ledger between the panes lists every term of the settlement's score the way the game
-  tallies a leader's opinion, and each line opens on a click to what is behind it. The band shows the pressure
-  stage; the pies count the whole age's moves; the panes carry a faint green (arriving) or red (leaving) wash.
-- "Your settlements | All civilizations" and "By pressure | By name" switch the tab's view and order. All
-  civilizations has every civilization's cause cards and, under each, a table of its settlements with the
-  composition bar, population and origins, Mix, Character, Enclave and pressure to leave; every civilization has a
-  card there, flows or none.
-- The dashboard has four tabs on both surfaces (the screen and the Emigration page inside Demographics):
-  Settlements, Network, Policies, Notifications. The Net Migration table sits behind "Diagram | Table" on Network;
-  the Cities, Displaced, Communities, Causes and Guide tabs are folded into Settlements (the Civilopedia carries the
-  Guide). The navigation follows the Demographics screen: the tab bar, rounded gold pills for a tab's second view,
-  the Scaled | Civ row, then the content; Advanced settings sits at the top right of the standalone screen's title
-  line.
-- People driven out of one of your settlements into another of yours now go home on their own. Once their home
-  has been calm for 3 turns (10 after fighting inside its borders or a siege), they come back every 4 turns, one at a
-  time plus one more for every 8 still away, and settle the plot their people left when it's still open, otherwise
-  another free plot. The Chronicle and a "People are coming home" notice beside End Turn say when they start and when
-  the last is back; the notice opens the Settlements tab. AI civilizations get the same. "People find their own way
-  home" in Advanced settings holds the numbers and an off switch.
-- Hasten and Call from abroad are buttons on the settlement's card, in Gold or Influence, that pay and move people at
-  once; a price the treasury can't cover is greyed. The card says what the fee buys: the tile a returnee works at
-  home and the tiles they leave where they live now, the net per person, and how many turns sooner the fee brings
-  them ("instead of over the next N turns"); the price buttons' hover has the full ledger, and for a call abroad the
-  odds and the cost per person who comes. Hasten runs on that settlement's own cooldown.
-- The call-home offer is a reminder. Once a settlement your people fled is calm enough for them to return and at
-  least five population points are displaced from settlements you still hold, a small pop-up with a homecoming quote
-  in your people's voice offers to open the Settlements tab, not now, or don't remind me again. It comes back only
-  once half again as many are displaced and ten turns have passed. "Displaced-people reminders" under Options, Mods,
-  Emigration is the switch (on by default); the threshold is an Advanced setting. The console `emigration.callHome()`
-  still raises the old dialog.
-- The city readout says what would stop people leaving: "What would stop it: +3 Food or +2 Happiness here (Granary
-  gives +1 Food)", from the same model that scores the settlement, with the building of the age that gives most of
-  that yield. Off under "Readout" in Advanced settings.
-- What newcomers cost you is spelled out: the readout's "Newcomers: -3 Gold, -1 Happiness a turn across your
-  civilization while they settle in", the same line on the Settlements tab, and the arrival notice ends with it.
-- "Persia closes its borders": a notice beside End Turn and a Chronicle line when another civilization you've met
-  slots or drops an immigration stance.
-- Spoil Guard: the Options checkbox replaces the Analytics visibility dropdown. On (the default) hides civilizations
-  you haven't met across the Emigration screens; off shows everyone. A red pill at the top of the screen, beside
-  Advanced, says what the guard hides while it's on. With Demographics installed the two guards work together,
-  whichever is stricter wins, so you're only spoiled once both are off.
-- A second city strategy for the AI, "hold your people": a settlement whose Food has stalled biases Production and
-  Happiness, the yields the Anti-Immigration Stance and the happiness buildings carry.
-- AI civilizations pay the mod's call-home and refugee prices with a discount for the game's difficulty: 4% a level
-  of the game's Gold handicap, so Deity is 20% off. "AI price discount per difficulty level" in Advanced settings.
-- The Civilopedia's Emigration section describes the mod as it is now: Reading the Dashboard covers the four tabs
-  and the settlement card; Coming Home covers the free homecoming, the reminder, Hasten and Call from abroad, the
-  prices and the AI's part; Immigration Policies and Treatment of Communities carry the cards' current numbers;
-  Scope & Visibility and the lens and options pages describe the Spoil Guard; the notifications page describes the
-  notices beside End Turn and the readout's fix line; Common Questions and About say what the AI does.
-
-### Added
-- A first-loss explainer, off by default. The first time one of your settlements loses a tile to emigration, one
-  page in the mod's pop-up frame says what happened ("3 people left Cilakofa this turn. They tore down the Farm
-  they worked on the way out; the plot is yours to settle again."), where they went and why, what happens next and
-  where to look, with the settlement's fix line as its detail, and the buttons "Open the Emigration screen" and
-  "Got it". It shows once per game and leaves "The First to Leave" in the Chronicle. The Mods-tab checkbox
-  "First-loss explainer" turns it on.
-- The Civilopedia's Common Questions page gained the lines the retired Guide tab still answered better: towns
-  and internal moves take part, you can't hand-place migrants, the three brakes against a snowball, and what a
-  repair does and doesn't do. The Guide module and its strings are gone.
-- A departure forecast under the pressure gauge in each of your settlements' Leaving pane, and as a line in the
-  city readout: "About 3 people are likely to leave in the next 4 turns", projected from how fast the pressure has
-  been rising over the last few turns (a cooldown still running pushes it back, and a far crossing reads smaller),
-  or "Nobody is likely to leave soon" when the pressure is flat or falling. It is a projection, never a promise.
-  Advanced settings: "Departure forecast" (on) and "Forecast: how far ahead" (3, 5 or 8 turns).
-- "Close to newcomers", a button in the Arriving pane of each of your settlements' cards. A closed settlement takes
-  nobody in: arrivals go to your next best settlement, one already on the road is re-aimed at it when it lands,
-  and the closed settlement pays no integration cost. Refugees with nowhere else to go are not forced in; they take
-  the next destination or die as before. The pane's heading reads "Closed to newcomers" while it is closed, the
-  settlement's readout says the same, and "Open to newcomers" reverses it. The AI never closes a city. The
-  Advanced setting "Close a settlement to newcomers" (on) hides the button and reopens everything when off.
+- The Settlements tab is the dashboard, and the screen opens on it. Each of your settlements gets a card with four
+  panes and its prosperity score between them:
+  - **Arriving:** where arrivals came from, which settlements this one draws people from and why, and what would
+    draw more ("Add +2 Happiness by building: Arena"), with the Pro-Immigration Stance as a step when it helps.
+  - **Leaving:** the pressure to leave as a five-step gauge from Negligible to Critical, what drives it, where
+    people are being pulled and why, and what would keep them.
+  - **Arrived:** who lives here by origin, the settlement's Mix and Character, and how close its foreign community
+    is to an enclave, with a button when a stance decision is waiting.
+  - **Left:** who has gone, where they live now and since when, the tiles they tore down on the way out, and the
+    buttons that bring them home.
+  - The prosperity score lists its terms the way the game tallies a leader's opinion, and a click on a line shows
+    what's behind it.
+- A departure forecast under the pressure gauge and in the city readout: "About 3 people are likely to leave in
+  the next 4 turns", worked out from how fast the pressure has been rising, or "Nobody is likely to leave soon".
+  A settlement losing people to war or disaster says they're fleeing now. It's a projection, not a promise.
+  Advanced settings has the switch and the horizon (3, 5 or 8 turns).
+- "Close to newcomers" on each of your settlements' cards. A closed settlement takes nobody in and pays no
+  integration cost for them: arrivals go to your next best settlement, and people already on the road are re-aimed
+  when they get there. Refugees with nowhere else to go still find somewhere. It costs 1 Influence a turn while it
+  stays closed; when the treasury can't cover it, the settlement opens again and a notice says so. "Open to
+  newcomers" undoes it. AI civilizations close settlements too: one past its congestion bar closes an unhappy
+  settlement that has been taking people in, never its capital, pays the same upkeep, and opens it again once the
+  pressure eases. Advanced settings has the cost (0 makes it free) and the AI's switch.
+- "Your settlements | All civilizations" and "By pressure | By name" at the top of the tab. All civilizations shows
+  each civilization's causes and a table of its settlements with their origins, Mix, Character, enclave and
+  pressure to leave.
+- People driven out of one of your settlements into another of yours go home on their own. Once home has been calm
+  for 3 turns (10 after fighting or a siege), they come back a few at a time and settle the plot their people left
+  when it's still free. The Chronicle and a "People are coming home" notice say when it starts and when the last
+  is back. AI civilizations get the same.
+- Hasten and Call from abroad are buttons on the card, priced in Gold or Influence. The card shows what the fee
+  buys: what a returnee works at home against what they work where they are, and how many turns sooner they're
+  back. A price you can't cover is greyed out, with the shortfall on hover.
+- A reminder replaces the call-home pop-up. Once a settlement your people fled is calm and at least five people
+  are displaced, a small pop-up with a homecoming quote offers to open the Settlements tab. It comes back only when
+  half again as many are displaced and ten turns have passed. "Displaced-people reminders" in the options turns it
+  off.
+- A first-loss explainer, off by default. The first time one of your settlements loses a tile to emigration, a
+  single page says what happened, where the people went and why, what happens next and where to look, and the
+  Chronicle keeps it as "The First to Leave". Turn it on with "First-loss explainer" in the options.
+- The city readout says what would stop people leaving ("What would stop it: +3 Food or +2 Happiness here
+  (Granary gives +1 Food)"), what newcomers cost you a turn, "Siege stalled" when a siege has stopped, and "Closed
+  to newcomers" when you've closed the settlement.
+- A notice and a Chronicle line when a civilization you've met opens or closes its borders ("Persia closes its
+  borders").
+- Spoil Guard, in place of the old visibility dropdown. It's on by default and hides civilizations you haven't met
+  across the Emigration screens; a red pill at the top of the screen says so. With Demographics installed, the
+  stricter of the two guards wins.
+- The AI has a second city strategy, "hold your people": an established town whose Food has stalled leans toward
+  Production and Happiness.
+- AI civilizations pay the mod's call-home and refugee prices with a discount for the difficulty: 4% a step from
+  Settler, so 20% off at Deity. "AI price discount per difficulty level" in Advanced settings.
+- The Civilopedia covers the new screen, Coming Home, the cards' numbers and what the AI does.
 
 ### Changed
-- Refugees avoid a settlement under attack. A destination in a crisis of its own (fighting or disaster over the
-  flee threshold, or being razed) is a much weaker destination while it lasts: it loses 12 for each threshold's
-  worth it sits over the flee threshold, at most 30, half of that for people fleeing somewhere worse. A stalled
-  siege lifts it. Refugees already on the road to such a settlement are held, or sent to the civilization's next
-  calm settlement, until it is safe or their wait runs out. With nowhere safer, people still go. In the 2026-10-26
-  reads New York took four turns of war refugees while itself besieged, and one crisis move in six landed in a
-  city in crisis. Advanced settings: "Refugees avoid a settlement under attack" and its two numbers.
-- Flight waits for sustained fighting. A settlement's fighting has to stay over the flee threshold for two turns
-  running before its people flee it as war refugees and the fighting can kill; a lone skirmish or a one-turn
-  siege flag moves nobody (Philadelphia crossed the threshold on a single flagged turn). A settlement being razed
-  empties at once, as before. Advanced setting: "Turns of fighting before people flee".
-- Talent Attraction costs 2 Gold per settlement in Exploration and 3 in Modern, beside its Science, so an
-  eight-settlement civilization weighs +16 Science against -16 Gold; every AI slotted it within ten turns of
-  Inspiration while it was free. Consular Protection's visible Influence is +3 in Exploration and +5 in Modern
-  (+1 and +2 before), with the per-enclave Influence on top; no AI slotted it in 139 turns against the game's
-  Influence cards at +4. A save holding either card keeps it.
-- The balance counters behind `emigration.metrics()` live in the save: a read after a reload shows the whole
-  game's totals beside this session's. Nothing a player sees.
-- The AI's "hold your people" city strategy now switches on: its condition read gross Food under 2, which no
-  settlement reaches (the game's own Food strategy uses 10 and 15), so it never ran in 138 turns. It now needs Food
-  under 16 and more than 4 rural population, the shape of an established town that has stopped growing.
-- A siege nobody fights stalls. Enemy units parked beside a city used to drive people out, and kill some, for as
-  long as they stood there, with no attack ever made. After 3 quiet turns (no district damage, no fighting in the
-  settlement's borders) the siege is stalled: it adds no pressure, nobody dies for it, and the settlement's readout
-  and its card on the Settlements tab say "Siege stalled". The next attack ends the stall. Deaths under siege now
-  count against the same siege as departures, and at 80% of the population it began with the siege kills nobody
-  else. Both numbers are in Advanced settings under War & violence.
-- Talent Attraction gives +1 Science per 5 Population in every settlement (per 4 in the Modern Age), through the
-  game's own yield system, so it shows in each settlement's yield breakdown. Immigrants raise population, so the
-  people you draw keep paying for as long as they stay. The old per-immigrant bonus that faded 30% a turn is gone;
-  nobody could tell what the fade meant. The retired Cultural Magnetism and Commercial Draw cards get the same shape
-  in Culture and Gold for saves that still hold one.
-- Consular Protection carries +1 Influence a turn in Exploration and +2 in Modern through the game's own yield
-  system, on top of the per-enclave Influence, so the AI's planner can value it.
-- The two stance cards name their downsides in parentheses with the game's icons: the Pro-Immigration Stance's
-  integration cost per newcomer (about 1.5 Gold and 0.5 Happiness a turn, fading over 6 to 8 turns) and the
-  enclaves that come with arrivals; the Anti-Immigration Stance's lost growth and tiles and the half of enclave
-  yields given up.
-- A settlement's Character comes from its own people alone: Homogeneous (one origin 95% or more), Local Majority,
-  Mixed City, Cosmopolitan Center, World City. Before, a 100% native capital could read "Mixed City" because the word
-  blended in the civilization's openness and inbound flow.
-- While people find their own way home, the AI's paid calls are for people abroad only. After fighting in a
-  settlement's borders or a siege, it has to be calm for 10 turns before its people come back (3 after a disaster,
-  famine or unrest), because a frontier settlement that was hit once is likely to be hit again.
-- Clicking a migration notice beside End Turn opens the Emigration screen on the tab that matters: the Notifications
-  tab for most, the Settlements tab for "People are leaving" and "People are coming home".
-- The Simplify dashboard option hides the Network diagram; the Causes tab it also hid is part of Settlements now.
-- README: the dashboard, Coming Home, the Spoil Guard and the AI section (the second strategy, the difficulty
-  discount, the stance notices, the native yields the planner reads, and what has been seen in a game) describe
-  3.7.0.
+- A siege nobody fights stalls. Enemy units parked beside a city used to drive its people out, and kill some, for
+  as long as they stood there. After 3 quiet turns with no damage and no fighting in its borders, the siege stops
+  adding pressure and kills nobody until the next attack. Deaths under a siege now count toward the same limit as
+  departures, so a siege that has taken 80% of the people it started with kills nobody else.
+- People flee fighting once it has lasted two turns. A lone skirmish or one turn of enemies at the gates moves
+  nobody; a settlement being razed still empties at once.
+- Refugees avoid a settlement under attack. A city in a crisis of its own pulls far less while it lasts, and
+  refugees heading there wait or go to the next calm settlement. With nowhere safer, they still go.
+- Talent Attraction gives +1 Science per 5 Population in each settlement (per 4 in the Modern Age) and costs 2
+  Gold per settlement (3 in Modern). Both show in the settlement's yield breakdown, and the people you draw keep
+  paying for as long as they stay. The old bonus that faded each turn is gone.
+- Consular Protection gives +3 Influence a turn in Exploration and +5 in Modern, plus its Influence per enclave
+  abroad.
+- The two stance cards name their downsides with the game's icons.
+- A settlement's Character comes from its own people: Homogeneous, Local Majority, Mixed City, Cosmopolitan Center
+  or World City. A capital full of its own people used to read "Mixed City".
+- The screen has four tabs, Settlements, Network, Policies and Notifications, on its own and inside Demographics.
+  The Net Migration table is behind "Diagram | Table" on Network, and the old Cities, Displaced, Communities,
+  Causes and Guide tabs are part of Settlements. The Guide's answers moved to the Civilopedia.
+- A notice beside End Turn opens the tab it's about: Settlements for "People are leaving" and "People are coming
+  home", Notifications for the rest.
+- After fighting or a siege, a settlement has to be calm for 10 turns before its people come back (3 after a
+  disaster, famine or unrest).
+- The interface is translated into all eleven of the game's other languages, the new screen and Civilopedia pages
+  included.
 
 ### Fixed
-- The "Nothing to show yet" lines on the Emigration screen's tabs, and the small notes beside a settlement's name,
-  were invisible, and so were the Network tab's "Playback timeline appears after a couple of turns" line: the game's
-  font draws italic text as nothing. They're plain text now.
-- Calling people home now knows who has already come back. The count of people away never went down, so after a
-  call the offer kept listing the same people, and AI civilizations kept paying to call back people who were
-  already home. Returns are counted in the save, by a call or by drifting home, and come off the count.
-- A settlement's pies counted the fifty most recent moves, which rolled past a departure the displaced row still
-  showed; they count the whole age now, so the two agree.
+- The Deity discount was the half-price floor. The difficulty was read as the game's raw Gold handicap (80 at
+  Deity) instead of its step on the ladder, so King and up all paid half. It's 4% a step now.
+- The "hold your people" strategy never switched on: it waited for Food under 2, which no settlement reaches. It
+  now looks for a town of more than 4 rural population with Food under 16.
+- The "Nothing to show yet" lines, the notes beside a settlement's name and the Network tab's timeline hint were
+  invisible: the game's font draws italic text as nothing. They're plain text now.
+- Calling people home kept offering people who had already come back, and AI civilizations kept paying for them.
+  Returns are counted now.
+- A settlement's pies counted only the last fifty moves, so they could disagree with the Left pane. They count
+  the whole age now.
+- On "All civilizations", a civilization's arrivals and departures pies left out moves between its own
+  settlements, so a civilization whose people only moved at home showed a lone "Died" wedge under thousands of
+  people in its cause bars. Both pies now have a "Between its own settlements" slice.
 
 ## [3.6.7] - 2026-10-25
 

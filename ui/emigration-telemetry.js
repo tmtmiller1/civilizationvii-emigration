@@ -10,7 +10,7 @@ import { DEATH_REASON } from "/emigration/ui/emigration-move-reasons.js";
 
 // Balance counters, read via telemetryCounters() and summarized to the debug log on the throttled report cadence
 // below. Two sets: the all-game totals, persisted in the save under STATE_KEY with each pass (session 1 of the
-// 3.7.0 plan found a read after a reload covered only the turns driven since), and this session's, zero on every
+// 2026-10-26 reads found a read after a reload covered only the turns driven since), and this session's, zero on every
 // load. Every bump lands in both. crisisInternal/crisisCrossCiv split refugees by destination,
 // attritionTrapped/attritionFleeing by whether a refuge existed, transitRazed/transitCapped by why a lagged refugee
 // never landed, crisisDestAvoided counts moves the destination-safety penalty turned elsewhere; reasonHits{tag}
