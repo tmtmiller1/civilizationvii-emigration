@@ -3643,5 +3643,5 @@ and both Chinese draw without missing-glyph boxes. Captures `working_screenshots
 languages; the window capture missed de, es and fr, whose readings are in the run log.
 
 One fix from it: the Japanese card used 流出 for both the Leaving and the Left pane. Left (`LOC_EMIG_DP_SUB`) is
-now 離郷, beside 定住 for Arrived; not seen drawn yet. The setup screen itself, which the lab skips, still needs a
-person to look at the option drawn there.
+now 離郷, beside 定住 for Arrived; not seen drawn yet. The setup screen itself, which the lab skips: the owner confirmed
+on 2026-10-26 that the option "Emigration: AI keeps cities happy" appears there and works.
