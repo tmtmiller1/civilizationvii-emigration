@@ -3,6 +3,12 @@ Generated from CHANGELOG.md by scripts/steam-changelog.mjs; release.sh uploads t
 To fix an old Workshop entry, paste the text under its ==== line into that entry's Edit box on the change-notes page.
 A block edited by hand is kept as-is. Delete a block to regenerate it from CHANGELOG.md.
 
+==== 4.0.1 | 2026-10-27 | src 3395e5dcbc21 | gen f2b3fd379dec ====
+[b]Version 4.0.1 · 27 October 2026[/b]
+
+[b]Fixed[/b]
+• The Settlements tab was slow to open in large games, about 3 seconds with 18 settlements in a world of 82. Its cards were each redoing the same world-wide calculation; they share it now.
+
 ==== 4.0.0 | 2026-10-27 | src a2c61cc15b7c | gen 59ba377714f4 ====
 [b]Version 4.0.0 · 27 October 2026[/b]
 The Emigration screen is rebuilt around your settlements, displaced people come home on their own, wars treat refugees more sensibly, and the AI plays its side of the system. Your saves and settings carry over.

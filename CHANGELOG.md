@@ -5,6 +5,12 @@ All notable changes to the **Emigration** mod for Civilization VII. Follows
 The Steam Workshop change note for each release is generated from the matching
 section below by `release.sh`.
 
+## [4.0.1] - 2026-10-27
+
+### Fixed
+- The Settlements tab was slow to open in large games, about 3 seconds with 18 settlements in a world of 82. Its
+  cards were each redoing the same world-wide calculation; they share it now.
+
 ## [4.0.0] - 2026-10-27
 
 The Emigration screen is rebuilt around your settlements, displaced people come home on their own, wars treat

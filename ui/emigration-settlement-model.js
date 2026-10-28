@@ -171,16 +171,32 @@ export function pulledToward(sig, ranked, ownerPop, nameOf) {
 }
 
 /**
+ * Each settlement's best destination in a pass, worked out once so a render's cards share it (each one costs a pass
+ * over every settlement, about 2 ms in a game of 80).
+ * @param {*[]} ranked @param {Record<number, number>|null} ownerPop @returns {(src:*)=>*}
+ */
+export function bestDestinations(ranked, ownerPop) {
+  /** @type {Map<*, *>} */
+  const memo = new Map();
+  return (src) => {
+    if (!memo.has(src)) memo.set(src, bestDestination(src, ranked, ownerPop));
+    return memo.get(src);
+  };
+}
+
+/**
  * The settlements whose best destination is this one, strongest first, and how many there are in all.
  * @param {*} sig @param {*[]} ranked @param {Record<number, number>|null} ownerPop
- * @param {(sig:*)=>string} nameOf @returns {{rows:PullRow[], count:number}}
+ * @param {(sig:*)=>string} nameOf @param {(src:*)=>*} [bestOf] Shared best destinations (bestDestinations).
+ * @returns {{rows:PullRow[], count:number}}
  */
-export function drawnFrom(sig, ranked, ownerPop, nameOf) {
+export function drawnFrom(sig, ranked, ownerPop, nameOf, bestOf) {
+  const best0 = bestOf || bestDestinations(ranked, ownerPop);
   /** @type {{src:*, pull:number}[]} */
   const hits = [];
   for (const src of ranked) {
     if (src.key === sig.key) continue;
-    const best = bestDestination(src, ranked, ownerPop);
+    const best = best0(src);
     if (best && best.dest && best.dest.key === sig.key) hits.push({ src, pull: best.adjusted });
   }
   hits.sort((a, b) => b.pull - a.pull);
@@ -198,7 +214,7 @@ export function drawnFrom(sig, ranked, ownerPop, nameOf) {
  * @param {*} sig The settlement's ranked signal.
  * @param {{ranked:*[], ownerPop:Record<number,number>|null, field:{meanHappiness:number}|null}} pass
  * @param {{nameOf?:(sig:*)=>string, stance?:(pid:number)=>{open:StanceStatus, closed:StanceStatus},
- *   compositionOf?:(city:*)=>*}} [deps]
+ *   compositionOf?:(city:*)=>*, bestOf?:(src:*)=>*}} [deps]
  * @returns {SettlementModel}
  */
 export function settlementModel(sig, pass, deps) {
@@ -206,7 +222,7 @@ export function settlementModel(sig, pass, deps) {
   const nameOf = d.nameOf || destNameOf;
   const stance = d.stance || liveStances;
   const compositionOf = d.compositionOf || compositionForCity;
-  const drawn = drawnFrom(sig, pass.ranked, pass.ownerPop, nameOf);
+  const drawn = drawnFrom(sig, pass.ranked, pass.ownerPop, nameOf, d.bestOf);
   return {
     name: nameOf(sig), city: sig.city, pros: num(sig.pros),
     score: weigh(explainPush(sig, pass.field || null)),
@@ -230,10 +246,11 @@ export function liveSettlementModels(pid) {
   const out = new Map();
   const pass = livePass();
   if (!pass) return out;
+  const bestOf = bestDestinations(pass.ranked, pass.ownerPop);
   for (const sig of pass.ranked) {
     if (sig.owner !== pid) continue;
     try {
-      const m = settlementModel(sig, pass);
+      const m = settlementModel(sig, pass, { bestOf });
       if (m.name) out.set(m.name, m);
     } catch (_) {
       /* one unreadable settlement leaves the others their cards */

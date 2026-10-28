@@ -10,7 +10,7 @@ import assert from "node:assert/strict";
 globalThis.Locale = { compose: (s) => s };
 const { CONFIG } = await import("/emigration/ui/emigration-config.js");
 const { prosperity, fieldContext, rankByProsperity } = await import("/emigration/ui/emigration-prosperity.js");
-const { settlementModel, pulledToward, drawnFrom } = await import("/emigration/ui/emigration-settlement-model.js");
+const { settlementModel, pulledToward, drawnFrom, bestDestinations } = await import("/emigration/ui/emigration-settlement-model.js");
 const { pressureTip, prosperityLedgerFor } = await import("/emigration/ui/emigration-settlement-card.js");
 
 CONFIG.readoutPrescribe = true;
@@ -106,6 +106,25 @@ function testModel() {
   assert.match(dis.sub[0].note, /^\d+ turns remaining \u00b7 \d+% of the base$/, "the turns its distress has left, then its share");
 }
 
+/** The cards of one render share each settlement's best destination; the rows come out the same. */
+function testSharedBest() {
+  const calls = new Map();
+  const shared = bestDestinations(ranked, pass.ownerPop);
+  const counted = (src) => { calls.set(src.key, (calls.get(src.key) || 0) + 1); return shared(src); };
+  for (const s of ranked) {
+    assert.deepEqual(drawnFrom(s, ranked, pass.ownerPop, nameOf, counted), drawnFrom(s, ranked, pass.ownerPop, nameOf),
+      "the same rows with the shared lookup");
+  }
+  assert.ok([...calls.values()].every((n) => n === ranked.length - 1), "each source asked once per card");
+  const keys = new Set();
+  const probe = bestDestinations(ranked, pass.ownerPop);
+  for (const s of ranked) { probe(s); probe(s); keys.add(s.key); }
+  assert.equal(keys.size, ranked.length);
+  const m = settlementModel(poor, pass, { nameOf, stance, compositionOf, bestOf: shared });
+  assert.deepEqual(m.drawnFrom, settlementModel(poor, pass, { nameOf, stance, compositionOf }).drawnFrom);
+}
+
 testPulls();
 testModel();
+testSharedBest();
 console.log("settlement-model: ok");
