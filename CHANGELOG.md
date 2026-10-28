@@ -5,6 +5,13 @@ All notable changes to the **Emigration** mod for Civilization VII. Follows
 The Steam Workshop change note for each release is generated from the matching
 section below by `release.sh`.
 
+## [4.0.2] - 2026-10-27
+
+### Fixed
+- The plus/minus buttons on a settlement's Prosperity score did nothing when clicked; only the row's name opened
+  its lines. They open and close the row now.
+- Closed rows showed a minus. They show a plus, and the minus once the row is open.
+
 ## [4.0.1] - 2026-10-27
 
 ### Fixed

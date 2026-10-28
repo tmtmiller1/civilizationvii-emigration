@@ -88,20 +88,25 @@ function wireRow(line, btn, sub, box) {
   const set = (/** @type {boolean} */ open) => {
     sub.style.display = open ? "flex" : "none";
     line.classList.toggle("open", open);
-    btn.setAttribute("data-type", open ? "minus" : "plus");
+    btn.setAttribute("type", open ? "minus" : "plus");
   };
-  const flip = () => set(sub.style.display === "none");
-  btn.addEventListener("action-activate", flip);
-  line.addEventListener("click", flip);
+  // One listener, on the row: the button lets clicks through to it. With the button's own action-activate as well,
+  // a click on the button opened the row and the same click, reaching the row, closed it again.
+  line.addEventListener("click", () => set(sub.style.display === "none"));
   return set;
 }
 
-/** @returns {HTMLElement} The game's small plus/minus button, showing the plus. */
+/**
+ * The game's small plus/minus button, showing the plus. It redraws on its `type` attribute (`data-type` it only
+ * reads back), and draws both signs until one is set. Clicks pass through it to the row.
+ * @returns {HTMLElement}
+ */
 function plusMinus() {
   const b = document.createElement("fxs-minus-plus");
   b.className = "emig-sc-tpm";
-  b.setAttribute("data-type", "plus");
+  b.setAttribute("type", "plus");
   b.setAttribute("tabindex", "-1");
+  b.style.pointerEvents = "none";
   return b;
 }
 
