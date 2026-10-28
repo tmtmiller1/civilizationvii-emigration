@@ -3939,3 +3939,25 @@ still holds, and `data/emigration-relief.sql` keeps the types so such a save loa
 built-environment term stays. The stage score and the direct push are unchanged: the push of 3 was sized from the
 static read in section 70, which had no relief in it. The 30-turn package runs had relief on, so unhappy settlements
 will lose people a little more often than those runs showed, which is still at or above today's rate.
+
+## 74. The Network diagram's dot budget (crash, lab runs nb1 and nb2, 2026-10-27)
+
+The owner's game crashed at 23:34 on clicking Scaled Pop on the Network tab (turn 107, 18 of 82 settlements,
+4.0.2 from the Workshop). The crash was in the game's HTML renderer painting a frame (`CivilizationVII+0x7be740`,
+under `cohtml::ViewRendererImpl::ExecutePaint`, null address), and Renderer.log had
+`ResourceList.AddResource(), attempting to add more than 49152 items` a second earlier.
+
+Hypothesis: Scaled Pop puts more dots on the canvas than the renderer holds in a frame. Disproof test: load a copy
+of the 23:32 autosave in a lab game, build both scenes without painting, then click Scaled Pop.
+
+- nb1, released 4.0.2: Civ Pop built 1,456 dots (74 refugee rings), Scaled Pop 7,942 (386). `SCALED_DOT_CAP`
+  capped only the last frame's total; the timeline's 56 frames of history made up the rest. The Network tab opened
+  and drew in Civ Pop; a scripted click on Scaled crashed the game within 5 s, with the same renderer error and the
+  same top three frames as the owner's report.
+- nb2, the working copy: `dotsWithinBudget` coarsens the unit until the scene holds `DOT_BUDGET` (1,000) dots or
+  fewer, in either mode. Scaled Pop built 985 dots, Civ Pop 823. The tab opened straight into Scaled Pop (the saved
+  mode), four switches between the modes and 40 s of timeline playback ran with no crash and no AddResource line;
+  paints averaged 2.7 ms. Capture: `working_screenshots/network-budget/scaled-985-dots.png`.
+
+Both runs could also have reached the 4.0.1 tab-speed and 4.0.2 plus/minus items on WATCH_LIST.md (same save, same
+mod set); they weren't run, since the owner asked for the crash.

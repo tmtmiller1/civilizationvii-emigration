@@ -32,9 +32,13 @@ export const WX = 1120;
 export const WY = 560;
 
 // Scaled Pop mode: a fixed people-per-dot so the dot count tracks real population size, capped at
-// SCALED_DOT_CAP (past the cap the people-per-dot coarsens). Civ Pop mode stays 1 dot = 1 engine point.
+// SCALED_DOT_CAP (past the cap the people-per-dot coarsens). Civ Pop mode starts at 1 dot = 1 engine point.
 const SCALED_PEOPLE_PER_DOT = 2000;
 const SCALED_DOT_CAP = 2000;
+// The most dots the scene draws, the timeline's history included, in either mode: past it each dot stands for more
+// people, so a long game keeps the same count. A turn-106 Exploration game in Scaled Pop drew enough that the
+// renderer logged "ResourceList.AddResource(), attempting to add more than 49152 items" and crashed (2026-10-27).
+export const DOT_BUDGET = 1000;
 
 /**
  * @typedef {import("/emigration/ui/emigration-network-dots.js").Dot} Dot
@@ -626,6 +630,22 @@ function runLoop(canvas, ctx, holder) {
 
 
 /**
+ * The scene's dots at `unit` people each, coarsened until they fit DOT_BUDGET. A settlement always keeps one dot, so
+ * the count only approaches the budget from above in a few steps.
+ * @param {*[]} frames @param {*[]} centers @param {Map<number, number>} byId @param {*} colorMap @param {number} unit
+ * @returns {Dot[]}
+ */
+export function dotsWithinBudget(frames, centers, byId, colorMap, unit) {
+  let u = unit;
+  let dots = buildChronoDots(frames, centers, byId, colorMap, u);
+  for (let k = 0; k < 4 && dots.length > DOT_BUDGET; k++) {
+    u = Math.ceil(u * Math.max(1.25, dots.length / DOT_BUDGET));
+    dots = buildChronoDots(frames, centers, byId, colorMap, u);
+  }
+  return dots;
+}
+
+/**
  * Create the 2x canvas + scaled 2D context (ctx is null if the environment has no 2D context).
  * @returns {{canvas:HTMLCanvasElement, ctx:CanvasRenderingContext2D|null}} Canvas + context.
  */
@@ -717,7 +737,7 @@ function buildScene(frames, colorMap, events) {
   const unit = civMode
     ? Math.max(1, Math.round((total || 1) / Math.max(1, points)))
     : Math.max(SCALED_PEOPLE_PER_DOT, Math.ceil((total || 1) / SCALED_DOT_CAP));
-  const dots = buildChronoDots(frames, sim.nodes, byId, colorMap, unit);
+  const dots = dotsWithinBudget(frames, sim.nodes, byId, colorMap, unit);
   const shownUnit = Math.max(1, Math.round(total / Math.max(1, dots.length)));
   const evs = resolveEvents(events, byId);
   tagEventDots(dots, evs);

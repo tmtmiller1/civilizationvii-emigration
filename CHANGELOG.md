@@ -5,6 +5,16 @@ All notable changes to the **Emigration** mod for Civilization VII. Follows
 The Steam Workshop change note for each release is generated from the matching
 section below by `release.sh`.
 
+## [Unreleased]
+
+## [4.0.3] - 2026-10-28
+
+### Fixed
+- The game could crash on the Network tab in a long game, when switching to Scaled Pop or opening the tab with it
+  on (Scaled Pop is the default). The diagram tried to draw more dots than the game's renderer can hold in one
+  frame. It now draws at most 1,000 dots in either mode, with each dot standing for more people as your
+  population grows.
+
 ## [4.0.2] - 2026-10-27
 
 ### Fixed

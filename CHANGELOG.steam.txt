@@ -3,6 +3,12 @@ Generated from CHANGELOG.md by scripts/steam-changelog.mjs; release.sh uploads t
 To fix an old Workshop entry, paste the text under its ==== line into that entry's Edit box on the change-notes page.
 A block edited by hand is kept as-is. Delete a block to regenerate it from CHANGELOG.md.
 
+==== 4.0.3 | 2026-10-28 | src c31ce761845a | gen bea7f311ac2a ====
+[b]Version 4.0.3 · 28 October 2026[/b]
+
+[b]Fixed[/b]
+• The game could crash on the Network tab in a long game, when switching to Scaled Pop or opening the tab with it on (Scaled Pop is the default). The diagram tried to draw more dots than the game's renderer can hold in one frame. It now draws at most 1,000 dots in either mode, with each dot standing for more people as your population grows.
+
 ==== 4.0.2 | 2026-10-27 | src 9d7fed50ab48 | gen bfd82074dc59 ====
 [b]Version 4.0.2 · 27 October 2026[/b]
 
