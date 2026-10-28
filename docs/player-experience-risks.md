@@ -284,7 +284,8 @@ challenge it was meant to add.
   its notice to a human host rest on the console check and the tests. The Food card didn't get an
   AI to slot the stance in 130 Deity Antiquity turns (all five had it unlocked), but in Exploration (+2 Food) two
   AIs slotted the Pro-Immigration Stance by turn 31 and later swapped to the Anti-Immigration Stance; +1 is too
-  small, +2 is taken, and the Antiquity card now carries +2 (Goryeo took it by turn 61 in the next game; the Modern +3 card was taken by turn 71); two age
+  small, +2 is taken, and the Antiquity card now carries +2 (Goryeo took it by turn 61 in the next game; the Modern +3
+  card was taken by turn 71); two age
   changes crossed clean but with no AI stance in hand at the crossing;
   three AI hosts chose enclave stances by the rule in the Exploration leg of the second game; no refugee wave
   reached an AI host, so that choice is unwatched. The

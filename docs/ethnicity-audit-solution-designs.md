@@ -58,7 +58,8 @@ else).
 The border color (the dominant origin) and the hover numbers need no change. They already read the same tile data.
 
 **Open design question (parked with enclave creation, see O5).** Should an enclave form at all for an origin that
-is already the city's majority? Rostov's Bulgarians are not a quarter of a Norman city; they are the city, conquered. Option B is to add an upper bar
+is already the city's majority? Rostov's Bulgarians are not a quarter of a Norman city; they are the city, conquered.
+Option B is to add an upper bar
 to formation (the origin must be under 50%), so a conquered majority shows as the whole city's color instead of an
 enclave. The recommendation is the lens fix above either way, because an existing save (EmigShots072) already holds
 such an enclave.

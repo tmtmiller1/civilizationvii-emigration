@@ -90,7 +90,7 @@
         <Replace Tag="LOC_EMIG_EXPLAIN_CELEBRATION" Language="ko_KR"><Text>축제</Text></Replace>
         <Replace Tag="LOC_EMIG_EXPLAIN_STAGE" Language="ko_KR"><Text>행복도 단계</Text></Replace>
         <Replace Tag="LOC_EMIG_EXPLAIN_HAPPINESS_SHAPED" Language="ko_KR"><Text>제국 평균 대비</Text></Replace>
-        <Replace Tag="LOC_EMIG_EXPLAIN_HAPPINESS_OWN" Language="ko_KR"><Text>Its own Happiness</Text></Replace>
+        <Replace Tag="LOC_EMIG_EXPLAIN_HAPPINESS_OWN" Language="ko_KR"><Text>자체 행복도</Text></Replace>
         <Replace Tag="LOC_EMIG_EXPLAIN_CAP_TRIM" Language="ko_KR"><Text>건설물 효과 상한</Text></Replace>
         <Replace Tag="LOC_EMIG_EXPLAIN_FOOD" Language="ko_KR"><Text>식량</Text></Replace>
         <Replace Tag="LOC_EMIG_EXPLAIN_PRODUCTION" Language="ko_KR"><Text>생산력</Text></Replace>
@@ -245,7 +245,7 @@
         <Replace Tag="LOC_EMIG_T_SCAP" Language="ko_KR"><Text>포위: 전쟁으로 잃는 최대 도시 비율</Text></Replace>
         <Replace Tag="LOC_EMIG_T_SCAP_D" Language="ko_KR"><Text>전쟁 이주가 멈추기 전에 가져갈 수 있는 도시 인구의 최대치(포위 시작 시 규모에 대한 비율). 포위 모델에서만 사용.</Text></Replace>
         <Replace Tag="LOC_EMIG_T_INTAKE" Language="ko_KR"><Text>정착지에서 새 이주민 만류하기</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_INTAKE_D" Language="ko_KR"><Text>Each of your settlements gets a "Dissuade newcomers" button on its Settlements card. While it's on, people looking for a new home pick somewhere else: another of your settlements, another civilization's, or they stay where they are. People already on the road still arrive. Off hides the button and welcomes newcomers back everywhere, in the AI's settlements too.</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_INTAKE_D" Language="ko_KR"><Text>정착지 탭에 있는 각 정착지 카드에 "새 이주민 만류하기" 버튼이 생깁니다. 켜져 있는 동안 새 보금자리를 찾는 사람들은 다른 곳을 고릅니다. 당신의 다른 정착지나 다른 문명의 정착지로 가거나, 지금 있는 곳에 머뭅니다. 이미 길에 오른 사람은 그대로 도착합니다. 끄면 버튼이 사라지고, AI의 정착지를 포함한 모든 곳에서 새 이주민을 다시 환영합니다.</Text></Replace>
         <Replace Tag="LOC_EMIG_T_INTAKE_COST" Language="ko_KR"><Text>새 이주민 만류에 드는 턴당 영향력</Text></Replace>
         <Replace Tag="LOC_EMIG_T_INTAKE_COST_D" Language="ko_KR"><Text>정착지 하나에서 새 이주민을 만류하는 데 매 턴 드는 영향력입니다. 당신과 AI 모두 똑같이 냅니다. 영향력이 모자라면 낼 수 있는 만큼의 정착지만 계속 만류하고, 나머지는 다시 새 이주민을 환영합니다. 끄면 무료입니다.</Text></Replace>
         <Replace Tag="LOC_EMIG_T_AI_INTAKE" Language="ko_KR"><Text>AI 문명이 새 이주민을 만류함</Text></Replace>
@@ -391,10 +391,10 @@
         <Replace Tag="LOC_EMIG_HOMECOMING_SPLIT" Language="ko_KR"><Text>{1_Home}이(가) 다시 안전해졌습니다. 그곳을 떠났던 사람 가운데 {2_Go}명이 고향으로 돌아오고, {3_Stay}명은 간 곳에 정착했습니다.</Text></Replace>
         <Replace Tag="LOC_EMIG_HOMECOMING_ALL_STAY" Language="ko_KR"><Text>{1_Home}이(가) 다시 안전해졌지만, 그곳을 떠났던 {2_Stay}명은 간 곳에 정착했습니다. 재촉으로 아직 데려올 수 있습니다.</Text></Replace>
         <Replace Tag="LOC_EMIG_HOMECOMING_DONE_GOING" Language="ko_KR"><Text>{1_Home}(으)로 돌아오던 마지막 사람들이 도착했습니다.</Text></Replace>
-        <Replace Tag="LOC_EMIG_RELIEF_LINE" Language="ko_KR"><Text>People who left</Text></Replace>
-        <Replace Tag="LOC_BUILDING_EMIG_RELIEF_NAME" Language="ko_KR"><Text>People who left</Text></Replace>
-        <Replace Tag="LOC_BUILDING_EMIG_RELIEF_DESCRIPTION" Language="ko_KR"><Text>+1 Happiness for each person who left this settlement over unhappiness, until it grows back to the size it was when they left.</Text></Replace>
-        <Replace Tag="LOC_BUILDING_EMIG_RELIEF_TOOLTIP" Language="ko_KR"><Text>+1 Happiness for each person who left this settlement over unhappiness, until it grows back to the size it was when they left.</Text></Replace>
+        <Replace Tag="LOC_EMIG_RELIEF_LINE" Language="ko_KR"><Text>떠난 사람들</Text></Replace>
+        <Replace Tag="LOC_BUILDING_EMIG_RELIEF_NAME" Language="ko_KR"><Text>떠난 사람들</Text></Replace>
+        <Replace Tag="LOC_BUILDING_EMIG_RELIEF_DESCRIPTION" Language="ko_KR"><Text>불만 때문에 이 정착지를 떠난 사람 1명마다 행복도 +1. 그들이 떠났을 때의 크기로 다시 자랄 때까지 유지됩니다.</Text></Replace>
+        <Replace Tag="LOC_BUILDING_EMIG_RELIEF_TOOLTIP" Language="ko_KR"><Text>불만 때문에 이 정착지를 떠난 사람 1명마다 행복도 +1. 그들이 떠났을 때의 크기로 다시 자랄 때까지 유지됩니다.</Text></Replace>
         <Replace Tag="LOC_EMIG_DP_WAIT_STAYED" Language="ko_KR"><Text>{1_Count}명은 간 곳에 정착했으며, 비용을 내고 데려오지 않으면 그곳에 머뭅니다.</Text></Replace>
         <Replace Tag="LOC_EMIG_DP_WAIT_DECIDE" Language="ko_KR"><Text>{1_Home}이(가) {2_Turns}턴 더 평온하면, 그곳을 떠났던 사람들이 고향으로 돌아올지 정합니다. 떠나 있던 기간이 길수록, 지금 사는 곳의 형편이 좋을수록 더 많이 머뭅니다.</Text></Replace>
         <Replace Tag="LOC_EMIG_DP_FREE_STAY" Language="ko_KR"><Text>{1_Count}명은 지금 있는 곳에 머묾</Text></Replace>
@@ -481,7 +481,7 @@
         <Replace Tag="LOC_EMIG_SC_CLOSED" Language="ko_KR"><Text>새 이주민 만류 중</Text></Replace>
         <Replace Tag="LOC_EMIG_SC_CLOSE_INTAKE" Language="ko_KR"><Text>새 이주민 만류하기</Text></Replace>
         <Replace Tag="LOC_EMIG_SC_OPEN_INTAKE" Language="ko_KR"><Text>새 이주민 환영하기</Text></Replace>
-        <Replace Tag="LOC_EMIG_SC_CLOSE_INTAKE_TIP" Language="ko_KR"><Text>People looking for a new home pick somewhere else: another of your settlements, another civilization's, or they stay where they are. People already on the road still arrive, and this settlement doesn't pay integration costs for anyone who chose elsewhere.</Text></Replace>
+        <Replace Tag="LOC_EMIG_SC_CLOSE_INTAKE_TIP" Language="ko_KR"><Text>새 보금자리를 찾는 사람들은 다른 곳을 고릅니다. 당신의 다른 정착지나 다른 문명의 정착지로 가거나, 지금 있는 곳에 머뭅니다. 이미 길에 오른 사람은 그대로 도착하며, 이 정착지는 다른 곳을 고른 사람들에 대한 통합 비용을 내지 않습니다.</Text></Replace>
         <Replace Tag="LOC_EMIG_SC_INTAKE_PAYING" Language="ko_KR"><Text>매 턴 영향력 {1_Cost}을(를) 내고 있습니다.</Text></Replace>
         <Replace Tag="LOC_EMIG_SC_INTAKE_A_TURN" Language="ko_KR"><Text>/턴</Text></Replace>
         <Replace Tag="LOC_EMIG_SC_INTAKE_SHORT" Language="ko_KR"><Text>영향력이 부족합니다: 새 이주민을 만류하려면 매 턴 {1_Cost}이(가) 필요하지만 {2_Have}만 있습니다.</Text></Replace>
@@ -494,7 +494,7 @@
         <Replace Tag="LOC_EMIG_SC_TALLY_SUM" Language="ko_KR"><Text>합계</Text></Replace>
         <Replace Tag="LOC_EMIG_SC_LEDGER_TITLE_TIP" Language="ko_KR"><Text>줄을 클릭하면 그 뒤의 내용이 보입니다. 여기를 클릭하면 모두 펼치거나 접습니다.</Text></Replace>
         <Replace Tag="LOC_EMIG_LEDGER_HAPPY_NOTE" Language="ko_KR"><Text>이곳 {1_H}, 제국 전체 {2_Mean}</Text></Replace>
-        <Replace Tag="LOC_EMIG_LEDGER_HAPPY_NOTE_OWN" Language="ko_KR"><Text>{1_H} here</Text></Replace>
+        <Replace Tag="LOC_EMIG_LEDGER_HAPPY_NOTE_OWN" Language="ko_KR"><Text>이곳 {1_H}</Text></Replace>
         <Replace Tag="LOC_EMIG_LEDGER_POP_NOTE" Language="ko_KR"><Text>{1_Pop}명</Text></Replace>
         <Replace Tag="LOC_EMIG_LEDGER_PCT_NOTE" Language="ko_KR"><Text>기본값의 {1_Pct}%</Text></Replace>
         <Replace Tag="LOC_EMIG_LEDGER_TURNS_LEFT" Language="ko_KR"><Text>{1_Turns}턴 남음</Text></Replace>
@@ -1101,7 +1101,7 @@
         <Replace Tag="LOC_EMIG_FORECAST_LEAVE" Language="ko_KR"><Text>앞으로 {2_Turns}턴 안에 약 {1_Count}명이 떠날 듯합니다</Text></Replace>
         <Replace Tag="LOC_EMIG_FORECAST_CRISIS" Language="ko_KR"><Text>지금 사람들이 피난 중입니다. 몇 명이 떠날지는 압력이 아니라 위기에 달렸습니다</Text></Replace>
         <Replace Tag="LOC_EMIG_FORECAST_STABLE" Language="ko_KR"><Text>당분간 떠날 사람이 없을 듯합니다</Text></Replace>
-        <Replace Tag="LOC_EMIG_RO_CLOSED" Language="ko_KR"><Text>Dissuading newcomers: people looking for a new home pick somewhere else</Text></Replace>
+        <Replace Tag="LOC_EMIG_RO_CLOSED" Language="ko_KR"><Text>새 이주민 만류 중: 새 보금자리를 찾는 사람들은 다른 곳을 고릅니다</Text></Replace>
         <Replace Tag="LOC_EMIG_RO_SIEGE_STALLED" Language="ko_KR"><Text>포위 교착: 포위군이 공격하지 않고 있어, 다시 공격할 때까지 포위로 떠나거나 죽는 사람이 없습니다</Text></Replace>
         <Replace Tag="LOC_EMIG_RO_WARN_HOLDING" Language="ko_KR"><Text>이 정착지에서 재정착 중인 난민</Text></Replace>
         <Replace Tag="LOC_EMIG_RO_WARN_TRAPPED" Language="ko_KR"><Text>위험: 달아날 곳 없이 갇혔습니다{1_Why}</Text></Replace>
@@ -2089,7 +2089,7 @@
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_ARRIVALS_CHAPTER_ARRIVING_TITLE" Language="ko_KR"><Text>도착</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_ARRIVALS_CHAPTER_ARRIVING_PARA_1" Language="ko_KR"><Text>다른 문명은 도착한 이주민을 스스로 배치합니다. 당신의 도시에서는 새 이주민 정착 방식 설정(옵션, 추가 콘텐츠, 이주, 고급 설정, 도착 및 이탈)이 어떻게 될지를 정합니다:[BLIST][LI][B]확인하기[/B](기본값): 받아들이는 도시에 새 이주민 또는 난민 팝업이 떠서 타일을 고르거나, 도시에 맡기거나, 기다릴 수 있습니다. 세 개의 스위치로 어떤 종류의 도착에 대해 물을지 정합니다. 기본적으로 난민만 묻고, 이주민과 귀환자는 바로 배치됩니다.[LI][B]자동[/B]: 도시가 성장할 때처럼 즉시 포인트를 배치합니다.[LI][B]이주민 유닛[/B]: 새 이주민이 도시 옆에 이주민 유닛으로 도착하며, 당신이 직접 재정착시킵니다. 정착하지 않은 이주민 유닛은 매 턴 유지비가 듭니다.[LI][B]끔[/B]: 게임 자체의 도시 성장 알림이 포인트를 배치하라고 묻습니다.[/LIST]</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_ARRIVALS_CHAPTER_ARRIVING_PARA_2" Language="ko_KR"><Text>난민 팝업은 도착한 이들이 어디에서, 무엇을 피해 달아났는지를 알려 주며, 그들 민족의 목소리로 된 인용문을 함께 보여 줍니다(실향민의 목소리 참고). 만나지 않은 문명에서 온 난민은 그저 실향민으로만 표시됩니다.</Text></Replace>
-        <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_ARRIVALS_CHAPTER_ARRIVING_PARA_3" Language="ko_KR"><Text>Each of your settlements has a "Dissuade newcomers" button on its Settlements card, with its price in the button. While it's on, people who would have moved there choose again by the same pull as everyone else: another of your settlements, another civilization's, or staying where they are when nowhere else is better. You lose the ones who go abroad or stay home. People already on the road still arrive. It costs 1 Influence a turn, and when you can't pay, newcomers are welcome there again. "Welcome newcomers" undoes it. AI civilizations do the same: one past its congestion bar dissuades newcomers in an unhappy settlement that has been taking people in, pays the same upkeep, and welcomes them again once the pressure eases.</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_ARRIVALS_CHAPTER_ARRIVING_PARA_3" Language="ko_KR"><Text>당신의 정착지마다 정착지 탭의 카드에 "새 이주민 만류하기" 버튼이 있으며, 버튼에 비용이 표시됩니다. 켜져 있는 동안 그곳으로 옮겨 갔을 사람들은 다른 모두와 같은 끌림에 따라 다시 고릅니다. 당신의 다른 정착지, 다른 문명의 정착지, 또는 더 나은 곳이 없으면 지금 있는 곳에 머뭅니다. 외국으로 가거나 고향에 머무는 사람은 잃게 됩니다. 이미 길에 오른 사람은 그대로 도착합니다. 매 턴 영향력이 1 들고, 낼 수 없게 되면 그곳에서 새 이주민을 다시 환영합니다. "새 이주민 환영하기"를 누르면 원래대로 돌아갑니다. AI 문명도 같은 일을 합니다. 혼잡 기준을 넘은 AI 문명은 사람들을 받아 온 불만스러운 정착지에서 새 이주민을 만류하고, 같은 유지비를 내며, 압력이 줄어들면 다시 환영합니다.</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_ARRIVALS_CHAPTER_RESETTLE_TITLE" Language="ko_KR"><Text>정착을 기다리는 난민</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_ARRIVALS_CHAPTER_RESETTLE_PARA_1" Language="ko_KR"><Text>전쟁 및 재해 난민 다섯 명 중 한 명(기본값)은 도착하자마자 정착합니다. 나머지는 목적지의 대기 인원에 들어가 이후 몇 턴에 걸쳐 정착합니다. 행복하고 개방적이며 붐비지 않는 도시는 그들을 더 빨리 정착시키고, 반이민 기조는 이를 늦춥니다. 받아들인 쪽은 아직 기다리는 이들의 유지비를 냅니다. 그들이 피해 온 위기가 새 도시에까지 닥치면, 기다리던 난민이 먼저 다른 곳으로 떠납니다. 도시 이주 보고과 도시 정보 패널에 대기 인원이 표시됩니다.</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_ARRIVALS_CHAPTER_COST_TITLE" Language="ko_KR"><Text>사람을 받아들이는 대가</Text></Replace>

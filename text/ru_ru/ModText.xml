@@ -90,7 +90,7 @@
         <Replace Tag="LOC_EMIG_EXPLAIN_CELEBRATION" Language="ru_RU"><Text>Празднования</Text></Replace>
         <Replace Tag="LOC_EMIG_EXPLAIN_STAGE" Language="ru_RU"><Text>Уровень счастья</Text></Replace>
         <Replace Tag="LOC_EMIG_EXPLAIN_HAPPINESS_SHAPED" Language="ru_RU"><Text>Относительно среднего по империи</Text></Replace>
-        <Replace Tag="LOC_EMIG_EXPLAIN_HAPPINESS_OWN" Language="ru_RU"><Text>Its own Happiness</Text></Replace>
+        <Replace Tag="LOC_EMIG_EXPLAIN_HAPPINESS_OWN" Language="ru_RU"><Text>Собственное Счастье</Text></Replace>
         <Replace Tag="LOC_EMIG_EXPLAIN_CAP_TRIM" Language="ru_RU"><Text>Потолок за постройки</Text></Replace>
         <Replace Tag="LOC_EMIG_EXPLAIN_FOOD" Language="ru_RU"><Text>Еда</Text></Replace>
         <Replace Tag="LOC_EMIG_EXPLAIN_PRODUCTION" Language="ru_RU"><Text>Производство</Text></Replace>
@@ -245,7 +245,7 @@
         <Replace Tag="LOC_EMIG_T_SCAP" Language="ru_RU"><Text>Осада: наибольшая доля города, потерянная в войне</Text></Replace>
         <Replace Tag="LOC_EMIG_T_SCAP_D" Language="ru_RU"><Text>Наибольшая доля населения города (как часть его размера на начало осады), которую может забрать вызванная войной эмиграция, прежде чем остановится. Используется только моделью осады.</Text></Replace>
         <Replace Tag="LOC_EMIG_T_INTAKE" Language="ru_RU"><Text>Отваживать новоприбывших в поселении</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_INTAKE_D" Language="ru_RU"><Text>Each of your settlements gets a "Dissuade newcomers" button on its Settlements card. While it's on, people looking for a new home pick somewhere else: another of your settlements, another civilization's, or they stay where they are. People already on the road still arrive. Off hides the button and welcomes newcomers back everywhere, in the AI's settlements too.</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_INTAKE_D" Language="ru_RU"><Text>У каждого вашего поселения на его карточке во вкладке «Поселения» появляется кнопка «Отваживать новоприбывших». Пока она включена, те, кто ищет новый дом, выбирают другое место: другое ваше поселение, поселение другой цивилизации или остаются там, где они есть. Те, кто уже в пути, всё равно прибудут. «Выкл.» скрывает кнопку и снова принимает новоприбывших везде, в том числе в поселениях ИИ.</Text></Replace>
         <Replace Tag="LOC_EMIG_T_INTAKE_COST" Language="ru_RU"><Text>Влияние за ход, чтобы отваживать новоприбывших</Text></Replace>
         <Replace Tag="LOC_EMIG_T_INTAKE_COST_D" Language="ru_RU"><Text>Сколько Влияния за ход стоит отваживать новоприбывших в каждом поселении, причём и для вас, и для ИИ. Когда Влияния не хватает, отваживать их продолжают столько поселений, сколько удаётся оплатить, а остальные снова принимают новоприбывших. Выкл. = бесплатно.</Text></Replace>
         <Replace Tag="LOC_EMIG_T_AI_INTAKE" Language="ru_RU"><Text>Цивилизации ИИ отваживают новоприбывших</Text></Replace>
@@ -391,10 +391,10 @@
         <Replace Tag="LOC_EMIG_HOMECOMING_SPLIT" Language="ru_RU"><Text>{1_Home} снова в безопасности. Из бежавших оттуда людей возвращаются домой: {2_Go}, осели там, куда ушли: {3_Stay}.</Text></Replace>
         <Replace Tag="LOC_EMIG_HOMECOMING_ALL_STAY" Language="ru_RU"><Text>{1_Home} снова в безопасности, но бежавшие оттуда люди ({2_Stay}) осели там, куда ушли. «Ускорить» всё ещё может их вернуть.</Text></Replace>
         <Replace Tag="LOC_EMIG_HOMECOMING_DONE_GOING" Language="ru_RU"><Text>Последние из тех, кто возвращался в {1_Home}, уже дома.</Text></Replace>
-        <Replace Tag="LOC_EMIG_RELIEF_LINE" Language="ru_RU"><Text>People who left</Text></Replace>
-        <Replace Tag="LOC_BUILDING_EMIG_RELIEF_NAME" Language="ru_RU"><Text>People who left</Text></Replace>
-        <Replace Tag="LOC_BUILDING_EMIG_RELIEF_DESCRIPTION" Language="ru_RU"><Text>+1 Happiness for each person who left this settlement over unhappiness, until it grows back to the size it was when they left.</Text></Replace>
-        <Replace Tag="LOC_BUILDING_EMIG_RELIEF_TOOLTIP" Language="ru_RU"><Text>+1 Happiness for each person who left this settlement over unhappiness, until it grows back to the size it was when they left.</Text></Replace>
+        <Replace Tag="LOC_EMIG_RELIEF_LINE" Language="ru_RU"><Text>Ушедшие</Text></Replace>
+        <Replace Tag="LOC_BUILDING_EMIG_RELIEF_NAME" Language="ru_RU"><Text>Ушедшие</Text></Replace>
+        <Replace Tag="LOC_BUILDING_EMIG_RELIEF_DESCRIPTION" Language="ru_RU"><Text>+1 Счастья за каждого человека, покинувшего это поселение из-за недовольства, пока оно снова не вырастет до размера, который был при его уходе.</Text></Replace>
+        <Replace Tag="LOC_BUILDING_EMIG_RELIEF_TOOLTIP" Language="ru_RU"><Text>+1 Счастья за каждого человека, покинувшего это поселение из-за недовольства, пока оно снова не вырастет до размера, который был при его уходе.</Text></Replace>
         <Replace Tag="LOC_EMIG_DP_WAIT_STAYED" Language="ru_RU"><Text>Осели там, куда ушли: {1_Count}. Они останутся там, если вы не заплатите за их возвращение.</Text></Replace>
         <Replace Tag="LOC_EMIG_DP_WAIT_DECIDE" Language="ru_RU"><Text>Когда {1_Home} пробудет в покое ещё немного (осталось ходов: {2_Turns}), бежавшие оттуда люди решат, возвращаться ли домой. Чем дольше они отсутствуют и чем лучше им живётся на новом месте, тем больше из них остаётся.</Text></Replace>
         <Replace Tag="LOC_EMIG_DP_FREE_STAY" Language="ru_RU"><Text>остаются на месте: {1_Count}</Text></Replace>
@@ -481,7 +481,7 @@
         <Replace Tag="LOC_EMIG_SC_CLOSED" Language="ru_RU"><Text>Отваживает новоприбывших</Text></Replace>
         <Replace Tag="LOC_EMIG_SC_CLOSE_INTAKE" Language="ru_RU"><Text>Отваживать новоприбывших</Text></Replace>
         <Replace Tag="LOC_EMIG_SC_OPEN_INTAKE" Language="ru_RU"><Text>Принимать новоприбывших</Text></Replace>
-        <Replace Tag="LOC_EMIG_SC_CLOSE_INTAKE_TIP" Language="ru_RU"><Text>People looking for a new home pick somewhere else: another of your settlements, another civilization's, or they stay where they are. People already on the road still arrive, and this settlement doesn't pay integration costs for anyone who chose elsewhere.</Text></Replace>
+        <Replace Tag="LOC_EMIG_SC_CLOSE_INTAKE_TIP" Language="ru_RU"><Text>Те, кто ищет новый дом, выбирают другое место: другое ваше поселение, поселение другой цивилизации или остаются там, где они есть. Те, кто уже в пути, всё равно прибудут, а это поселение не платит за интеграцию тех, кто выбрал другое место.</Text></Replace>
         <Replace Tag="LOC_EMIG_SC_INTAKE_PAYING" Language="ru_RU"><Text>Платим {1_Cost} Влияния за ход.</Text></Replace>
         <Replace Tag="LOC_EMIG_SC_INTAKE_A_TURN" Language="ru_RU"><Text>за ход</Text></Replace>
         <Replace Tag="LOC_EMIG_SC_INTAKE_SHORT" Language="ru_RU"><Text>Недостаточно Влияния: чтобы отваживать новоприбывших, нужно {1_Cost} за ход, а у нас {2_Have}.</Text></Replace>
@@ -494,7 +494,7 @@
         <Replace Tag="LOC_EMIG_SC_TALLY_SUM" Language="ru_RU"><Text>Итого</Text></Replace>
         <Replace Tag="LOC_EMIG_SC_LEDGER_TITLE_TIP" Language="ru_RU"><Text>Нажмите на строку, чтобы увидеть, что за ней стоит; нажмите здесь, чтобы раскрыть или свернуть все.</Text></Replace>
         <Replace Tag="LOC_EMIG_LEDGER_HAPPY_NOTE" Language="ru_RU"><Text>{1_H} здесь, {2_Mean} в среднем по империи</Text></Replace>
-        <Replace Tag="LOC_EMIG_LEDGER_HAPPY_NOTE_OWN" Language="ru_RU"><Text>{1_H} here</Text></Replace>
+        <Replace Tag="LOC_EMIG_LEDGER_HAPPY_NOTE_OWN" Language="ru_RU"><Text>{1_H} здесь</Text></Replace>
         <Replace Tag="LOC_EMIG_LEDGER_POP_NOTE" Language="ru_RU"><Text>{1_Pop} жителей</Text></Replace>
         <Replace Tag="LOC_EMIG_LEDGER_PCT_NOTE" Language="ru_RU"><Text>{1_Pct}% от базы</Text></Replace>
         <Replace Tag="LOC_EMIG_LEDGER_TURNS_LEFT" Language="ru_RU"><Text>осталось {1_Turns} ходов</Text></Replace>
@@ -1101,7 +1101,7 @@
         <Replace Tag="LOC_EMIG_FORECAST_LEAVE" Language="ru_RU"><Text>Примерно {1_Count} человек, скорее всего, уедут в ближайшие {2_Turns} ходов</Text></Replace>
         <Replace Tag="LOC_EMIG_FORECAST_CRISIS" Language="ru_RU"><Text>Люди бегут прямо сейчас; сколько именно, зависит от кризиса, а не от давления</Text></Replace>
         <Replace Tag="LOC_EMIG_FORECAST_STABLE" Language="ru_RU"><Text>В ближайшее время вряд ли кто-то уедет</Text></Replace>
-        <Replace Tag="LOC_EMIG_RO_CLOSED" Language="ru_RU"><Text>Dissuading newcomers: people looking for a new home pick somewhere else</Text></Replace>
+        <Replace Tag="LOC_EMIG_RO_CLOSED" Language="ru_RU"><Text>Отваживает новоприбывших: те, кто ищет новый дом, выбирают другое место</Text></Replace>
         <Replace Tag="LOC_EMIG_RO_SIEGE_STALLED" Language="ru_RU"><Text>Осада затихла: осаждающие не атакуют, так что никто не уезжает и не гибнет из-за осады, пока они не начнут</Text></Replace>
         <Replace Tag="LOC_EMIG_RO_WARN_HOLDING" Language="ru_RU"><Text>Беженцы расселяются в этом поселении</Text></Replace>
         <Replace Tag="LOC_EMIG_RO_WARN_TRAPPED" Language="ru_RU"><Text>Под угрозой: заперты, бежать некуда{1_Why}</Text></Replace>
@@ -2089,7 +2089,7 @@
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_ARRIVALS_CHAPTER_ARRIVING_TITLE" Language="ru_RU"><Text>Прибытие</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_ARRIVALS_CHAPTER_ARRIVING_PARA_1" Language="ru_RU"><Text>Другие цивилизации размещают своих прибывших сами. Для ваших городов исход определяет параметр «Как селятся новоприбывшие» (Настройки ▸ Дополнения ▸ Эмиграция ▸ Расширенные настройки ▸ Прибытие и отъезд):[BLIST][LI][B]Спрашивать[/B] (по умолчанию): окно «Новоприбывшие» или «Беженцы» в принимающем городе позволяет выбрать клетку, доверить выбор городу или подождать. Три переключателя определяют, при каких видах прибытия задаётся вопрос; по умолчанию спрашивают только о беженцах, а мигранты и возвращающиеся размещаются сразу.[LI][B]Автоматически[/B]: город сразу размещает очко, как при обычном росте.[LI][B]Отряд мигрантов[/B]: новоприбывшие появляются рядом с городом в виде отряда «Мигрант», которого вы переселяете сами. Нерасселённый мигрант требует содержания каждый ход.[LI][B]Выкл.[/B]: разместить очко предлагает стандартный запрос игры «Расширить город».[/LIST]</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_ARRIVALS_CHAPTER_ARRIVING_PARA_2" Language="ru_RU"><Text>Окно «Беженцы» сообщает, откуда бежали прибывшие и от чего, и приводит цитату голосом их народа (см. «Голоса изгнанников»). Беженцы из цивилизации, с которой вы не встречались, описываются просто как перемещённые люди.</Text></Replace>
-        <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_ARRIVALS_CHAPTER_ARRIVING_PARA_3" Language="ru_RU"><Text>Each of your settlements has a "Dissuade newcomers" button on its Settlements card, with its price in the button. While it's on, people who would have moved there choose again by the same pull as everyone else: another of your settlements, another civilization's, or staying where they are when nowhere else is better. You lose the ones who go abroad or stay home. People already on the road still arrive. It costs 1 Influence a turn, and when you can't pay, newcomers are welcome there again. "Welcome newcomers" undoes it. AI civilizations do the same: one past its congestion bar dissuades newcomers in an unhappy settlement that has been taking people in, pays the same upkeep, and welcomes them again once the pressure eases.</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_ARRIVALS_CHAPTER_ARRIVING_PARA_3" Language="ru_RU"><Text>У каждого вашего поселения на его карточке во вкладке «Поселения» есть кнопка «Отваживать новоприбывших» с ценой на кнопке. Пока она включена, те, кто переехал бы туда, выбирают заново по тому же притяжению, что и все остальные: другое ваше поселение, поселение другой цивилизации или остаются на месте, если нигде не лучше. Тех, кто уезжает за границу или остаётся дома, вы теряете. Те, кто уже в пути, всё равно прибудут. Это стоит 1 Влияние за ход, а когда платить нечем, новоприбывших там снова принимают. Кнопка «Принимать новоприбывших» всё отменяет. Цивилизации ИИ поступают так же: перешедшая свой порог перегруженности цивилизация отваживает новоприбывших от недовольного поселения, которое принимало людей, платит то же содержание и снова принимает их, как только давление спадает.</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_ARRIVALS_CHAPTER_RESETTLE_TITLE" Language="ru_RU"><Text>Беженцы, ожидающие расселения</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_ARRIVALS_CHAPTER_RESETTLE_PARA_1" Language="ru_RU"><Text>Каждый пятый беженец от войны и бедствий (по умолчанию) селится сразу по прибытии. Остальные попадают в очередь ожидания в пункте назначения и расселяются в течение следующих ходов. Довольный, открытый и не перенаселённый город расселяет их быстрее; «Антииммиграционный курс» замедляет этот процесс. Принимающая сторона платит за содержание тех, кто ещё ждёт. Если кризис, от которого они бежали, доходит до нового города, ожидающие беженцы уходят первыми. Сколько людей ждёт, показывают сводка по городу и панель «Информация о городе».</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_ARRIVALS_CHAPTER_COST_TITLE" Language="ru_RU"><Text>Цена приёма людей</Text></Replace>

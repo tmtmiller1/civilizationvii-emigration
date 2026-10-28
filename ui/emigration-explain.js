@@ -285,8 +285,8 @@ function pushRow(rows, key, delta, sub) {
  */
 function happinessParts(base, d) {
   if (CONFIG.happinessModel === "stage") {
-    return [{ label: factorLabel("happinessOwn"), delta: base.happiness,
-      note: loc("LOC_EMIG_LEDGER_HAPPY_NOTE_OWN", "{1_H} here", round1(d.happiness.h)) }];
+    const note = loc("LOC_EMIG_LEDGER_HAPPY_NOTE_OWN", "{1_H} here", round1(d.happiness.h));
+    return [{ label: factorLabel("happinessOwn"), delta: base.happiness, note }];
   }
   return [
     { label: factorLabel("happinessShaped"), delta: base.happiness,

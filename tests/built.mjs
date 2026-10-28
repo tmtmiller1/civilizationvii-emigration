@@ -159,4 +159,22 @@ CONFIG.builtRoleWeights = {
   assert.equal(builtFor({}).score, 0, "a settlement with no usable id scores 0");
 }
 
+// A hidden marker building (People who left, Cultural Diffusion's and Partisans' markers) isn't something the
+// settlement built, so the index leaves it out; an ordinary building beside it is still in.
+{
+  const saved = globalThis.GameInfo;
+  globalThis.GameInfo = {
+    Constructibles: [def({ ConstructibleType: "BUILDING_MARKET_TEST" }),
+      def({ ConstructibleType: "BUILDING_EMIG_RELIEF_1", CanBeHidden: 1 }),
+      def({ ConstructibleType: "BUILDING_CD_FLIP_LEADER_TEST", CanBeHidden: true })],
+    Buildings: [], Constructible_YieldChanges: []
+  };
+  B.reset();
+  const idx = B.index();
+  assert.ok(idx.has("BUILDING_MARKET_TEST"), "an ordinary building counts");
+  assert.ok(!idx.has("BUILDING_EMIG_RELIEF_1") && !idx.has("BUILDING_CD_FLIP_LEADER_TEST"), "hidden markers don't");
+  globalThis.GameInfo = saved;
+  B.reset();
+}
+
 console.log("built tests passed");

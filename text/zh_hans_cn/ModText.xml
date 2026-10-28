@@ -90,7 +90,7 @@
         <Replace Tag="LOC_EMIG_EXPLAIN_CELEBRATION" Language="zh_Hans_CN"><Text>庆典</Text></Replace>
         <Replace Tag="LOC_EMIG_EXPLAIN_STAGE" Language="zh_Hans_CN"><Text>幸福阶段</Text></Replace>
         <Replace Tag="LOC_EMIG_EXPLAIN_HAPPINESS_SHAPED" Language="zh_Hans_CN"><Text>相对于帝国平均水平</Text></Replace>
-        <Replace Tag="LOC_EMIG_EXPLAIN_HAPPINESS_OWN" Language="zh_Hans_CN"><Text>Its own Happiness</Text></Replace>
+        <Replace Tag="LOC_EMIG_EXPLAIN_HAPPINESS_OWN" Language="zh_Hans_CN"><Text>自身幸福度</Text></Replace>
         <Replace Tag="LOC_EMIG_EXPLAIN_CAP_TRIM" Language="zh_Hans_CN"><Text>建筑加成上限</Text></Replace>
         <Replace Tag="LOC_EMIG_EXPLAIN_FOOD" Language="zh_Hans_CN"><Text>食物</Text></Replace>
         <Replace Tag="LOC_EMIG_EXPLAIN_PRODUCTION" Language="zh_Hans_CN"><Text>生产力</Text></Replace>
@@ -245,7 +245,7 @@
         <Replace Tag="LOC_EMIG_T_SCAP" Language="zh_Hans_CN"><Text>围城：战争造成的最大城市人口损失</Text></Replace>
         <Replace Tag="LOC_EMIG_T_SCAP_D" Language="zh_Hans_CN"><Text>战争移民在停止前最多能带走的城市人口（按围城开始时规模的比例）。仅围城模型使用。</Text></Replace>
         <Replace Tag="LOC_EMIG_T_INTAKE" Language="zh_Hans_CN"><Text>在定居点劝阻新来者</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_INTAKE_D" Language="zh_Hans_CN"><Text>Each of your settlements gets a "Dissuade newcomers" button on its Settlements card. While it's on, people looking for a new home pick somewhere else: another of your settlements, another civilization's, or they stay where they are. People already on the road still arrive. Off hides the button and welcomes newcomers back everywhere, in the AI's settlements too.</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_INTAKE_D" Language="zh_Hans_CN"><Text>你的每个定居点在定居点标签页的卡片上都会多出一个“劝阻新来者”按钮。开启期间，寻找新家园的人会另选他处：你的另一个定居点、其他文明的定居点，或者留在原地。已经在路上的人仍会抵达。关闭此选项会隐藏该按钮，并在所有地方重新欢迎新来者，包括 AI 的定居点。</Text></Replace>
         <Replace Tag="LOC_EMIG_T_INTAKE_COST" Language="zh_Hans_CN"><Text>劝阻新来者每回合花费的影响力</Text></Replace>
         <Replace Tag="LOC_EMIG_T_INTAKE_COST_D" Language="zh_Hans_CN"><Text>每个定居点劝阻新来者每回合要花多少影响力，你和 AI 都一样。影响力不够时，付得起几个定居点就有几个继续劝阻，其余的重新欢迎新来者。关闭此选项则劝阻不收费。</Text></Replace>
         <Replace Tag="LOC_EMIG_T_AI_INTAKE" Language="zh_Hans_CN"><Text>AI 文明会劝阻新来者</Text></Replace>
@@ -391,10 +391,10 @@
         <Replace Tag="LOC_EMIG_HOMECOMING_SPLIT" Language="zh_Hans_CN"><Text>{1_Home}重归安全。逃离它的人中有 {2_Go} 人正在回家，{3_Stay} 人已在他们去的地方定居。</Text></Replace>
         <Replace Tag="LOC_EMIG_HOMECOMING_ALL_STAY" Language="zh_Hans_CN"><Text>{1_Home}重归安全，但逃离它的 {2_Stay} 人已在他们去的地方定居。加急仍可以把他们带回来。</Text></Replace>
         <Replace Tag="LOC_EMIG_HOMECOMING_DONE_GOING" Language="zh_Hans_CN"><Text>回{1_Home}的最后一批人已经到家。</Text></Replace>
-        <Replace Tag="LOC_EMIG_RELIEF_LINE" Language="zh_Hans_CN"><Text>People who left</Text></Replace>
-        <Replace Tag="LOC_BUILDING_EMIG_RELIEF_NAME" Language="zh_Hans_CN"><Text>People who left</Text></Replace>
-        <Replace Tag="LOC_BUILDING_EMIG_RELIEF_DESCRIPTION" Language="zh_Hans_CN"><Text>+1 Happiness for each person who left this settlement over unhappiness, until it grows back to the size it was when they left.</Text></Replace>
-        <Replace Tag="LOC_BUILDING_EMIG_RELIEF_TOOLTIP" Language="zh_Hans_CN"><Text>+1 Happiness for each person who left this settlement over unhappiness, until it grows back to the size it was when they left.</Text></Replace>
+        <Replace Tag="LOC_EMIG_RELIEF_LINE" Language="zh_Hans_CN"><Text>离开的人</Text></Replace>
+        <Replace Tag="LOC_BUILDING_EMIG_RELIEF_NAME" Language="zh_Hans_CN"><Text>离开的人</Text></Replace>
+        <Replace Tag="LOC_BUILDING_EMIG_RELIEF_DESCRIPTION" Language="zh_Hans_CN"><Text>每有一人因不满离开这个定居点，幸福度 +1，直到它重新成长到他们离开时的规模。</Text></Replace>
+        <Replace Tag="LOC_BUILDING_EMIG_RELIEF_TOOLTIP" Language="zh_Hans_CN"><Text>每有一人因不满离开这个定居点，幸福度 +1，直到它重新成长到他们离开时的规模。</Text></Replace>
         <Replace Tag="LOC_EMIG_DP_WAIT_STAYED" Language="zh_Hans_CN"><Text>{1_Count} 人已在他们去的地方定居，会一直留在那里，除非你付费带他们回来。</Text></Replace>
         <Replace Tag="LOC_EMIG_DP_WAIT_DECIDE" Language="zh_Hans_CN"><Text>{1_Home}再平静 {2_Turns} 回合后，逃离它的人会决定是否回家。他们在外越久、在现居地过得越好，留下的人就越多。</Text></Replace>
         <Replace Tag="LOC_EMIG_DP_FREE_STAY" Language="zh_Hans_CN"><Text>{1_Count} 人留在原地</Text></Replace>
@@ -481,7 +481,7 @@
         <Replace Tag="LOC_EMIG_SC_CLOSED" Language="zh_Hans_CN"><Text>正在劝阻新来者</Text></Replace>
         <Replace Tag="LOC_EMIG_SC_CLOSE_INTAKE" Language="zh_Hans_CN"><Text>劝阻新来者</Text></Replace>
         <Replace Tag="LOC_EMIG_SC_OPEN_INTAKE" Language="zh_Hans_CN"><Text>欢迎新来者</Text></Replace>
-        <Replace Tag="LOC_EMIG_SC_CLOSE_INTAKE_TIP" Language="zh_Hans_CN"><Text>People looking for a new home pick somewhere else: another of your settlements, another civilization's, or they stay where they are. People already on the road still arrive, and this settlement doesn't pay integration costs for anyone who chose elsewhere.</Text></Replace>
+        <Replace Tag="LOC_EMIG_SC_CLOSE_INTAKE_TIP" Language="zh_Hans_CN"><Text>寻找新家园的人会另选他处：你的另一个定居点、其他文明的定居点，或者留在原地。已经在路上的人仍会抵达，这个定居点也不用为另选他处的人支付融入成本。</Text></Replace>
         <Replace Tag="LOC_EMIG_SC_INTAKE_PAYING" Language="zh_Hans_CN"><Text>每回合支付 {1_Cost} 影响力。</Text></Replace>
         <Replace Tag="LOC_EMIG_SC_INTAKE_A_TURN" Language="zh_Hans_CN"><Text>/回合</Text></Replace>
         <Replace Tag="LOC_EMIG_SC_INTAKE_SHORT" Language="zh_Hans_CN"><Text>影响力不足：劝阻新来者每回合要花 {1_Cost}，而我们只有 {2_Have}。</Text></Replace>
@@ -494,7 +494,7 @@
         <Replace Tag="LOC_EMIG_SC_TALLY_SUM" Language="zh_Hans_CN"><Text>合计</Text></Replace>
         <Replace Tag="LOC_EMIG_SC_LEDGER_TITLE_TIP" Language="zh_Hans_CN"><Text>点击某一行查看其背后的内容；点击此处可全部展开或收起。</Text></Replace>
         <Replace Tag="LOC_EMIG_LEDGER_HAPPY_NOTE" Language="zh_Hans_CN"><Text>此处 {1_H}，全帝国 {2_Mean}</Text></Replace>
-        <Replace Tag="LOC_EMIG_LEDGER_HAPPY_NOTE_OWN" Language="zh_Hans_CN"><Text>{1_H} here</Text></Replace>
+        <Replace Tag="LOC_EMIG_LEDGER_HAPPY_NOTE_OWN" Language="zh_Hans_CN"><Text>此处 {1_H}</Text></Replace>
         <Replace Tag="LOC_EMIG_LEDGER_POP_NOTE" Language="zh_Hans_CN"><Text>{1_Pop} 人</Text></Replace>
         <Replace Tag="LOC_EMIG_LEDGER_PCT_NOTE" Language="zh_Hans_CN"><Text>基础值的 {1_Pct}%</Text></Replace>
         <Replace Tag="LOC_EMIG_LEDGER_TURNS_LEFT" Language="zh_Hans_CN"><Text>剩余 {1_Turns} 回合</Text></Replace>
@@ -1101,7 +1101,7 @@
         <Replace Tag="LOC_EMIG_FORECAST_LEAVE" Language="zh_Hans_CN"><Text>接下来 {2_Turns} 回合内大约有 {1_Count} 人可能离开</Text></Replace>
         <Replace Tag="LOC_EMIG_FORECAST_CRISIS" Language="zh_Hans_CN"><Text>人们正在逃离；人数取决于危机，而非压力</Text></Replace>
         <Replace Tag="LOC_EMIG_FORECAST_STABLE" Language="zh_Hans_CN"><Text>近期不太可能有人离开</Text></Replace>
-        <Replace Tag="LOC_EMIG_RO_CLOSED" Language="zh_Hans_CN"><Text>Dissuading newcomers: people looking for a new home pick somewhere else</Text></Replace>
+        <Replace Tag="LOC_EMIG_RO_CLOSED" Language="zh_Hans_CN"><Text>正在劝阻新来者：寻找新家园的人会另选他处</Text></Replace>
         <Replace Tag="LOC_EMIG_RO_SIEGE_STALLED" Language="zh_Hans_CN"><Text>围城停滞：围城者没有发起攻击，所以在他们再次进攻之前没有人会因围城离开或死亡</Text></Replace>
         <Replace Tag="LOC_EMIG_RO_WARN_HOLDING" Language="zh_Hans_CN"><Text>难民正在此定居点安置</Text></Replace>
         <Replace Tag="LOC_EMIG_RO_WARN_TRAPPED" Language="zh_Hans_CN"><Text>有风险：被困而无处可逃{1_Why}</Text></Replace>
@@ -2089,7 +2089,7 @@
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_ARRIVALS_CHAPTER_ARRIVING_TITLE" Language="zh_Hans_CN"><Text>抵达</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_ARRIVALS_CHAPTER_ARRIVING_PARA_1" Language="zh_Hans_CN"><Text>其他文明会自行安置抵达者。对于你的城市，由“新来者如何定居”设置（选项 ▸ 附加内容 ▸ 移民 ▸ 高级设置 ▸ 迁入与迁出）决定如何处理：[BLIST][LI][B]询问我[/B]（默认）：接纳城市会弹出“新来者”或“难民”窗口，让你选择地块、交由城市决定或稍后再说。三个开关决定哪些类型的抵达会询问你；默认只有难民会询问，移民与返乡者会立即安置。[LI][B]自动[/B]：城市立即安置该人口点，与城市自然增长时一样。[LI][B]移民单位[/B]：新来者以移民单位的形式出现在城市旁，由你亲自安置。未安置的移民单位每回合都需支付维护费。[LI][B]关闭[/B]：由游戏自带的“发展城市”提示要求你安置该人口点。[/LIST]</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_ARRIVALS_CHAPTER_ARRIVING_PARA_2" Language="zh_Hans_CN"><Text>“难民”弹窗会说明抵达者从何处逃来、为何逃离，并附上一段以其民族口吻说出的引语（见“流离者之声”）。来自你尚未相遇文明的难民只会被描述为流离失所者。</Text></Replace>
-        <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_ARRIVALS_CHAPTER_ARRIVING_PARA_3" Language="zh_Hans_CN"><Text>Each of your settlements has a "Dissuade newcomers" button on its Settlements card, with its price in the button. While it's on, people who would have moved there choose again by the same pull as everyone else: another of your settlements, another civilization's, or staying where they are when nowhere else is better. You lose the ones who go abroad or stay home. People already on the road still arrive. It costs 1 Influence a turn, and when you can't pay, newcomers are welcome there again. "Welcome newcomers" undoes it. AI civilizations do the same: one past its congestion bar dissuades newcomers in an unhappy settlement that has been taking people in, pays the same upkeep, and welcomes them again once the pressure eases.</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_ARRIVALS_CHAPTER_ARRIVING_PARA_3" Language="zh_Hans_CN"><Text>你的每个定居点在定居点标签页的卡片上都有一个“劝阻新来者”按钮，按钮上标明价格。开启期间，原本会迁往那里的人会按照与其他人相同的吸引力重新选择：你的另一个定居点、其他文明的定居点，或者在别处都不更好时留在原地。去了国外或留在家乡的人，你就失去了。已经在路上的人仍会抵达。每回合花费 1 影响力，付不起时那里会重新欢迎新来者。“欢迎新来者”可以撤销。AI 文明也会这样做：超过拥堵上限的 AI 会在一个一直在接纳人口、且不满的定居点劝阻新来者，支付同样的维护费，并在压力缓解后重新欢迎他们。</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_ARRIVALS_CHAPTER_RESETTLE_TITLE" Language="zh_Hans_CN"><Text>等待安置的难民</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_ARRIVALS_CHAPTER_RESETTLE_PARA_1" Language="zh_Hans_CN"><Text>默认情况下，每五名战争和灾害难民中有一名会在抵达时直接定居。其余的人会进入目的地的等待队列，并在随后几个回合内陆续定居。幸福、开放且不拥挤的东道城市安置他们更快；反移民立场则会减慢安置。东道主需为仍在等待的人支付维护费。如果他们逃离的危机蔓延到新城市，等待中的难民会先行离开。城市概览面板和城市详情面板会显示等待人数。</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_ARRIVALS_CHAPTER_COST_TITLE" Language="zh_Hans_CN"><Text>接纳人口的代价</Text></Replace>

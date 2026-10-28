@@ -106,5 +106,6 @@ excluded by an allow-list audit.
 
 ## License
 
-Changes go under the same terms as the mod: the Tower Mod License 1.0 in [LICENSE](LICENSE), with `ui/settings-keeper.js` under
+Changes go under the same terms as the mod: the Tower Mod License 1.0 in [LICENSE](LICENSE), with
+`ui/settings-keeper.js` under
 MIT. By sending a change, you agree I can release it under those terms.

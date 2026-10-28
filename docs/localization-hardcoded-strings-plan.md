@@ -80,14 +80,16 @@ currently empty; the localization work lands there under `## [2.1.0]`.
 
 ## Localization machinery to reuse (do not reinvent)
 
-- Helper: `loc(key, fallback, ...args)` in [ui/emigration-loc.js](../ui/emigration-loc.js): composes via `Locale.compose`, returns the English `fallback` (with `{1_X}` placeholder fill) on any miss/throw. Import as
+- Helper: `loc(key, fallback, ...args)` in [ui/emigration-loc.js](../ui/emigration-loc.js): composes via
+  `Locale.compose`, returns the English `fallback` (with `{1_X}` placeholder fill) on any miss/throw. Import as
   `import { loc } from "/emigration/ui/emigration-loc.js";` (or `loc as tr`). Several files carry
   local `loc`/`pick` copies (`emigration-naming.js:26`, `emigration-report.js:35`,
   `emigration-move-reasons.js:82`, `emigration-network-viz.js:92`); reuse the file's existing local
   helper rather than adding a second import.
 - 12 ModText files: `text/en_us/ModText.xml` uses `<EnglishText>` / `<Row Tag="…"><Text>…</Text></Row>`.
   The 11 others use `<LocalizedText>` / `<Replace Tag="…" Language="xx_XX"><Text>…</Text></Replace>`.
-  **`Language=` codes** (mixed-case, from modinfo): `de_DE es_ES fr_FR it_IT ja_JP ko_KR pl_PL pt_BR ru_RU zh_Hans_CN zh_Hant_HK`.
+  **`Language=` codes** (mixed-case, from modinfo):
+  `de_DE es_ES fr_FR it_IT ja_JP ko_KR pl_PL pt_BR ru_RU zh_Hans_CN zh_Hant_HK`.
   Every new key = **1 `<Row>` in en_us + 11 `<Replace>` rows** (one per locale, correct `Language=`).
 - Namespace invariant (enforced): every en_us tag must contain `EMIG`/`EMIGRATION` or `DEMOGRAPHICS`
   (`tests/validate-package.mjs:182`).
@@ -111,7 +113,8 @@ currently empty; the localization work lands there under `## [2.1.0]`.
 
 These sit next to siblings that already use `LOC_` keys, pure inconsistency.
 
-**[ui/emigration-options.js](../ui/emigration-options.js)**: the Options framework resolves a bare `LOC_` string automatically, so replace each hardcoded `label:`/`description:` with a `LOC_` key:
+**[ui/emigration-options.js](../ui/emigration-options.js)**: the Options framework resolves a bare `LOC_` string
+automatically, so replace each hardcoded `label:`/`description:` with a `LOC_` key:
 - `SNAP_ITEMS` (L68–73): 5 dropdown labels → `LOC_OPTIONS_EMIG_SNAP_1`…`_5` (or `_EVERY_TURN`, `_2`…).
 - `VISIBILITY_ITEMS` (L79–82): 3 labels → `LOC_OPTIONS_EMIG_VISIBILITY_FOLLOW` / `_HIDE` / `_SHOWALL`.
   (Delete the "no localization round-trip needed" comment.)
@@ -120,9 +123,16 @@ These sit next to siblings that already use `LOC_` keys, pure inconsistency.
   `_DESCRIPTION`, `_DILEMMAS` / `_DESCRIPTION`, `_ETHNIC` / `_DESCRIPTION`, `_RETURN` / `_DESCRIPTION`.
   Follow the existing `LOC_OPTIONS_EMIGRATION_*` / `_DESCRIPTION` convention already in the file.
 
-**[ui/emigration-tunables.js](../ui/emigration-tunables.js)**: `choiceLabels` arrays (current lines: L111 `Off/Weak/Standard/Strong`, L125 & L127 `Off/Important/Verbose`, L126 `Any/Minor+/Moderate+/Major only`). Convert to `LOC_` keys resolved at render time. Confirm how `choiceLabels` reach the dropdown in `emigration-advanced-editor.js`: if the editor renders them verbatim, either store keys and `loc()` them at build time in the editor, or store `LOC_` strings if the dropdown widget auto-resolves. Keys: `LOC_EMIG_CHOICE_OFF/WEAK/STANDARD/STRONG`, `LOC_EMIG_CHOICE_OFF/IMPORTANT/VERBOSE`, `LOC_EMIG_CHOICE_ANY/MINOR/MODERATE/MAJOR`. (Numeric `"30%"` labels at L109 stay literal.)
+**[ui/emigration-tunables.js](../ui/emigration-tunables.js)**: `choiceLabels` arrays (current lines: L111
+`Off/Weak/Standard/Strong`, L125 & L127 `Off/Important/Verbose`, L126 `Any/Minor+/Moderate+/Major only`). Convert to
+`LOC_` keys resolved at render time. Confirm how `choiceLabels` reach the dropdown in `emigration-advanced-editor.js`:
+if the editor renders them verbatim, either store keys and `loc()` them at build time in the editor, or store `LOC_`
+strings if the dropdown widget auto-resolves. Keys: `LOC_EMIG_CHOICE_OFF/WEAK/STANDARD/STRONG`,
+`LOC_EMIG_CHOICE_OFF/IMPORTANT/VERBOSE`, `LOC_EMIG_CHOICE_ANY/MINOR/MODERATE/MAJOR`. (Numeric `"30%"` labels at L109
+stay literal.)
 
-**[ui/options/emigration-advanced-editor.js](../ui/options/emigration-advanced-editor.js)**: 3 UI-chrome strings via `loc()` (current lines):
+**[ui/options/emigration-advanced-editor.js](../ui/options/emigration-advanced-editor.js)**: 3 UI-chrome strings via
+`loc()` (current lines):
 - L268 placeholder "Search settings…" → `LOC_EMIG_ADV_SEARCH_PLACEHOLDER`
 - L276 caption "Reset all to defaults" → `LOC_EMIG_ADV_RESET_ALL`
 - L344 tooltip "Reset to default" → `LOC_EMIG_ADV_RESET_ONE`
@@ -154,7 +164,8 @@ Therefore:
 
 1. Add id-derived keys for every spec `id` in
    [ui/emigration-demographics.js](../ui/emigration-demographics.js) and
-   [ui/emigration-demographics-per-cause-metrics.js](../ui/emigration-demographics-per-cause-metrics.js). The **exact** keys (from the audited ids):
+   [ui/emigration-demographics-per-cause-metrics.js](../ui/emigration-demographics-per-cause-metrics.js). The **exact**
+   keys (from the audited ids):
    - `LOC_DEMOGRAPHICS_METRIC_EMIG_NET_CUM` (+`_TITLE` +`_SUBTITLE`), `…_EMIG_NET_CUM_PTS`,
      `…_EMIG_REFUGEES` (+`_SUBTITLE`, already exists), `…_EMIG_REFUGEES_PTS`, `…_EMIG_REFUGEES_IN`,
      `…_EMIG_REFUGEES_IN_PTS`, `…_EMIG_OUT_CUM`, `…_EMIG_OUT_CUM_PTS`, `…_EMIG_IN_CUM`,
@@ -182,7 +193,10 @@ Therefore:
    If verbatim, pre-compose via `loc()`; add `LOC_DEMOGRAPHICS_METRIC_EMIG_GRAPHS`, `LOC_EMIG_VIEW_*`,
    `LOC_EMIG_SOURCES_PREFIX` keys. (Reuse existing `LOC_EMIG_VIEW_*` keys if present.)
 
-**[ui/emigration-migration-page.js](../ui/emigration-migration-page.js)**: `SUBTABS`/`HUB_PAGES` labels+titles (L25–36, 122–128) and page title "Migration" (L99). The standalone window (`emigration-views.js:516`) already localizes the same tab bar via `loc()`: **reuse the exact same `LOC_` keys** here rather than minting new ones; wrap the embedded copies in `loc()`.
+**[ui/emigration-migration-page.js](../ui/emigration-migration-page.js)**: `SUBTABS`/`HUB_PAGES` labels+titles (L25–36,
+122–128) and page title "Migration" (L99). The standalone window (`emigration-views.js:516`) already localizes the same
+tab bar via `loc()`: **reuse the exact same `LOC_` keys** here rather than minting new ones; wrap the embedded copies in
+`loc()`.
 
 ---
 
@@ -192,13 +206,32 @@ The connectors/fallbacks glued onto localized names leak English. Fix by moving 
 into a `LOC_` template with `{n_X}` placeholders (the `loc()` helper fills them), instead of `+`
 concatenation.
 
-- [ui/emigration-naming.js](../ui/emigration-naming.js) (largest; current lines): war name `victim + "–" + aggressor + " War"` (L389) and `(victim || "the") + " War"` (L390) → `LOC_EMIG_WARNAME_TWO` `"{1_Victim}–{2_Aggressor} War"` / `LOC_EMIG_WARNAME_ONE`. `" Enclave"` (L175/177, `"foreign enclave"`) → `LOC_EMIG_QUARTER_ENCLAVE` `"{1_Demonym} Enclave"` / `LOC_EMIG_QUARTER_ENCLAVE_FOREIGN`. `" Crisis"` (L226) → `LOC_EMIG_EVENT_CRISIS_SUFFIX` template. Generic fallbacks (`UNMET_LABEL="an unmet civilization"` def L17, used L311/348–350, `"a people"` L72, `"a disaster"` L194, and the `|| "people"/"a settlement"/"A nation"/"A disaster"/"war"` at L413–440) → `LOC_EMIG_FALLBACK_UNMET_CIV`, `_A_PEOPLE`, `_A_DISASTER`, `_PEOPLE`, `_A_SETTLEMENT`, `_A_NATION`, `_WAR`. (These are already `loc(key) || fallback` in places, where a key already exists, just ensure it's defined; where the literal is the only source, add a key.)
-- [ui/emigration-events.js:316](../ui/emigration-events.js): `name + " strikes " + place + "! "` → `LOC_EMIG_DISASTER_STRIKES_AT` `"{1_Name} strikes {2_Place}! "` and `LOC_EMIG_DISASTER_STRIKES` `"{1_Name} strikes! "`.
-- [ui/emigration-narrative.js:228](../ui/emigration-narrative.js): `Math.round(e.pct) + " percent"` feeding `{n_Pct}`. Prefer `Locale.toPercent`/existing percent helper; if a bare number is needed, add `LOC_EMIG_PERCENT` `"{1_N} percent"`. Check for an existing percent formatter in the mod first.
-- [ui/emigration-return.js:251](../ui/emigration-return.js): `reason: "at peace again"` → `LOC_EMIG_RETURN_REASON_PEACE`, composed before passing as `{4_Reason}`.
-- [ui/emigration-feedback.js:641](../ui/emigration-feedback.js): `UNMET_CIV_LABEL="an unmet civilization"` (def L641; used L468/654/685/778) → reuse `LOC_EMIG_FALLBACK_UNMET_CIV` from naming.js.
-- [ui/emigration-causes.js:279](../ui/emigration-causes.js): `` `+${rows.length - 4} more` `` → `LOC_EMIG_CAUSES_MORE` `"+{1_N} more"`.
-- [ui/emigration-quarter-phrases.js](../ui/emigration-quarter-phrases.js): ~20 diaspora phrases (L16–33) with **no `_KEYS` sibling**. `emigration-narrative.js` already has localized parallel copies WITH `_KEYS` arrays; **converge on that**: add `LOC_EMIG_QTR_FEATURE_*` / `LOC_EMIG_QTR_GENERIC_*` keys and a parallel `_KEYS` array here, and confirm `emigration-diaspora.js` (`chronicleEstablished`) consumes the localized version. Reuse the narrative.js keys if the phrase text is identical.
+- [ui/emigration-naming.js](../ui/emigration-naming.js) (largest; current lines): war name
+  `victim + "–" + aggressor + " War"` (L389) and `(victim || "the") + " War"` (L390) → `LOC_EMIG_WARNAME_TWO`
+  `"{1_Victim}–{2_Aggressor} War"` / `LOC_EMIG_WARNAME_ONE`. `" Enclave"` (L175/177, `"foreign enclave"`) →
+  `LOC_EMIG_QUARTER_ENCLAVE` `"{1_Demonym} Enclave"` / `LOC_EMIG_QUARTER_ENCLAVE_FOREIGN`. `" Crisis"` (L226) →
+  `LOC_EMIG_EVENT_CRISIS_SUFFIX` template. Generic fallbacks (`UNMET_LABEL="an unmet civilization"` def L17, used
+  L311/348–350, `"a people"` L72, `"a disaster"` L194, and the
+  `|| "people"/"a settlement"/"A nation"/"A disaster"/"war"` at L413–440) → `LOC_EMIG_FALLBACK_UNMET_CIV`, `_A_PEOPLE`,
+  `_A_DISASTER`, `_PEOPLE`, `_A_SETTLEMENT`, `_A_NATION`, `_WAR`. (These are already `loc(key) || fallback` in places,
+  where a key already exists, just ensure it's defined; where the literal is the only source, add a key.)
+- [ui/emigration-events.js:316](../ui/emigration-events.js): `name + " strikes " + place + "! "` →
+  `LOC_EMIG_DISASTER_STRIKES_AT` `"{1_Name} strikes {2_Place}! "` and `LOC_EMIG_DISASTER_STRIKES`
+  `"{1_Name} strikes! "`.
+- [ui/emigration-narrative.js:228](../ui/emigration-narrative.js): `Math.round(e.pct) + " percent"` feeding `{n_Pct}`.
+  Prefer `Locale.toPercent`/existing percent helper; if a bare number is needed, add `LOC_EMIG_PERCENT`
+  `"{1_N} percent"`. Check for an existing percent formatter in the mod first.
+- [ui/emigration-return.js:251](../ui/emigration-return.js): `reason: "at peace again"` →
+  `LOC_EMIG_RETURN_REASON_PEACE`, composed before passing as `{4_Reason}`.
+- [ui/emigration-feedback.js:641](../ui/emigration-feedback.js): `UNMET_CIV_LABEL="an unmet civilization"` (def L641;
+  used L468/654/685/778) → reuse `LOC_EMIG_FALLBACK_UNMET_CIV` from naming.js.
+- [ui/emigration-causes.js:279](../ui/emigration-causes.js): `` `+${rows.length - 4} more` `` → `LOC_EMIG_CAUSES_MORE`
+  `"+{1_N} more"`.
+- [ui/emigration-quarter-phrases.js](../ui/emigration-quarter-phrases.js): ~20 diaspora phrases (L16–33) with **no
+  `_KEYS` sibling**. `emigration-narrative.js` already has localized parallel copies WITH `_KEYS` arrays; **converge on
+  that**: add `LOC_EMIG_QTR_FEATURE_*` / `LOC_EMIG_QTR_GENERIC_*` keys and a parallel `_KEYS` array here, and confirm
+  `emigration-diaspora.js` (`chronicleEstablished`) consumes the localized version. Reuse the narrative.js keys if the
+  phrase text is identical.
 
 ---
 
@@ -226,8 +259,10 @@ resolved in [emigration-roadmap-and-backlog.md](emigration-roadmap-and-backlog.m
 
 ## Deliberate non-changes (log, don't fix)
 
-- [ui/emigration-demo-data.js](../ui/emigration-demo-data.js): sample event names ("Nile flood", "Roman–Greek War") and `" BC"`/`" AD"` suffixes (L175–204). Visible only in the opt-in **Sample** data-preview mode. Log to
-  [wont-fix-with-justifications.md](wont-fix-with-justifications.md) with verdict + reasoning (developer/preview-only fixture data, not live gameplay).
+- [ui/emigration-demo-data.js](../ui/emigration-demo-data.js): sample event names ("Nile flood", "Roman–Greek War") and
+  `" BC"`/`" AD"` suffixes (L175–204). Visible only in the opt-in **Sample** data-preview mode. Log to
+  [wont-fix-with-justifications.md](wont-fix-with-justifications.md) with verdict + reasoning (developer/preview-only
+  fixture data, not live gameplay).
 
 ---
 

@@ -80,8 +80,10 @@ and segfaulted while committing a build (`MARKRUNNING`).
 
 **What we did instead (2026-07-17, at the author's direction):** removed the entire buildable-enclave
 feature and archived it (13 files) at
-[`mod_ideas_tested/_archived-emigration-enclave-feature/`](../../../mod_ideas_tested/_archived-emigration-enclave-feature/): full
-design preserved in its [`docs/cultural-enclaves.md`](../../../mod_ideas_tested/_archived-emigration-enclave-feature/docs/cultural-enclaves.md).
+[`mod_ideas_tested/_archived-emigration-enclave-feature/`](../../../mod_ideas_tested/_archived-emigration-enclave-feature/):
+full
+design preserved in its
+[`docs/cultural-enclaves.md`](../../../mod_ideas_tested/_archived-emigration-enclave-feature/docs/cultural-enclaves.md).
 Patched out the couplings (`emigration-quarter.js` built-enclave double-pay guard dropped,
 `emigration-city-panel.js` `invested:false`, `emigration-selftest.js` probe imports → inert no-ops,
 modinfo enclave ActionGroups/items, the `test:enclave-built` script). **The STANCE / decision-modal
@@ -128,7 +130,9 @@ Modifier/building yield sources. A UI-script mod cannot create or attach such a 
 2. Auto-placing a real yield-bearing entity at runtime: CONFIRMED FAILED. `Game.PlayerOperations`
    `CREATE_ELEMENT {Kind:"CONSTRUCTIBLE"}` for a tile IMPROVEMENT. The first probe was invalid (it never
    sent the op, gated behind a `CityOperations.canStart("BUILD")` check improvements don't use). The
-   corrected Self-Test probe ([emigration-enclave-probe.js](../../../mod_ideas_tested/_archived-emigration-enclave-feature/ui/emigration-enclave-probe.js), archived) sends
+   corrected Self-Test probe
+   ([emigration-enclave-probe.js](../../../mod_ideas_tested/_archived-emigration-enclave-feature/ui/emigration-enclave-probe.js),
+   archived) sends
    it directly; placement does not take. Route disproven.
 
 The border policies only work because they ride the game's native Tradition/policy slot, which the

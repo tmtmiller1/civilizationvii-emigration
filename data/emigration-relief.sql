@@ -1,11 +1,10 @@
--- emigration-relief.sql: fewer people, less strain (ui/emigration-relief.js).
+-- emigration-relief.sql: the old People who left buildings, kept for saves (ui/emigration-relief.js).
 --
--- Ten hidden buildings for a settlement's center, BUILDING_EMIG_RELIEF_1 to _10, each adding that much Happiness to
--- its settlement through the game's own city yield, under the tooltip line "People who left". The script places the
--- one that matches how many people have left the settlement over unhappiness since it was last that size, and swaps
--- it as the count changes. Free, no population, only in an existing city center, never built or bought: they belong
--- to a trait nobody has. One copy of a building type lands per city, so the count needs a type per tier (probe,
--- docs/emigration-roadmap-and-backlog.md section 67). Every row names only this file's own types and base-game ones.
+-- The first 4.0.0 build of 2026-10-27 gave a settlement that lost people over unhappiness the game's own Happiness
+-- through these ten hidden city-center buildings, BUILDING_EMIG_RELIEF_1 to _10. The City Details panel lists every
+-- constructible, and other rules count buildings, so the relief moved into the mod's own reading of Happiness
+-- (roadmap section 72). Nothing places these any more; they stay defined so a save holding one still loads, and the
+-- relief pass takes down any still standing. Every row names only this file's own types and base-game ones.
 
 INSERT INTO Types (Type, Kind) VALUES ('TRAIT_EMIG_RELIEF_NONE', 'KIND_TRAIT');
 INSERT INTO Traits (TraitType, InternalOnly) VALUES ('TRAIT_EMIG_RELIEF_NONE', 1);

@@ -53,8 +53,8 @@ import { forecastFor } from "/emigration/ui/emigration-forecast.js";
  * @property {boolean} attritionRisk Distressed with no viable refuge (the outlet may fire).
  * @property {string[]} riskReasons The crisis-type tags behind any distress (siege/disaster/famine),
  *   for the readout warning's "why". Empty when the city is content.
- * @property {boolean} siegeStalled Besieged, but nobody has attacked for a while: the siege adds no
- *   pressure and kills nobody until it does.
+ * @property {boolean} siegeStalled Besieged, but nobody has attacked for a while: the siege stops adding
+ *   pressure and killing until it does.
  * @property {boolean} closedToNewcomers The owner closed this settlement to newcomers.
  * @property {number[]} pressureSeries Recent emigration-pressure samples (oldest first), the forecast's input.
  * @property {import("/emigration/ui/emigration-forecast.js").Forecast|null} forecast When the pressure is

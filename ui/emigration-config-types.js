@@ -228,7 +228,6 @@
  * @property {number} happinessStageFullAt Happiness below zero at which the stage model's push is strongest.
  * @property {number} happinessStagePush The stage model's strongest push (in the units of happyRepulsion).
  * @property {number} unhappyPressurePush Pressure a turn an unhappy settlement adds at full strength (stage model).
- * @property {boolean} reliefEnabled Departures over unhappiness give their settlement Happiness back (stage model).
  * @property {number} happyScale Tanh scale for field-relative happiness (shaped model).
  * @property {number} happyRepulsion Steepness multiplier on the misery side (shaped model).
  * @property {number} happyAmp Happiness→economy amplification (shaped model).

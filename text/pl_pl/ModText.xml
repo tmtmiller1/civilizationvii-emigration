@@ -90,7 +90,7 @@
         <Replace Tag="LOC_EMIG_EXPLAIN_CELEBRATION" Language="pl_PL"><Text>Święta</Text></Replace>
         <Replace Tag="LOC_EMIG_EXPLAIN_STAGE" Language="pl_PL"><Text>Poziom zadowolenia</Text></Replace>
         <Replace Tag="LOC_EMIG_EXPLAIN_HAPPINESS_SHAPED" Language="pl_PL"><Text>Względem średniej imperium</Text></Replace>
-        <Replace Tag="LOC_EMIG_EXPLAIN_HAPPINESS_OWN" Language="pl_PL"><Text>Its own Happiness</Text></Replace>
+        <Replace Tag="LOC_EMIG_EXPLAIN_HAPPINESS_OWN" Language="pl_PL"><Text>Jej własne Zadowolenie</Text></Replace>
         <Replace Tag="LOC_EMIG_EXPLAIN_CAP_TRIM" Language="pl_PL"><Text>Limit za zabudowę</Text></Replace>
         <Replace Tag="LOC_EMIG_EXPLAIN_FOOD" Language="pl_PL"><Text>Żywność</Text></Replace>
         <Replace Tag="LOC_EMIG_EXPLAIN_PRODUCTION" Language="pl_PL"><Text>Produkcja</Text></Replace>
@@ -245,7 +245,7 @@
         <Replace Tag="LOC_EMIG_T_SCAP" Language="pl_PL"><Text>Oblężenie: największa część miasta utracona przez wojnę</Text></Replace>
         <Replace Tag="LOC_EMIG_T_SCAP_D" Language="pl_PL"><Text>Najwięcej populacji miasta (jako ułamek jego rozmiaru w chwili rozpoczęcia oblężenia), jakie emigracja wywołana wojną może zabrać, zanim się zatrzyma. Używane tylko przez model oblężenia.</Text></Replace>
         <Replace Tag="LOC_EMIG_T_INTAKE" Language="pl_PL"><Text>Zniechęcanie przybyszów w osadzie</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_INTAKE_D" Language="pl_PL"><Text>Each of your settlements gets a "Dissuade newcomers" button on its Settlements card. While it's on, people looking for a new home pick somewhere else: another of your settlements, another civilization's, or they stay where they are. People already on the road still arrive. Off hides the button and welcomes newcomers back everywhere, in the AI's settlements too.</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_INTAKE_D" Language="pl_PL"><Text>Każda twoja osada dostaje na swojej karcie w zakładce Osady przycisk „Zniechęcaj przybyszów”. Gdy jest włączony, ci, którzy szukają nowego domu, wybierają inne miejsce: inną twoją osadę, osadę innej cywilizacji albo zostają tam, gdzie są. Ci, którzy są już w drodze, i tak docierają. Wyłączone ukrywa przycisk i znów przyjmuje przybyszów wszędzie, także w osadach SI.</Text></Replace>
         <Replace Tag="LOC_EMIG_T_INTAKE_COST" Language="pl_PL"><Text>Wpływy na turę za zniechęcanie przybyszów</Text></Replace>
         <Replace Tag="LOC_EMIG_T_INTAKE_COST_D" Language="pl_PL"><Text>Ile Wpływów co turę kosztuje zniechęcanie przybyszów w każdej osadzie, zarówno ciebie, jak i SI. Gdy Wpływów zaczyna brakować, tyle osad, na ile starcza, dalej ich zniechęca, a reszta znów przyjmuje przybyszów. Wyłączone sprawia, że nic to nie kosztuje.</Text></Replace>
         <Replace Tag="LOC_EMIG_T_AI_INTAKE" Language="pl_PL"><Text>Cywilizacje SI zniechęcają przybyszów</Text></Replace>
@@ -391,10 +391,10 @@
         <Replace Tag="LOC_EMIG_HOMECOMING_SPLIT" Language="pl_PL"><Text>{1_Home} jest znów bezpieczna. Część ludzi, którzy z niej uciekli ({2_Go}), wraca do domu, a reszta ({3_Stay}) osiedliła się tam, dokąd poszła.</Text></Replace>
         <Replace Tag="LOC_EMIG_HOMECOMING_ALL_STAY" Language="pl_PL"><Text>{1_Home} jest znów bezpieczna, ale ludzie, którzy z niej uciekli ({2_Stay}), osiedlili się tam, dokąd poszli. Przyspiesz wciąż może ich sprowadzić.</Text></Replace>
         <Replace Tag="LOC_EMIG_HOMECOMING_DONE_GOING" Language="pl_PL"><Text>Ostatni z ludzi wracających do osady {1_Home} są z powrotem.</Text></Replace>
-        <Replace Tag="LOC_EMIG_RELIEF_LINE" Language="pl_PL"><Text>People who left</Text></Replace>
-        <Replace Tag="LOC_BUILDING_EMIG_RELIEF_NAME" Language="pl_PL"><Text>People who left</Text></Replace>
-        <Replace Tag="LOC_BUILDING_EMIG_RELIEF_DESCRIPTION" Language="pl_PL"><Text>+1 Happiness for each person who left this settlement over unhappiness, until it grows back to the size it was when they left.</Text></Replace>
-        <Replace Tag="LOC_BUILDING_EMIG_RELIEF_TOOLTIP" Language="pl_PL"><Text>+1 Happiness for each person who left this settlement over unhappiness, until it grows back to the size it was when they left.</Text></Replace>
+        <Replace Tag="LOC_EMIG_RELIEF_LINE" Language="pl_PL"><Text>Ci, którzy odeszli</Text></Replace>
+        <Replace Tag="LOC_BUILDING_EMIG_RELIEF_NAME" Language="pl_PL"><Text>Ci, którzy odeszli</Text></Replace>
+        <Replace Tag="LOC_BUILDING_EMIG_RELIEF_DESCRIPTION" Language="pl_PL"><Text>+1 Zadowolenia za każdą osobę, która opuściła tę osadę z niezadowolenia, dopóki osada nie urośnie z powrotem do rozmiaru, jaki miała, gdy ta osoba odeszła.</Text></Replace>
+        <Replace Tag="LOC_BUILDING_EMIG_RELIEF_TOOLTIP" Language="pl_PL"><Text>+1 Zadowolenia za każdą osobę, która opuściła tę osadę z niezadowolenia, dopóki osada nie urośnie z powrotem do rozmiaru, jaki miała, gdy ta osoba odeszła.</Text></Replace>
         <Replace Tag="LOC_EMIG_DP_WAIT_STAYED" Language="pl_PL"><Text>Ci, którzy osiedlili się tam, dokąd poszli ({1_Count}), zostaną, chyba że zapłacisz za ich sprowadzenie.</Text></Replace>
         <Replace Tag="LOC_EMIG_DP_WAIT_DECIDE" Language="pl_PL"><Text>Gdy {1_Home} pozostanie spokojna przez pozostałe tury ({2_Turns}), ludzie, którzy z niej uciekli, zdecydują, czy wrócić do domu. Im dłużej są nieobecni i im lepiej im tam, gdzie teraz mieszkają, tym więcej z nich zostaje.</Text></Replace>
         <Replace Tag="LOC_EMIG_DP_FREE_STAY" Language="pl_PL"><Text>zostają tam, gdzie są: {1_Count}</Text></Replace>
@@ -481,7 +481,7 @@
         <Replace Tag="LOC_EMIG_SC_CLOSED" Language="pl_PL"><Text>Zniechęca przybyszów</Text></Replace>
         <Replace Tag="LOC_EMIG_SC_CLOSE_INTAKE" Language="pl_PL"><Text>Zniechęcaj przybyszów</Text></Replace>
         <Replace Tag="LOC_EMIG_SC_OPEN_INTAKE" Language="pl_PL"><Text>Przyjmuj przybyszów</Text></Replace>
-        <Replace Tag="LOC_EMIG_SC_CLOSE_INTAKE_TIP" Language="pl_PL"><Text>People looking for a new home pick somewhere else: another of your settlements, another civilization's, or they stay where they are. People already on the road still arrive, and this settlement doesn't pay integration costs for anyone who chose elsewhere.</Text></Replace>
+        <Replace Tag="LOC_EMIG_SC_CLOSE_INTAKE_TIP" Language="pl_PL"><Text>Ci, którzy szukają nowego domu, wybierają inne miejsce: inną twoją osadę, osadę innej cywilizacji albo zostają tam, gdzie są. Ci, którzy są już w drodze, i tak docierają, a ta osada nie płaci kosztu integracji za tych, którzy wybrali gdzie indziej.</Text></Replace>
         <Replace Tag="LOC_EMIG_SC_INTAKE_PAYING" Language="pl_PL"><Text>Płacisz {1_Cost} Wpływów na turę.</Text></Replace>
         <Replace Tag="LOC_EMIG_SC_INTAKE_A_TURN" Language="pl_PL"><Text>na turę</Text></Replace>
         <Replace Tag="LOC_EMIG_SC_INTAKE_SHORT" Language="pl_PL"><Text>Za mało Wpływów: zniechęcanie przybyszów kosztuje {1_Cost} na turę, a mamy {2_Have}.</Text></Replace>
@@ -494,7 +494,7 @@
         <Replace Tag="LOC_EMIG_SC_TALLY_SUM" Language="pl_PL"><Text>Razem</Text></Replace>
         <Replace Tag="LOC_EMIG_SC_LEDGER_TITLE_TIP" Language="pl_PL"><Text>Kliknij wiersz, by zobaczyć, co za nim stoi; kliknij tutaj, by otworzyć lub zamknąć wszystkie.</Text></Replace>
         <Replace Tag="LOC_EMIG_LEDGER_HAPPY_NOTE" Language="pl_PL"><Text>{1_H} tutaj, {2_Mean} w całym imperium</Text></Replace>
-        <Replace Tag="LOC_EMIG_LEDGER_HAPPY_NOTE_OWN" Language="pl_PL"><Text>{1_H} here</Text></Replace>
+        <Replace Tag="LOC_EMIG_LEDGER_HAPPY_NOTE_OWN" Language="pl_PL"><Text>{1_H} tutaj</Text></Replace>
         <Replace Tag="LOC_EMIG_LEDGER_POP_NOTE" Language="pl_PL"><Text>{1_Pop} ludzi</Text></Replace>
         <Replace Tag="LOC_EMIG_LEDGER_PCT_NOTE" Language="pl_PL"><Text>{1_Pct}% podstawy</Text></Replace>
         <Replace Tag="LOC_EMIG_LEDGER_TURNS_LEFT" Language="pl_PL"><Text>pozostało {1_Turns} tur</Text></Replace>
@@ -1101,7 +1101,7 @@
         <Replace Tag="LOC_EMIG_FORECAST_LEAVE" Language="pl_PL"><Text>W ciągu następnych {2_Turns} tur prawdopodobnie odejdzie około {1_Count} ludzi</Text></Replace>
         <Replace Tag="LOC_EMIG_FORECAST_CRISIS" Language="pl_PL"><Text>Ludzie uciekają teraz; ilu, zależy od kryzysu, nie od presji</Text></Replace>
         <Replace Tag="LOC_EMIG_FORECAST_STABLE" Language="pl_PL"><Text>Nikt raczej nie odejdzie w najbliższym czasie</Text></Replace>
-        <Replace Tag="LOC_EMIG_RO_CLOSED" Language="pl_PL"><Text>Dissuading newcomers: people looking for a new home pick somewhere else</Text></Replace>
+        <Replace Tag="LOC_EMIG_RO_CLOSED" Language="pl_PL"><Text>Zniechęca przybyszów: ci, którzy szukają nowego domu, wybierają inne miejsce</Text></Replace>
         <Replace Tag="LOC_EMIG_RO_SIEGE_STALLED" Language="pl_PL"><Text>Oblężenie zatrzymane: oblegający nie atakują, więc nikt nie odchodzi ani nie ginie przez oblężenie, dopóki nie zaatakują</Text></Replace>
         <Replace Tag="LOC_EMIG_RO_WARN_HOLDING" Language="pl_PL"><Text>W tym osiedlu przesiedlani są uchodźcy</Text></Replace>
         <Replace Tag="LOC_EMIG_RO_WARN_TRAPPED" Language="pl_PL"><Text>Zagrożenie: uwięzieni, bez dokąd uciec{1_Why}</Text></Replace>
@@ -2089,7 +2089,7 @@
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_ARRIVALS_CHAPTER_ARRIVING_TITLE" Language="pl_PL"><Text>Przybycie</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_ARRIVALS_CHAPTER_ARRIVING_PARA_1" Language="pl_PL"><Text>Inne cywilizacje same umieszczają swoich przybyszów. W twoich miastach o tym, co się dzieje, decyduje ustawienie Jak osiedlają się przybysze (Opcje, Dodatki, Emigracja, Ustawienia zaawansowane, Przybycia i odejścia):[BLIST][LI][B]Pytaj mnie[/B] (domyślnie): okno Nowo przybyli lub Uchodźcy w mieście docelowym pozwala wybrać pole, zdać się na miasto albo zaczekać. Trzy przełączniki określają, przy jakich rodzajach przybyć padnie pytanie; domyślnie pytają tylko uchodźcy, a migranci i powracający są umieszczani od razu.[LI][B]Automatycznie[/B]: miasto natychmiast umieszcza punkt, tak jak przy wzroście.[LI][B]Jednostka migrantów[/B]: przybysze pojawiają się obok miasta jako jednostka migrantów, którą możesz przesiedlić. Nieosiedlona jednostka migrantów kosztuje utrzymanie co turę.[LI][B]Wyłączone[/B]: punkt umieszczasz w zwykłym oknie gry Powiększ miasto.[/LIST]</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_ARRIVALS_CHAPTER_ARRIVING_PARA_2" Language="pl_PL"><Text>Okno Uchodźcy podaje, skąd uciekli przybysze i przed czym, wraz z cytatem w głosie ich ludu (patrz Głosy wysiedlonych). Uchodźcy z cywilizacji, której nie spotkałeś, są opisywani jedynie jako wysiedleni.</Text></Replace>
-        <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_ARRIVALS_CHAPTER_ARRIVING_PARA_3" Language="pl_PL"><Text>Each of your settlements has a "Dissuade newcomers" button on its Settlements card, with its price in the button. While it's on, people who would have moved there choose again by the same pull as everyone else: another of your settlements, another civilization's, or staying where they are when nowhere else is better. You lose the ones who go abroad or stay home. People already on the road still arrive. It costs 1 Influence a turn, and when you can't pay, newcomers are welcome there again. "Welcome newcomers" undoes it. AI civilizations do the same: one past its congestion bar dissuades newcomers in an unhappy settlement that has been taking people in, pays the same upkeep, and welcomes them again once the pressure eases.</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_ARRIVALS_CHAPTER_ARRIVING_PARA_3" Language="pl_PL"><Text>Każda twoja osada ma na swojej karcie w zakładce Osady przycisk „Zniechęcaj przybyszów” z ceną na przycisku. Gdy jest włączony, ci, którzy przenieśliby się tam, wybierają od nowa według tego samego przyciągania co wszyscy: inną twoją osadę, osadę innej cywilizacji albo pozostanie na miejscu, gdy nigdzie nie jest lepiej. Tracisz tych, którzy wyjeżdżają za granicę albo zostają w domu. Ci, którzy są już w drodze, i tak docierają. Kosztuje to 1 Wpływ na turę, a gdy nie możesz zapłacić, przybysze są tam znów mile widziani. „Przyjmuj przybyszów” cofa zmianę. Cywilizacje SI robią to samo: ta, która przekroczyła próg zatłoczenia, zniechęca przybyszów w niezadowolonej osadzie, która dotąd przyjmowała ludzi, płaci to samo utrzymanie i znów ich przyjmuje, gdy nacisk zelżeje.</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_ARRIVALS_CHAPTER_RESETTLE_TITLE" Language="pl_PL"><Text>Uchodźcy czekający na osiedlenie</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_ARRIVALS_CHAPTER_RESETTLE_PARA_1" Language="pl_PL"><Text>Domyślnie co piąty uchodźca wojenny lub uciekający przed katastrofą osiedla się zaraz po przybyciu. Reszta trafia do puli oczekujących w miejscu docelowym i osiedla się w kolejnych turach. Szczęśliwy, otwarty i niezatłoczony gospodarz osiedla ich szybciej; Stanowisko Antyimigracyjne to spowalnia. Gospodarz płaci utrzymanie za tych, którzy wciąż czekają. Jeśli kryzys, przed którym uciekli, dotrze do nowego miasta, czekający uchodźcy ruszają dalej jako pierwsi. Liczbę czekających pokazują odczyt miasta i panel Szczegóły miasta.</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_ARRIVALS_CHAPTER_COST_TITLE" Language="pl_PL"><Text>Koszt przyjmowania ludzi</Text></Replace>

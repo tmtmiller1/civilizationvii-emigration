@@ -163,6 +163,9 @@ function index() {
     if (!type) continue;
     const cls = def.ConstructibleClass;
     if (cls !== "BUILDING" && cls !== "WONDER") continue;
+    // A hidden marker (this mod's People who left tiers, Cultural Diffusion's and Partisans' markers) isn't
+    // something the settlement built.
+    if (truthy(def.CanBeHidden)) continue;
     idx.set(type, {
       role: roleFor(def, blds.get(type), ys.get(type) || new Set()),
       name: typeof def.Name === "string" ? def.Name : "",
@@ -281,7 +284,7 @@ export function builtFor(city) {
 }
 
 export const __test = {
-  roleFor, scoreKinds, ROLE_ORDER,
+  roleFor, scoreKinds, ROLE_ORDER, index,
   /** Test seam: drop the per-settlement cache and the database index. */
   reset() {
     _index = null;

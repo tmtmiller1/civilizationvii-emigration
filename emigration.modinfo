@@ -328,7 +328,7 @@
                     <Item>data/emigration-enclave-village-db.xml</Item>
                     <!-- The notification types ui/emigration-train.js raises in the game's notification train. -->
                     <Item>data/emigration-notifications.xml</Item>
-                    <!-- People who left over unhappiness: the hidden Happiness tiers (ui/emigration-relief.js). -->
+                    <!-- The old People who left buildings, kept so first-4.0.0 saves load (ui/emigration-relief.js). -->
                     <Item>data/emigration-relief.sql</Item>
                 </UpdateDatabase>
                 <UpdateIcons>

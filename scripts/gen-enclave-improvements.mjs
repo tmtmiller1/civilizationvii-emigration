@@ -71,7 +71,7 @@ for (const civ of civs) {
     text.push(`        <Row Tag="LOC_${t}_DESCRIPTION"><Text>${esc("A quarter settled by " + entry.demonym + " migrants who have put down roots in the city. " +
       why + ". The enclave itself works this tile: +" + ENCLAVE_BENEFIT + " " + yieldWord(benefit) + " (its " + yieldWord(penalty).toLowerCase() +
       " cost is charged to the treasury each turn).")}</Text></Row>`);
-    text.push(`        <Row Tag="LOC_${t}_TOOLTIP"><Text>${esc(entry.demonym + " Enclave: +" + ENCLAVE_BENEFIT + " " + yieldWord(benefit) + ". Recognized by the city; it cannot be built, only formed.")}</Text></Row>`);
+    text.push(`        <Row Tag="LOC_${t}_TOOLTIP"><Text>${esc(entry.demonym + " Enclave: +" + ENCLAVE_BENEFIT + " " + yieldWord(benefit) + ". Recognized by the city; it can't be built, only formed.")}</Text></Row>`);
   }
 }
 

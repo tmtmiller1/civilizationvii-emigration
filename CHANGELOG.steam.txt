@@ -3,7 +3,7 @@ Generated from CHANGELOG.md by scripts/steam-changelog.mjs; release.sh uploads t
 To fix an old Workshop entry, paste the text under its ==== line into that entry's Edit box on the change-notes page.
 A block edited by hand is kept as-is. Delete a block to regenerate it from CHANGELOG.md.
 
-==== 4.0.0 | 2026-10-27 | src 5e1039d64bb8 | gen 59ba377714f4 ====
+==== 4.0.0 | 2026-10-27 | src a2c61cc15b7c | gen 59ba377714f4 ====
 [b]Version 4.0.0 · 27 October 2026[/b]
 The Emigration screen is rebuilt around your settlements, displaced people come home on their own, wars treat refugees more sensibly, and the AI plays its side of the system. Your saves and settings carry over.
 
@@ -24,7 +24,6 @@ The Emigration screen is rebuilt around your settlements, displaced people come 
 [b]Changed[/b]
 • A settlement's Happiness counts by its own stage, the one on its banner, not against the average of every settlement in the game.
 • Unhappy settlements lose people faster, the unhappier they are, as long as there's somewhere better to go. A Happy settlement's Happiness doesn't push anyone out.
-• People leaving over unhappiness make a settlement happier: +1 Happiness for each until it grows back to the size it was, shown in the game's Happiness tooltip as People who left.
 • The AI's two city strategies are always on; the game-setup option for them is gone.
 • A siege nobody fights stalls after three quiet turns and doesn't kill anyone until the next attack.
 • People flee fighting once it has lasted two turns; a settlement being razed still empties at once.
@@ -40,6 +39,7 @@ The Emigration screen is rebuilt around your settlements, displaced people come 
 • Some screen text was invisible because the game's font doesn't draw italics.
 • Calling people home kept offering people who had already come back.
 • A civilization's pies on “All civilizations” left out moves between its own settlements.
+• The settlement score counted hidden marker buildings, such as Cultural Diffusion's and Partisans', as buildings worth staying for.
 
 Details in the [url=https://github.com/tmtmiller1/civilizationvii-emigration/blob/main/CHANGELOG.md]full changelog[/url].
 
@@ -215,7 +215,7 @@ Every language now reads in full, and Chinese, Japanese and Korean draw every ch
 • Every civilization's stances were rewritten around what they now pay, in all 12 languages. The enclave's tile keeps its art and its own yield.
 • Enclaves recognized before this version keep their old per-turn stance yields.
 
-==== 3.0.0 | 2026-09-18 | src 3e2c025e60a7 | gen 195c9f2a1e3a ====
+==== 3.0.0 | 2026-09-18 | src 526752748cb4 | gen 195c9f2a1e3a ====
 [b]Version 3.0.0 · 18 September 2026[/b]
 
 [b]Added[/b]
@@ -258,7 +258,7 @@ Every language now reads in full, and Chinese, Japanese and Korean draw every ch
 
 Details in the [url=https://github.com/tmtmiller1/civilizationvii-emigration/blob/main/CHANGELOG.md]full changelog[/url].
 
-==== 2.2.0 | 2026-09-17 | src 8c08b2985933 | gen 633cc5bdcdf4 ====
+==== 2.2.0 | 2026-09-17 | src 5c910a85da24 | gen 633cc5bdcdf4 ====
 [b]Version 2.2.0 · 17 September 2026[/b]
 
 [b]Added[/b]

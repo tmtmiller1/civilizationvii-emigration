@@ -464,7 +464,8 @@ function cityMigrationCap() {
 function shedVoluntary(src, best, state, st, maxVol, inboundCtx) {
   if (st.cooldown > 0 || maxVol <= 0) return [];
   // The pull, and under the stage model the direct push of the settlement's own unhappiness.
-  st.pressure += Math.pow(Math.max(0, best.adjusted), CONFIG.deltaExponent) + unhappyPressure(src.happiness);
+  st.pressure += Math.pow(Math.max(0, best.adjusted), CONFIG.deltaExponent)
+    + unhappyPressure(src.happiness || 0);
   if (st.pressure < speedBar(CONFIG.emigrationBar)) {
     noteVoluntaryCue(src, best, st.pressure); // building toward the bar → low-key trend cue
     return [];

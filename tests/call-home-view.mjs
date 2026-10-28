@@ -90,7 +90,7 @@ function testExternalIsAGambleThatNamesTheForeignRuler() {
   const pct = Math.round(CONFIG.callHomeChanceExternal * 100);
   assert.ok(v.body.includes("driven out of Rome") && v.body.includes("live in Carthage, a city of Carthage"),
     "names the city and its ruler: " + v.body);
-  assert.ok(v.body.includes(`${pct}% chance`) && v.body.includes("may bring nobody") && v.body.includes("paid for either way"),
+  assert.ok(v.body.includes(`${pct}% chance`) && v.body.includes("may come back empty") && v.body.includes("paid for either way"),
     "states the odds, the risk, and that the fee is spent regardless");
   assert.ok(!v.body.includes("will come"), "no promise is made");
   assert.deepEqual(v.details, ["3 from Carthage (Carthage) back to Rome"]);

@@ -34,7 +34,7 @@ import { recordWarDeclared, recordPeace } from "/emigration/ui/emigration-war.js
 import { hasOpenBordersDeal } from "/emigration/ui/emigration-geography.js";
 import { reportPassFeedback, reportInboundFeedback, reportPressureCues, toast } from "/emigration/ui/emigration-feedback.js";
 import { intakePass } from "/emigration/ui/emigration-intake-upkeep.js";
-import { reliefPass } from "/emigration/ui/emigration-relief.js";
+import { reliefSweep } from "/emigration/ui/emigration-relief.js";
 import { installEmigrationEvents } from "/emigration/ui/emigration-events.js";
 import { installCityReadout } from "/emigration/ui/emigration-city-readout.js";
 import { installEmigrationConsole, openEmigrationScreen } from "/emigration/ui/emigration-screen.js";
@@ -208,7 +208,7 @@ function accountPass(migrations) {
   const conquests = accountAndReport(migrations, signals);
   appendConquests(migrations, conquests);
   recordMigrations(migrations);
-  reliefPass(migrations); // people who left over unhappiness: the game's own Happiness back, until it regrows
+  reliefSweep(); // takes down any People who left building a first-4.0.0 save still holds
   recordPassCounters(migrations); // P0.4 balance counters (voluntary/crisis/deaths)
   intakePass(signals, (msg) => toast(msg, undefined, false)); // closed settlements: the AI's choices, the upkeep
   reportPressureCues(takePressureCues()); // P0.3 low-key "rising pressure" cues

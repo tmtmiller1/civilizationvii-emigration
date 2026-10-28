@@ -90,7 +90,7 @@
         <Replace Tag="LOC_EMIG_EXPLAIN_CELEBRATION" Language="pt_BR"><Text>Celebrações</Text></Replace>
         <Replace Tag="LOC_EMIG_EXPLAIN_STAGE" Language="pt_BR"><Text>Estágio de felicidade</Text></Replace>
         <Replace Tag="LOC_EMIG_EXPLAIN_HAPPINESS_SHAPED" Language="pt_BR"><Text>Em relação à média do império</Text></Replace>
-        <Replace Tag="LOC_EMIG_EXPLAIN_HAPPINESS_OWN" Language="pt_BR"><Text>Its own Happiness</Text></Replace>
+        <Replace Tag="LOC_EMIG_EXPLAIN_HAPPINESS_OWN" Language="pt_BR"><Text>A própria Felicidade</Text></Replace>
         <Replace Tag="LOC_EMIG_EXPLAIN_CAP_TRIM" Language="pt_BR"><Text>Teto do que foi construído</Text></Replace>
         <Replace Tag="LOC_EMIG_EXPLAIN_FOOD" Language="pt_BR"><Text>Alimento</Text></Replace>
         <Replace Tag="LOC_EMIG_EXPLAIN_PRODUCTION" Language="pt_BR"><Text>Produção</Text></Replace>
@@ -245,7 +245,7 @@
         <Replace Tag="LOC_EMIG_T_SCAP" Language="pt_BR"><Text>Cerco: parcela máxima de uma cidade perdida na guerra</Text></Replace>
         <Replace Tag="LOC_EMIG_T_SCAP_D" Language="pt_BR"><Text>O máximo da população de uma cidade (como fração de seu tamanho no início do cerco) que a emigração de guerra pode levar antes de parar. Usado apenas pelo modelo de cerco.</Text></Replace>
         <Replace Tag="LOC_EMIG_T_INTAKE" Language="pt_BR"><Text>Desencorajar recém-chegados em um assentamento</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_INTAKE_D" Language="pt_BR"><Text>Each of your settlements gets a "Dissuade newcomers" button on its Settlements card. While it's on, people looking for a new home pick somewhere else: another of your settlements, another civilization's, or they stay where they are. People already on the road still arrive. Off hides the button and welcomes newcomers back everywhere, in the AI's settlements too.</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_INTAKE_D" Language="pt_BR"><Text>Cada um dos seus assentamentos ganha um botão "Desencorajar recém-chegados" no cartão dele na aba Assentamentos. Enquanto está ativo, quem procura um novo lar escolhe outro lugar: outro dos seus assentamentos, um de outra civilização, ou fica onde está. Quem já está a caminho chega mesmo assim. Desativado esconde o botão e volta a acolher recém-chegados em todo lugar, inclusive nos assentamentos da IA.</Text></Replace>
         <Replace Tag="LOC_EMIG_T_INTAKE_COST" Language="pt_BR"><Text>Influência por turno para desencorajar recém-chegados</Text></Replace>
         <Replace Tag="LOC_EMIG_T_INTAKE_COST_D" Language="pt_BR"><Text>Quanto custa em Influência, a cada turno e por assentamento, desencorajar recém-chegados, para você e para a IA. Quando a Influência não dá, tantos assentamentos quantos ela consegue pagar continuam desencorajando, e os demais voltam a acolher recém-chegados. Desativado torna isso gratuito.</Text></Replace>
         <Replace Tag="LOC_EMIG_T_AI_INTAKE" Language="pt_BR"><Text>Civilizações da IA desencorajam recém-chegados</Text></Replace>
@@ -391,10 +391,10 @@
         <Replace Tag="LOC_EMIG_HOMECOMING_SPLIT" Language="pt_BR"><Text>{1_Home} está segura de novo. Parte das pessoas que fugiram ({2_Go}) está voltando para casa, e o resto ({3_Stay}) se estabeleceu onde foi parar.</Text></Replace>
         <Replace Tag="LOC_EMIG_HOMECOMING_ALL_STAY" Language="pt_BR"><Text>{1_Home} está segura de novo, mas quem fugiu ({2_Stay}) se estabeleceu onde foi parar. Apressar ainda pode trazer essas pessoas de volta.</Text></Replace>
         <Replace Tag="LOC_EMIG_HOMECOMING_DONE_GOING" Language="pt_BR"><Text>Os últimos que estavam voltando para {1_Home} chegaram.</Text></Replace>
-        <Replace Tag="LOC_EMIG_RELIEF_LINE" Language="pt_BR"><Text>People who left</Text></Replace>
-        <Replace Tag="LOC_BUILDING_EMIG_RELIEF_NAME" Language="pt_BR"><Text>People who left</Text></Replace>
-        <Replace Tag="LOC_BUILDING_EMIG_RELIEF_DESCRIPTION" Language="pt_BR"><Text>+1 Happiness for each person who left this settlement over unhappiness, until it grows back to the size it was when they left.</Text></Replace>
-        <Replace Tag="LOC_BUILDING_EMIG_RELIEF_TOOLTIP" Language="pt_BR"><Text>+1 Happiness for each person who left this settlement over unhappiness, until it grows back to the size it was when they left.</Text></Replace>
+        <Replace Tag="LOC_EMIG_RELIEF_LINE" Language="pt_BR"><Text>Quem partiu</Text></Replace>
+        <Replace Tag="LOC_BUILDING_EMIG_RELIEF_NAME" Language="pt_BR"><Text>Quem partiu</Text></Replace>
+        <Replace Tag="LOC_BUILDING_EMIG_RELIEF_DESCRIPTION" Language="pt_BR"><Text>+1 de Felicidade para cada pessoa que deixou este assentamento por infelicidade, até ele voltar a crescer ao tamanho que tinha quando ela partiu.</Text></Replace>
+        <Replace Tag="LOC_BUILDING_EMIG_RELIEF_TOOLTIP" Language="pt_BR"><Text>+1 de Felicidade para cada pessoa que deixou este assentamento por infelicidade, até ele voltar a crescer ao tamanho que tinha quando ela partiu.</Text></Replace>
         <Replace Tag="LOC_EMIG_DP_WAIT_STAYED" Language="pt_BR"><Text>Quem se estabeleceu onde foi parar ({1_Count}) vai ficar lá, a não ser que você pague pelo retorno.</Text></Replace>
         <Replace Tag="LOC_EMIG_DP_WAIT_DECIDE" Language="pt_BR"><Text>Quando {1_Home} completar os turnos de calma que faltam ({2_Turns}), as pessoas que fugiram decidem se voltam para casa. Quanto mais tempo estiverem fora, e quanto melhor estiverem onde vivem agora, mais delas ficam.</Text></Replace>
         <Replace Tag="LOC_EMIG_DP_FREE_STAY" Language="pt_BR"><Text>ficam onde estão: {1_Count}</Text></Replace>
@@ -481,7 +481,7 @@
         <Replace Tag="LOC_EMIG_SC_CLOSED" Language="pt_BR"><Text>Desencorajando recém-chegados</Text></Replace>
         <Replace Tag="LOC_EMIG_SC_CLOSE_INTAKE" Language="pt_BR"><Text>Desencorajar recém-chegados</Text></Replace>
         <Replace Tag="LOC_EMIG_SC_OPEN_INTAKE" Language="pt_BR"><Text>Acolher recém-chegados</Text></Replace>
-        <Replace Tag="LOC_EMIG_SC_CLOSE_INTAKE_TIP" Language="pt_BR"><Text>People looking for a new home pick somewhere else: another of your settlements, another civilization's, or they stay where they are. People already on the road still arrive, and this settlement doesn't pay integration costs for anyone who chose elsewhere.</Text></Replace>
+        <Replace Tag="LOC_EMIG_SC_CLOSE_INTAKE_TIP" Language="pt_BR"><Text>Quem procura um novo lar escolhe outro lugar: outro dos seus assentamentos, um de outra civilização, ou fica onde está. Quem já está a caminho chega mesmo assim, e este assentamento não paga custo de integração por quem escolheu outro lugar.</Text></Replace>
         <Replace Tag="LOC_EMIG_SC_INTAKE_PAYING" Language="pt_BR"><Text>Pagando {1_Cost} de Influência por turno.</Text></Replace>
         <Replace Tag="LOC_EMIG_SC_INTAKE_A_TURN" Language="pt_BR"><Text>por turno</Text></Replace>
         <Replace Tag="LOC_EMIG_SC_INTAKE_SHORT" Language="pt_BR"><Text>Influência insuficiente: desencorajar recém-chegados custa {1_Cost} por turno e temos {2_Have}.</Text></Replace>
@@ -494,7 +494,7 @@
         <Replace Tag="LOC_EMIG_SC_TALLY_SUM" Language="pt_BR"><Text>Total</Text></Replace>
         <Replace Tag="LOC_EMIG_SC_LEDGER_TITLE_TIP" Language="pt_BR"><Text>Clique em uma linha para ver o que há por trás dela; clique aqui para abrir ou fechar todas.</Text></Replace>
         <Replace Tag="LOC_EMIG_LEDGER_HAPPY_NOTE" Language="pt_BR"><Text>{1_H} aqui, {2_Mean} no império</Text></Replace>
-        <Replace Tag="LOC_EMIG_LEDGER_HAPPY_NOTE_OWN" Language="pt_BR"><Text>{1_H} here</Text></Replace>
+        <Replace Tag="LOC_EMIG_LEDGER_HAPPY_NOTE_OWN" Language="pt_BR"><Text>{1_H} aqui</Text></Replace>
         <Replace Tag="LOC_EMIG_LEDGER_POP_NOTE" Language="pt_BR"><Text>{1_Pop} pessoas</Text></Replace>
         <Replace Tag="LOC_EMIG_LEDGER_PCT_NOTE" Language="pt_BR"><Text>{1_Pct}% da base</Text></Replace>
         <Replace Tag="LOC_EMIG_LEDGER_TURNS_LEFT" Language="pt_BR"><Text>{1_Turns} turnos restantes</Text></Replace>
@@ -1101,7 +1101,7 @@
         <Replace Tag="LOC_EMIG_FORECAST_LEAVE" Language="pt_BR"><Text>Cerca de {1_Count} pessoas devem partir nos próximos {2_Turns} turnos</Text></Replace>
         <Replace Tag="LOC_EMIG_FORECAST_CRISIS" Language="pt_BR"><Text>As pessoas estão fugindo agora; quantas depende da crise, não da pressão</Text></Replace>
         <Replace Tag="LOC_EMIG_FORECAST_STABLE" Language="pt_BR"><Text>Ninguém deve partir em breve</Text></Replace>
-        <Replace Tag="LOC_EMIG_RO_CLOSED" Language="pt_BR"><Text>Dissuading newcomers: people looking for a new home pick somewhere else</Text></Replace>
+        <Replace Tag="LOC_EMIG_RO_CLOSED" Language="pt_BR"><Text>Desencorajando recém-chegados: quem procura um novo lar escolhe outro lugar</Text></Replace>
         <Replace Tag="LOC_EMIG_RO_SIEGE_STALLED" Language="pt_BR"><Text>Cerco parado: os sitiantes não estão atacando, então ninguém parte nem morre pelo cerco até que ataquem</Text></Replace>
         <Replace Tag="LOC_EMIG_RO_WARN_HOLDING" Language="pt_BR"><Text>Refugiados em reassentamento neste assentamento</Text></Replace>
         <Replace Tag="LOC_EMIG_RO_WARN_TRAPPED" Language="pt_BR"><Text>Em risco: presos sem para onde fugir{1_Why}</Text></Replace>
@@ -2089,7 +2089,7 @@
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_ARRIVALS_CHAPTER_ARRIVING_TITLE" Language="pt_BR"><Text>A chegada</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_ARRIVALS_CHAPTER_ARRIVING_PARA_1" Language="pt_BR"><Text>As outras civilizações posicionam suas próprias chegadas. Para as suas cidades, a configuração Como os recém-chegados se assentam (Opções, Complementos, Emigração, Configurações avançadas, Chegadas e partidas) decide o que acontece:[BLIST][LI][B]Perguntar[/B] (padrão): uma janela de Recém-chegados ou de Refugiados na cidade receptora permite escolher o painel, deixar a cidade decidir ou esperar. Três chaves escolhem quais tipos de chegada perguntam; por padrão, só os refugiados perguntam, e migrantes e pessoas que retornam são posicionados na hora.[LI][B]Automático[/B]: a cidade posiciona o ponto imediatamente, como faz ao crescer.[LI][B]Unidade de migrantes[/B]: os recém-chegados vêm como uma unidade de Migrante ao lado da cidade, para que você a reassente. Um Migrante não assentado custa manutenção a cada turno.[LI][B]Desligado[/B]: o próprio aviso Expandir cidade do jogo pede que você posicione o ponto.[/LIST]</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_ARRIVALS_CHAPTER_ARRIVING_PARA_2" Language="pt_BR"><Text>A janela de Refugiados diz de onde os recém-chegados fugiram e do que fugiram, com uma citação na voz do seu povo (veja Vozes dos Deslocados). Refugiados de uma civilização que você não conheceu são descritos apenas como deslocados.</Text></Replace>
-        <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_ARRIVALS_CHAPTER_ARRIVING_PARA_3" Language="pt_BR"><Text>Each of your settlements has a "Dissuade newcomers" button on its Settlements card, with its price in the button. While it's on, people who would have moved there choose again by the same pull as everyone else: another of your settlements, another civilization's, or staying where they are when nowhere else is better. You lose the ones who go abroad or stay home. People already on the road still arrive. It costs 1 Influence a turn, and when you can't pay, newcomers are welcome there again. "Welcome newcomers" undoes it. AI civilizations do the same: one past its congestion bar dissuades newcomers in an unhappy settlement that has been taking people in, pays the same upkeep, and welcomes them again once the pressure eases.</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_ARRIVALS_CHAPTER_ARRIVING_PARA_3" Language="pt_BR"><Text>Cada um dos seus assentamentos tem um botão "Desencorajar recém-chegados" no cartão dele na aba Assentamentos, com o preço no botão. Enquanto está ativo, quem teria se mudado para lá escolhe de novo pela mesma atração que todo mundo: outro dos seus assentamentos, um de outra civilização, ou ficar onde está quando nenhum outro lugar é melhor. Você perde quem vai para o exterior ou fica em casa. Quem já está a caminho chega mesmo assim. Custa 1 de Influência por turno e, quando você não consegue pagar, os recém-chegados voltam a ser bem-vindos lá. "Acolher recém-chegados" desfaz isso. As civilizações da IA fazem o mesmo: a que passa do seu limite de congestionamento desencoraja recém-chegados num assentamento infeliz que vinha recebendo pessoas, paga a mesma manutenção e volta a acolhê-los quando a pressão diminui.</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_ARRIVALS_CHAPTER_RESETTLE_TITLE" Language="pt_BR"><Text>Refugiados à espera de assentamento</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_ARRIVALS_CHAPTER_RESETTLE_PARA_1" Language="pt_BR"><Text>Um em cada cinco refugiados de guerra e de desastre (por padrão) se assenta ao chegar. Os demais entram em uma fila de espera no destino e se assentam nos turnos seguintes. Um anfitrião feliz, aberto e sem superlotação os assenta mais depressa; uma Postura Anti-Imigração os retarda. O anfitrião paga manutenção pelos que ainda esperam. Se a crise da qual fugiram alcançar a nova cidade, os refugiados em espera seguem adiante primeiro. O painel da cidade e o painel Info. da cidade mostram quantos estão esperando.</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_ARRIVALS_CHAPTER_COST_TITLE" Language="pt_BR"><Text>O custo de acolher pessoas</Text></Replace>

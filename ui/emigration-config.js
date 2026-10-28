@@ -449,9 +449,6 @@ export const CONFIG = {
   // The stage model's direct push: pressure an unhappy settlement adds each turn on top of the pull, at full strength
   // from happinessStageFullAt below zero (unhappyPressure). 0 turns it off.
   unhappyPressurePush: 3,
-  // Under the stage model, a settlement that loses people over unhappiness gets +1 Happiness for each until it grows
-  // back to the size it was when they left (emigration-relief.js).
-  reliefEnabled: true,
   happyScale: 8, // tanh scale on (happiness − regional mean)
   // happyRepulsion/happyAmp/happyFloor are sized so the happiness term does not saturate the score;
   // suppressed yields carry most of an unhappy city's push. Paired with the yield weights above.

@@ -428,7 +428,7 @@ function pressureBlock(p, m, deps) {
   if (fc) b.appendChild(el("div", "emig-sc-line emig-sc-forecast", fc));
   if (p.stalled) {
     b.appendChild(el("div", "emig-sc-dim", loc("LOC_EMIG_SC_SIEGE_STALLED",
-      "Siege stalled: the besiegers aren't attacking, so the siege adds no pressure until they do.")));
+      "Siege stalled: the besiegers aren't attacking, so the siege doesn't add pressure until they do.")));
   }
   b.title = loc("LOC_EMIG_SC_PRESSURE_TIP", "Pressure to leave builds each turn from the strongest pull on this settlement's "
     + "people and drains when the gap closes. When it fills, a group leaves. It is {1_Pct}% full now.",

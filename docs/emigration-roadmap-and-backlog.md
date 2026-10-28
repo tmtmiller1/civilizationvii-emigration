@@ -53,7 +53,8 @@ invariants that must never be violated:
 ### 0.1 Ethnic composition + lens (per-tile origin mosaic)
 
 - **Model: [emigration-composition.js](../ui/emigration-composition.js)**
-  - `compositionForCity(city)` (**L510**) → `{ total, owner, civs: [{ civ, pts, share }], dominant: { civ, share } | null }`.
+  - `compositionForCity(city)` (**L510**) →
+    `{ total, owner, civs: [{ civ, pts, share }], dominant: { civ, share } | null }`.
     `civs` is sorted by `share` descending. This is the one source for "who lives here".
   - `compositionForOwner(pid)` (**L528**) → same shape, empire-wide.
   - `recordCompositionPass(signals, migs)` (**L476**): per-pass update; calls `integratePass()`.
@@ -187,7 +188,8 @@ invariants that must never be violated:
 The full scenario graphics are maintained in
 [migration-scenarios-diagrams.md](migration-scenarios-diagrams.md) so they can evolve independently from
 the implementation plan. They map directly to the hooks in §0.1–§0.6 and the quarter rules in
-[cultural-enclaves.md](../../../mod_ideas_tested/_archived-emigration-enclave-feature/docs/cultural-enclaves.md) (archived).
+[cultural-enclaves.md](../../../mod_ideas_tested/_archived-emigration-enclave-feature/docs/cultural-enclaves.md)
+(archived).
 
 ---
 
@@ -970,7 +972,8 @@ Production per age) are already in
 
 **Implementation.**
 1. Counterfactual estimate. `previewPolicy(pid, cardKind) → { immigrationDelta, influenceDelta,
-   integrationDelta, topSources: string[] }` in a new file [emigration-policy-preview.js](../ui/emigration-policy-preview.js).
+   integrationDelta, topSources: string[]
+   }` in a new file [emigration-policy-preview.js](../ui/emigration-policy-preview.js).
    Re-rank under the toggled stance: snapshot current pull totals, then re-evaluate with the candidate
    stance applied (the borders module already has the neutral-toggle path used by `permeability()`); the
    delta in summed inbound pull × the per-pass budget approximates `immigrationDelta`. Influence/Production
@@ -1089,7 +1092,8 @@ by `recordDisasterEvent()` (**L733**). The toast path with cooldown is `announce
    largest refugee corridor; `receivers` = top destination civ names. `null` when below the Minor floor.
 2. Surface. (a) **Toast** via `announceImportant()` (one per crisis tier change, cooldown-gated). (b)
    **Chronicle** entry (`kind: "exodus"`, severity in the title via `chronicleTitle()`). (c) optional **map
-   badge** reusing the network `drawEventBadge()` path ([emigration-network-paint.js](../ui/emigration-network-paint.js#L480)).
+   badge** reusing the network `drawEventBadge()` path
+   ([emigration-network-paint.js](../ui/emigration-network-paint.js#L480)).
 3. Hook. Call from `recordChroniclePass()`/`doPass()` after `recordMigrations()` so the pass's records
    are available.
 
@@ -2030,7 +2034,8 @@ Net: a whole second migration-engine path deleted, three dead keys gone, and a m
 
 ### 25.11 Checklist
 
-- [ ] WS1.1 `splitTracksEnabled`: inline split path, delete `processSourceLegacy` et al., trim legacy test section, drop key+typedef, update README §2
+- [ ] WS1.1 `splitTracksEnabled`: inline split path, delete `processSourceLegacy` et al., trim legacy test section, drop
+  key+typedef, update README §2
 - [ ] WS1.2 `splitBudgetsEnabled`: delete shared-pool branch + `budgets.shared`, drop key+typedef
 - [ ] WS1.3 `splitUiReadoutEnabled`: delete dominant-cause renderer, drop key+typedef
 - [ ] WS3, confirm loader tolerates unknown keys → delete `scaleBase/Exp/Growth` from CONFIG/DEFAULTS/typedef
@@ -2315,7 +2320,8 @@ A/B compared against the recorded telemetry.
 
 ## 28. Quality-analysis open items (from `emigration-quality-analysis`, refreshed 2026-07-06)
 
-Source: [`mods_quality_analyses/emigration-quality-analysis`](../../../mods_quality_analyses/emigration-quality-analysis)
+Source:
+[`mods_quality_analyses/emigration-quality-analysis`](../../../mods_quality_analyses/emigration-quality-analysis)
 (`issues-worklist.md` + `code-quality-violations-report.md`). **Every gate is green**: `tsc --noEmit` 0
 errors, `eslint ui` 0 problems, `npm run verify` passing over 119 test files, no in-scope module under
 90% statements. These three are what remain: one policy decision, one metric just under its ratchet, and
@@ -2416,7 +2422,8 @@ not worth extending.
 
 The owner reported that clicking one of the mod's notices froze the game long enough to look like a crash. Timing lines
 (`perf:` in UI.log, from `plog` in `ui/emigration-log.js`) were added around the gather, the tab builds, the network
-scene and its settle loop, and measured in a lab game: usual mod set, Antiquity seed 4242, `--quick`, driven to turn 101.
+scene and its settle loop, and measured in a lab game: usual mod set, Antiquity seed 4242, `--quick`, driven to turn
+101.
 
 | Open | Gather | First tab | Network |
 | --- | --- | --- | --- |
@@ -2450,7 +2457,8 @@ Emigration within that second.
 
 Watched 2026-10-18 in a second lab game (usual set, Antiquity seed 4242, `--quick`, driven to turn 101, 25
 settlements, Demographics never opened so nothing was published). Each action was timed from a script twice: as built,
-and with `Date.now` jumping 2 s on every call so the kept read was always stale, which is the old behavior. Times are two
+and with `Date.now` jumping 2 s on every call so the kept read was always stale, which is the old behavior. Times are
+two
 animation frames from the action; the same two frames with no action took 78 ms in that windowed game.
 
 | Action | Old | Now | Store reads, old → now |
@@ -2475,7 +2483,8 @@ dot was tagged, and the legend showed no ring key, which is correct for that dat
 
 With the sample data (Options, sample on), in the game's own screen:
 
-- The legend ends with "War refugees" and "Disaster refugees", ring swatches in #e5616b and #e0913c, and their hover text.
+- The legend ends with "War refugees" and "Disaster refugees", ring swatches in #e5616b and #e0913c, and their hover
+  text.
 - A sweep of the canvas with page mousemove events (156,800 points, 2 canvas px apart) hit refugee dots for all ten
   sample events. Each tooltip named the right one: "Roman–Greek War · Refugee from Rome", "Punic–Persian War · Refugee
   from Carthage", "Nile flood · Refugee from Egypt", and so on. 26,316 points gave the usual city or civ breakdown.
@@ -2787,7 +2796,8 @@ a tab that reads as a place to act, and a Communities "Character" that agrees wi
 Watched on WashingtonAnt130 after a reload: the six labels with "Displaced (66)"; Table showing the ledger;
 "All civilizations" showing the six civ cards under "Causes: Why people move"; Washington "Homogeneous" with the
 hover texts on cells and headings; the Hasten flow end to end (screen closed, dialog up, "Bring one home for 60"
-taken, screen back on "Displaced (65)", Philadelphia 2 to 1, 351 to 291 Gold). After a reload (2026-10-26, early morning): the View and Show switches sit in the Options row beside Numbers;
+taken, screen back on "Displaced (65)", Philadelphia 2 to 1, 351 to 291 Gold). After a reload (2026-10-26, early
+morning): the View and Show switches sit in the Options row beside Numbers;
 Hasten is a 134×42 gold button; hastening one from Boston (351 to 291 Gold, "Displaced (65)") put "Available again
 in 8 turns" on Boston's card alone, the other eight kept their buttons; a how-to line under the heading says what
 the tab is for. The dialog's buttons answer `action-activate`, not `click`, from the bench.
@@ -2884,7 +2894,8 @@ turn while they settle in, fading over 6 to 8 turns; more arrivals also mean mor
 numbers being `assimilationGold` × `assimilationLoadPerMigrant` and `assimilationHappiness` at `assimilationDecay`
 0.7; the Anti-Immigration Stance's "(You give up the Population growth and the Food/Production tiles newcomers
 would have worked, and half of your enclaves' Science/Culture/Gold yields.)", its Influence cost staying up front
-as a yield line in the game's own form ("-2 Influence per turn"), which the data test pins to the modifier. The six descriptions' translations were dropped from `i18n/<locale>.json` (new meaning), so the
+as a yield line in the game's own form ("-2 Influence per turn"), which the data test pins to the modifier. The six
+descriptions' translations were dropped from `i18n/<locale>.json` (new meaning), so the
 English ships until retranslated.
 
 Watched on WashingtonAnt130 (four reloads): the first draw stopped at the heading row (a price chip named
@@ -3024,8 +3035,10 @@ the space now lives in the code. Captures `working_screenshots/emig-370-settleme
 `emig-370-settlements-newyork.png`.
 
 Then, the same evening: the displaced row moved into the Keep and recover half ("shouldn't the hasten part be in
-the keep and recover card?"), two cells a line; a "Newcomers living here · N" mirror on the Attract half was built and taken
-out the same hour (the owner: the arrivals bar already says it); and the wording went from draw to attract ("Attracting from", "To attract more"), with an empty block reading "None"
+the keep and recover card?"), two cells a line; a "Newcomers living here · N" mirror on the Attract half was built and
+taken
+out the same hour (the owner: the arrivals bar already says it); and the wording went from draw to attract ("Attracting
+from", "To attract more"), with an empty block reading "None"
 as a value rather than a sentence (the owner: "Attracted: None").
 
 A wording pass followed (the owner: "Nowhere out-pulls it" is awkward, and "More yields and Happiness widen the
@@ -3203,11 +3216,14 @@ The wait is said as what the fee replaces: "instead of over the next 11 turns" u
 card's hasten line use the same phrase (`insteadText` replaces `soonerText`). The mechanic itself is unchanged: the
 paid call brings them home this turn, the free homecoming in batches.
 
-The subtitles are now in parentheses with the game's population icon first: "(👥 that came here this age)",
-"(👥 that left this age)", "(👥 from elsewhere, living here)" and "(👥 that went elsewhere)" (`peopleSub`, the
+The subtitles are now in parentheses with the game's population icon first: "([population icon] that came here this
+age)",
+"([population icon] that left this age)", "([population icon] from elsewhere, living here)" and "([population icon] that
+went elsewhere)" (`peopleSub`, the
 icon from `UI.getIconURL("YIELD_POPULATION", "FONTICON")`, tinted green with `fxs-background-image-tint`; the YIELD
 context gives a settlement mark, the owner caught it, and the glyph's texture is white, so the tint does the colour,
-and it only holds on an element without opacity; see docs/engine-limits-from-probes.md). A tally row that would print as 0.0 is left out.
+and it only holds on an element without opacity; see docs/engine-limits-from-probes.md). A tally row that would print as
+0.0 is left out.
 Watched in the WashingtonAnt130 save; captures `emig-370-settlements.png`, `emig-370-settlements-2.png`.
 
 A note for the lab scripts: the Settlements cards exist only once that tab is selected (the screen opens on
@@ -3643,7 +3659,8 @@ and both Chinese draw without missing-glyph boxes. Captures `working_screenshots
 languages; the window capture missed de, es and fr, whose readings are in the run log.
 
 One fix from it: the Japanese card used 流出 for both the Leaving and the Left pane. Left (`LOC_EMIG_DP_SUB`) is
-now 離郷, beside 定住 for Arrived; the owner confirmed it on a card on 2026-10-26. The setup screen itself, which the lab skips: the owner confirmed
+now 離郷, beside 定住 for Arrived; the owner confirmed it on a card on 2026-10-26. The setup screen itself, which the lab
+skips: the owner confirmed
 on 2026-10-26 that the option "Emigration: AI keeps cities happy" appears there and works.
 
 ## 65. The 4.0.0 release round (2026-10-26, night)
@@ -3869,3 +3886,56 @@ No settlement lost more than one person in any 5 turns under any rule, and the l
 move. The package stays behind `happinessModel` ("field" is still the default). Not watched: the relief building on
 the map and in a city's building list, an age change or a change of hands with one standing, and the player-facing
 text (the pressure gauge's reasons, the Civilopedia, the 11 translations of the four new lines).
+
+## 71. The relief building in play: the map, the building list, a change of hands, an age change (2026-10-27)
+
+Watched on WashingtonExp106 with the 4.0.0 build plus the relief icons, relief seeded through the module's own book
+for Philadelphia (yours) and Charax Spasinu (Abbasid) and placed by `reliefPass`:
+
+- Both took tier 2, and both Happiness breakdowns read "People who left = 2".
+- The map: nothing drawn at either settlement's center (captures in `working_screenshots/emig-relief-watch/`).
+- The building list: the base City Details panel lists every constructible in a city, `CanBeHidden` or not, so the
+  tier shows under Buildings as "People who left". `data/emigration-relief-icons.xml` gives the ten tiers the game's
+  Happiness icon there (`UI.getIconURL` returned `blp:Yield_Happiness`); the +2 itself shows in the Happiness
+  breakdown rather than under the row, since it's a modifier and not a building yield.
+- A change of hands: Charax Spasinu flipped to you through Cultural Diffusion's own marker kept its tier 2 and its +2.
+  The book is kept by settlement center, so relief stays with the settlement whoever holds it.
+- The age change: driven from Exploration turn 106 into Modern turn 2, the book came through the transition in the
+  game configuration and the tiers still stood, each matching its book (eight settlements at tier 1).
+
+## 72. Relief moves into the model (2026-10-27)
+
+Section 71 showed the hidden-building relief reaching into base-game functions it was never meant to touch: the City
+Details panel lists every constructible, so it read as a building the player owns; Emigration's own built-environment
+term counted it as a civic building (a reason to stay worth 0.3); two narrative events require a city to hold only
+buildings from the current age, and the relief buildings have no age; and whether one could make a city center read
+as a quarter was never settled. A script can't give one settlement Happiness without a vehicle the game attaches to a
+city, and the other vehicles are worse (a stationed unit is visible and movable; taking a specialist instead of a rural
+tile is ignored for AI cities). A per-population Happiness cost on every player would be native, but it charges every
+population point and relieves war and disaster departures too, which the owner ruled out.
+
+So the relief is now the mod's own: `reliefOf(signal)` adds +1 for each person who left over unhappiness to the
+settlement's Happiness as the stage score, the direct push and the cause label read it, until the settlement regrows
+to the size it was. Every civilization's settlements run through it alike, and the game's own Happiness and its yield
+penalty are left as they are. The card says it under the pressure gauge ("People who left: +2 Happiness in the push to
+leave, until the settlement grows back") and the score's Happiness row adds "+2 for people who left". The building
+types stay defined in `data/emigration-relief.sql` so a save holding one loads, and each pass takes down any still
+standing. The built-environment term also leaves out hidden marker buildings now (`CanBeHidden`), which covers
+Cultural Diffusion's and Partisans' markers too. The first 4.0.0 zip with the buildings had 0 downloads when this was
+written.
+
+## 73. Relief removed (2026-10-27)
+
+With the relief out of the game's own Happiness, the owner asked whether the mechanic was needed at all. Its draw was
+the Civilization V feeling of a city getting happier as people leave, and the in-model version no longer gives that:
+the banner, the yields and the AI's own reading stay where they were. What it still did was slow the bleeding of a
+city that stays unhappy, and three things already do that: the 8-turn rest after each departure, the need for a
+destination that pulls hard enough, and the score's population term. No run showed a settlement emptying. Its size
+was modest (a city at -5 that lost two people went from a direct push of 1.5 to 0.9), and it cost a rule, a card line,
+a ledger note, saved state and an open question about decay, since a city that never regrew kept it.
+
+So it's gone. `emigration-relief.js` now only takes down any old relief building a save from the first 4.0.0 build
+still holds, and `data/emigration-relief.sql` keeps the types so such a save loads. The `CanBeHidden` skip in the
+built-environment term stays. The stage score and the direct push are unchanged: the push of 3 was sized from the
+static read in section 70, which had no relief in it. The 30-turn package runs had relief on, so unhappy settlements
+will lose people a little more often than those runs showed, which is still at or above today's rate.

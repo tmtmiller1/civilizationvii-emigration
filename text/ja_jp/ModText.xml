@@ -90,7 +90,7 @@
         <Replace Tag="LOC_EMIG_EXPLAIN_CELEBRATION" Language="ja_JP"><Text>祝祭</Text></Replace>
         <Replace Tag="LOC_EMIG_EXPLAIN_STAGE" Language="ja_JP"><Text>幸福度の段階</Text></Replace>
         <Replace Tag="LOC_EMIG_EXPLAIN_HAPPINESS_SHAPED" Language="ja_JP"><Text>帝国の平均との比較</Text></Replace>
-        <Replace Tag="LOC_EMIG_EXPLAIN_HAPPINESS_OWN" Language="ja_JP"><Text>Its own Happiness</Text></Replace>
+        <Replace Tag="LOC_EMIG_EXPLAIN_HAPPINESS_OWN" Language="ja_JP"><Text>自身の幸福度</Text></Replace>
         <Replace Tag="LOC_EMIG_EXPLAIN_CAP_TRIM" Language="ja_JP"><Text>建造物による加点の上限</Text></Replace>
         <Replace Tag="LOC_EMIG_EXPLAIN_FOOD" Language="ja_JP"><Text>食料</Text></Replace>
         <Replace Tag="LOC_EMIG_EXPLAIN_PRODUCTION" Language="ja_JP"><Text>生産力</Text></Replace>
@@ -245,7 +245,7 @@
         <Replace Tag="LOC_EMIG_T_SCAP" Language="ja_JP"><Text>包囲: 戦争で失う都市人口の上限</Text></Replace>
         <Replace Tag="LOC_EMIG_T_SCAP_D" Language="ja_JP"><Text>戦争による移住が止まる前に奪える、都市人口の最大割合（包囲開始時の規模に対する割合）。包囲モデルのみで使用。</Text></Replace>
         <Replace Tag="LOC_EMIG_T_INTAKE" Language="ja_JP"><Text>居住地で新来者を遠ざける</Text></Replace>
-        <Replace Tag="LOC_EMIG_T_INTAKE_D" Language="ja_JP"><Text>Each of your settlements gets a "Dissuade newcomers" button on its Settlements card. While it's on, people looking for a new home pick somewhere else: another of your settlements, another civilization's, or they stay where they are. People already on the road still arrive. Off hides the button and welcomes newcomers back everywhere, in the AI's settlements too.</Text></Replace>
+        <Replace Tag="LOC_EMIG_T_INTAKE_D" Language="ja_JP"><Text>あなたの各居住地の、「居住地」タブにあるカードに「新来者を遠ざける」ボタンが付きます。オンのあいだ、新しい住まいを探す人々は別の場所を選びます。あなたの別の居住地、他の文明の居住地、あるいは今いる場所にとどまります。すでに移動中の人はそのまま到着します。オフにするとボタンが消え、AIの居住地も含めてすべての場所で新来者を再び歓迎します。</Text></Replace>
         <Replace Tag="LOC_EMIG_T_INTAKE_COST" Language="ja_JP"><Text>新来者を遠ざけるための毎ターンの影響力</Text></Replace>
         <Replace Tag="LOC_EMIG_T_INTAKE_COST_D" Language="ja_JP"><Text>居住地1つで新来者を遠ざけるのに毎ターンかかる影響力です。あなたにもAIにも同じように適用されます。影響力が足りなくなると、払える数の居住地だけが遠ざけ続け、残りは再び新来者を歓迎します。オフにすると無料になります。</Text></Replace>
         <Replace Tag="LOC_EMIG_T_AI_INTAKE" Language="ja_JP"><Text>AI文明が新来者を遠ざける</Text></Replace>
@@ -391,10 +391,10 @@
         <Replace Tag="LOC_EMIG_HOMECOMING_SPLIT" Language="ja_JP"><Text>{1_Home}は再び安全になりました。そこから逃げた人々のうち{2_Go}人が故郷へ戻り、{3_Stay}人は移った先に定住しました。</Text></Replace>
         <Replace Tag="LOC_EMIG_HOMECOMING_ALL_STAY" Language="ja_JP"><Text>{1_Home}は再び安全になりましたが、そこから逃げた{2_Stay}人は移った先に定住しました。「早める」でまだ連れ戻せます。</Text></Replace>
         <Replace Tag="LOC_EMIG_HOMECOMING_DONE_GOING" Language="ja_JP"><Text>{1_Home}へ戻っていた人々の最後の一団が帰り着きました。</Text></Replace>
-        <Replace Tag="LOC_EMIG_RELIEF_LINE" Language="ja_JP"><Text>People who left</Text></Replace>
-        <Replace Tag="LOC_BUILDING_EMIG_RELIEF_NAME" Language="ja_JP"><Text>People who left</Text></Replace>
-        <Replace Tag="LOC_BUILDING_EMIG_RELIEF_DESCRIPTION" Language="ja_JP"><Text>+1 Happiness for each person who left this settlement over unhappiness, until it grows back to the size it was when they left.</Text></Replace>
-        <Replace Tag="LOC_BUILDING_EMIG_RELIEF_TOOLTIP" Language="ja_JP"><Text>+1 Happiness for each person who left this settlement over unhappiness, until it grows back to the size it was when they left.</Text></Replace>
+        <Replace Tag="LOC_EMIG_RELIEF_LINE" Language="ja_JP"><Text>去った人々</Text></Replace>
+        <Replace Tag="LOC_BUILDING_EMIG_RELIEF_NAME" Language="ja_JP"><Text>去った人々</Text></Replace>
+        <Replace Tag="LOC_BUILDING_EMIG_RELIEF_DESCRIPTION" Language="ja_JP"><Text>不満からこの居住地を去った人1人につき幸福度+1。去ったときの規模まで再び成長するまで続きます。</Text></Replace>
+        <Replace Tag="LOC_BUILDING_EMIG_RELIEF_TOOLTIP" Language="ja_JP"><Text>不満からこの居住地を去った人1人につき幸福度+1。去ったときの規模まで再び成長するまで続きます。</Text></Replace>
         <Replace Tag="LOC_EMIG_DP_WAIT_STAYED" Language="ja_JP"><Text>{1_Count}人は移った先に定住しました。費用を払って連れ戻さない限り、そこに留まります。</Text></Replace>
         <Replace Tag="LOC_EMIG_DP_WAIT_DECIDE" Language="ja_JP"><Text>{1_Home}があと{2_Turns}ターン平穏であれば、そこから逃げた人々は故郷へ戻るかどうかを決めます。離れていた期間が長いほど、またいま暮らしている場所で恵まれているほど、留まる人が増えます。</Text></Replace>
         <Replace Tag="LOC_EMIG_DP_FREE_STAY" Language="ja_JP"><Text>{1_Count}人はいまの場所に留まる</Text></Replace>
@@ -481,7 +481,7 @@
         <Replace Tag="LOC_EMIG_SC_CLOSED" Language="ja_JP"><Text>新来者を遠ざけています</Text></Replace>
         <Replace Tag="LOC_EMIG_SC_CLOSE_INTAKE" Language="ja_JP"><Text>新来者を遠ざける</Text></Replace>
         <Replace Tag="LOC_EMIG_SC_OPEN_INTAKE" Language="ja_JP"><Text>新来者を歓迎する</Text></Replace>
-        <Replace Tag="LOC_EMIG_SC_CLOSE_INTAKE_TIP" Language="ja_JP"><Text>People looking for a new home pick somewhere else: another of your settlements, another civilization's, or they stay where they are. People already on the road still arrive, and this settlement doesn't pay integration costs for anyone who chose elsewhere.</Text></Replace>
+        <Replace Tag="LOC_EMIG_SC_CLOSE_INTAKE_TIP" Language="ja_JP"><Text>新しい住まいを探す人々は別の場所を選びます。あなたの別の居住地、他の文明の居住地、あるいは今いる場所にとどまります。すでに移動中の人はそのまま到着し、この居住地は別の場所を選んだ人々の統合コストを払いません。</Text></Replace>
         <Replace Tag="LOC_EMIG_SC_INTAKE_PAYING" Language="ja_JP"><Text>毎ターン影響力を{1_Cost}支払っています。</Text></Replace>
         <Replace Tag="LOC_EMIG_SC_INTAKE_A_TURN" Language="ja_JP"><Text>/ターン</Text></Replace>
         <Replace Tag="LOC_EMIG_SC_INTAKE_SHORT" Language="ja_JP"><Text>影響力が足りません：新来者を遠ざけるには毎ターン{1_Cost}必要ですが、{2_Have}しかありません。</Text></Replace>
@@ -494,7 +494,7 @@
         <Replace Tag="LOC_EMIG_SC_TALLY_SUM" Language="ja_JP"><Text>合計</Text></Replace>
         <Replace Tag="LOC_EMIG_SC_LEDGER_TITLE_TIP" Language="ja_JP"><Text>行をクリックするとその内訳が開きます。ここをクリックするとすべてを開閉します。</Text></Replace>
         <Replace Tag="LOC_EMIG_LEDGER_HAPPY_NOTE" Language="ja_JP"><Text>ここは{1_H}、帝国全体では{2_Mean}</Text></Replace>
-        <Replace Tag="LOC_EMIG_LEDGER_HAPPY_NOTE_OWN" Language="ja_JP"><Text>{1_H} here</Text></Replace>
+        <Replace Tag="LOC_EMIG_LEDGER_HAPPY_NOTE_OWN" Language="ja_JP"><Text>ここは{1_H}</Text></Replace>
         <Replace Tag="LOC_EMIG_LEDGER_POP_NOTE" Language="ja_JP"><Text>{1_Pop}人</Text></Replace>
         <Replace Tag="LOC_EMIG_LEDGER_PCT_NOTE" Language="ja_JP"><Text>基本値の{1_Pct}%</Text></Replace>
         <Replace Tag="LOC_EMIG_LEDGER_TURNS_LEFT" Language="ja_JP"><Text>残り{1_Turns}ターン</Text></Replace>
@@ -1101,7 +1101,7 @@
         <Replace Tag="LOC_EMIG_FORECAST_LEAVE" Language="ja_JP"><Text>今後{2_Turns}ターンで約{1_Count}人が去りそうです</Text></Replace>
         <Replace Tag="LOC_EMIG_FORECAST_CRISIS" Language="ja_JP"><Text>人々はいま逃げ出しています。人数は圧力ではなく危機の規模で決まります</Text></Replace>
         <Replace Tag="LOC_EMIG_FORECAST_STABLE" Language="ja_JP"><Text>近いうちに去る人はいなさそうです</Text></Replace>
-        <Replace Tag="LOC_EMIG_RO_CLOSED" Language="ja_JP"><Text>Dissuading newcomers: people looking for a new home pick somewhere else</Text></Replace>
+        <Replace Tag="LOC_EMIG_RO_CLOSED" Language="ja_JP"><Text>新来者を遠ざけています：新しい住まいを探す人々は別の場所を選びます</Text></Replace>
         <Replace Tag="LOC_EMIG_RO_SIEGE_STALLED" Language="ja_JP"><Text>包囲が膠着：包囲側が攻撃していないため、攻撃が再開するまで包囲で去る人も死ぬ人もいません</Text></Replace>
         <Replace Tag="LOC_EMIG_RO_WARN_HOLDING" Language="ja_JP"><Text>この居住地で難民が再定住中</Text></Replace>
         <Replace Tag="LOC_EMIG_RO_WARN_TRAPPED" Language="ja_JP"><Text>危機：逃げ場がなく閉じ込められています{1_Why}</Text></Replace>
@@ -2089,7 +2089,7 @@
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_ARRIVALS_CHAPTER_ARRIVING_TITLE" Language="ja_JP"><Text>到着</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_ARRIVALS_CHAPTER_ARRIVING_PARA_1" Language="ja_JP"><Text>他の文明は自分で到着者を配置します。あなたの都市については、「新来者の定住方法」の設定（オプション → 追加コンテンツ → 移住 → 詳細設定 → 流入と流出）によって次のように決まります。[BLIST][LI][B]確認する[/B]（既定）：受け入れ先の都市で「新来者」または「難民」のポップアップが開き、タイルを選ぶか、都市に任せるか、後回しにするかを選べます。3つのスイッチで、どの種類の到着時に確認するかを選びます。既定では難民のときだけ確認し、移民と帰還者はただちに配置されます。[LI][B]自動[/B]：成長したときと同じように、都市がただちにポイントを配置します。[LI][B]移民ユニット[/B]：新来者は都市の隣に「移住者」ユニットとして到着し、あなたが再定住させます。定住していない移住者には毎ターン維持費がかかります。[LI][B]オフ[/B]：ゲーム本来の「都市を成長させる」の選択で、ポイントの配置を求められます。[/LIST]</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_ARRIVALS_CHAPTER_ARRIVING_PARA_2" Language="ja_JP"><Text>「難民」ポップアップには、到着者がどこから、何から逃れてきたのかが、その民の声による引用とともに示されます（「故郷を追われた人々の声」を参照）。まだ出会っていない文明からの難民は、単に「故郷を追われた人々」とだけ表されます。</Text></Replace>
-        <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_ARRIVALS_CHAPTER_ARRIVING_PARA_3" Language="ja_JP"><Text>Each of your settlements has a "Dissuade newcomers" button on its Settlements card, with its price in the button. While it's on, people who would have moved there choose again by the same pull as everyone else: another of your settlements, another civilization's, or staying where they are when nowhere else is better. You lose the ones who go abroad or stay home. People already on the road still arrive. It costs 1 Influence a turn, and when you can't pay, newcomers are welcome there again. "Welcome newcomers" undoes it. AI civilizations do the same: one past its congestion bar dissuades newcomers in an unhappy settlement that has been taking people in, pays the same upkeep, and welcomes them again once the pressure eases.</Text></Replace>
+        <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_ARRIVALS_CHAPTER_ARRIVING_PARA_3" Language="ja_JP"><Text>あなたの各居住地には、「居住地」タブにあるカードに「新来者を遠ざける」ボタンがあり、ボタンに費用が表示されます。オンのあいだ、そこへ移るはずだった人々は、ほかの誰もと同じ引力で選び直します。あなたの別の居住地、他の文明の居住地、あるいはほかに良い場所がなければ今いる場所にとどまります。国外へ行った人や故郷にとどまった人は失われます。すでに移動中の人はそのまま到着します。毎ターン影響力が1かかり、払えなくなるとそこでは新来者が再び歓迎されます。「新来者を歓迎する」で元に戻せます。AI文明も同じことをします。混雑の基準を超えたAI文明は、人々を受け入れてきた不満のある居住地で新来者を遠ざけ、同じ維持費を払い、圧力が和らぐと再び歓迎します。</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_ARRIVALS_CHAPTER_RESETTLE_TITLE" Language="ja_JP"><Text>定住を待つ難民</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_ARRIVALS_CHAPTER_RESETTLE_PARA_1" Language="ja_JP"><Text>戦争や災害による難民のうち（既定で）5人に1人は到着と同時に定住します。残りは目的地で待機の列に入り、その後の数ターンで定住していきます。幸福で、開かれていて、混雑していない受け入れ先ほど早く定住させられます。「移民排斥の方針」は定住を遅らせます。受け入れ側は、まだ待機している人々の維持費を支払います。彼らが逃れてきた危機が新しい都市にまで及ぶと、待機中の難民が真っ先に移動します。都市の情報表示と都市の詳細パネルに、待機している人数が表示されます。</Text></Replace>
         <Replace Tag="LOC_PEDIA_EMIGRATION_PAGE_ARRIVALS_CHAPTER_COST_TITLE" Language="ja_JP"><Text>人々を受け入れる代償</Text></Replace>

@@ -86,7 +86,8 @@ user judges it closed.
   town and nine in AI cities.
 - Done, 2026-09-14. `ui/emigration-plot-cleanup.js` removes the empty rural district two seconds after
   every departure, death, and enclave-tile removal, and sweeps every settlement's land once a loaded game
-  starts and at the start of each local turn, which heals damaged saves as they load. Only a rural district with nothing on it is ever touched.
+  starts and at the start of each local turn, which heals damaged saves as they load. Only a rural district with nothing
+  on it is ever touched.
 - Verification. The removal and the re-placement on the same plot were watched in mod test 40;
   `tests/plot-cleanup.mjs` covers the detection, the deferred re-check, and the sweep.
 

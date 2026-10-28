@@ -155,13 +155,13 @@ function externalBody(quote, civ) {
     ? loc("LOC_EMIG_CALLHOME_BODY_EX_ONE",
       "{1_Away} population points were driven out of {2_Home} and now live in {3_From}, a city of {4_Civ}. "
       + "They have a life there, and a foreign ruler has no reason to help us empty their streets. Choose how "
-      + "many to call: each has about a {5_Pct}% chance of answering, the call may bring nobody, and it is "
+      + "many to call: each has about a {5_Pct}% chance of answering, the call may come back empty, and it's "
       + "paid for either way.", quote.available, one.home, one.from, civ(one.host), pct)
     : loc("LOC_EMIG_CALLHOME_BODY_EX",
       "{1_Away} population points were driven out of their homes and now live under other rulers. They have "
       + "a life there, and a foreign ruler has no reason to help us empty their streets. Choose how many to "
-      + "call: each has about a {2_Pct}% chance of answering, the call may bring nobody, and it is paid for "
-      + "either way.", quote.available, pct);
+      + "call: each has about a {2_Pct}% chance of answering, the call may come back empty, and it's paid "
+      + "for either way.", quote.available, pct);
 }
 
 /**
@@ -229,11 +229,11 @@ function tierLabel(n, cost, currency, external) {
 function leaveChoice(free) {
   if (free) {
     return { id: NO, label: loc("LOC_EMIG_CALLHOME_WAIT", "Wait for the free homecoming"),
-      note: loc("LOC_EMIG_CALLHOME_WAIT_N", "They come home on their own, on the schedule above; nothing is spent.") };
+      note: loc("LOC_EMIG_CALLHOME_WAIT_N", "They come home on their own, on the schedule above, for free.") };
   }
   return { id: NO, label: loc("LOC_EMIG_CALLHOME_NO", "Leave them where they are"),
     note: loc("LOC_EMIG_CALLHOME_NO_N",
-      "You will not be asked about these people again; they may still drift home on their own in time.") };
+      "You won't be asked about these people again; they may still drift home on their own in time.") };
 }
 
 /**
