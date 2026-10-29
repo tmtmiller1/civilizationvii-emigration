@@ -178,32 +178,52 @@
         <Argument name="Tooltip">LOC_EMIG_POLICY_CLOSED_BORDERS_NAME</Argument>
     </Modifier>
 
-    <!-- Consular Protection: a flat Influence floor the game's planner can see, so an AI civilization slots it
-         (the per-enclave Influence stays in the script, emigration-consular.js). EX +3 / MO +5: at +1/+2 no AI
-         slotted it in 139 Exploration turns against the game's own Influence cards at +4 (2026-10-26). -->
-    <Modifier id="MOD_EMIG_CONSULAR_INFLUENCE_EX" collection="COLLECTION_OWNER" effect="EFFECT_PLAYER_ADJUST_YIELD">
+    <!-- Consular Protection: Divine Right's shape, a Palace yield over the player's cities, with Gold where Divine
+         Right has Happiness, so the card is its own idea (consulates earn and protect) and the game's planner scores
+         it. EX +4 Influence and +10 Gold, MO +6 and +15. The Gold per person abroad stays in the script
+         (emigration-consular.js) and counts for nothing with the planner. From 110-turn AI runs on one seed
+         (2026-10-28/29, roadmap section 75): Influence alone was never slotted below +8 and taken by five of six
+         civs at +12, whatever its shape; with the Influence at +4, 6 Gold got two picks and 10 Gold six picks across
+         five civs, the same as +12 Influence alone. -->
+    <Modifier id="MOD_EMIG_CONSULAR_INFLUENCE_EX" collection="COLLECTION_PLAYER_CITIES" effect="EFFECT_CITY_ADJUST_CONSTRUCTIBLE_YIELD">
+        <Argument name="ConstructibleType">BUILDING_PALACE</Argument>
         <Argument name="YieldType">YIELD_DIPLOMACY</Argument>
-        <Argument name="Amount">3</Argument>
+        <Argument name="Amount">4</Argument>
         <Argument name="Tooltip">LOC_EMIG_POLICY_CONSULAR_NAME</Argument>
         <String context="Description">LOC_EMIG_POLICY_CONSULAR_DESC</String>
     </Modifier>
-    <Modifier id="MOD_EMIG_CONSULAR_INFLUENCE_MO" collection="COLLECTION_OWNER" effect="EFFECT_PLAYER_ADJUST_YIELD">
+    <Modifier id="MOD_EMIG_CONSULAR_GOLD_EX" collection="COLLECTION_PLAYER_CITIES" effect="EFFECT_CITY_ADJUST_CONSTRUCTIBLE_YIELD">
+        <Argument name="ConstructibleType">BUILDING_PALACE</Argument>
+        <Argument name="YieldType">YIELD_GOLD</Argument>
+        <Argument name="Amount">10</Argument>
+        <Argument name="Tooltip">LOC_EMIG_POLICY_CONSULAR_NAME</Argument>
+    </Modifier>
+    <Modifier id="MOD_EMIG_CONSULAR_INFLUENCE_MO" collection="COLLECTION_PLAYER_CITIES" effect="EFFECT_CITY_ADJUST_CONSTRUCTIBLE_YIELD">
+        <Argument name="ConstructibleType">BUILDING_PALACE</Argument>
         <Argument name="YieldType">YIELD_DIPLOMACY</Argument>
-        <Argument name="Amount">5</Argument>
+        <Argument name="Amount">6</Argument>
         <Argument name="Tooltip">LOC_EMIG_POLICY_CONSULAR_NAME</Argument>
         <String context="Description">LOC_EMIG_POLICY_CONSULAR_DESC</String>
+    </Modifier>
+    <Modifier id="MOD_EMIG_CONSULAR_GOLD_MO" collection="COLLECTION_PLAYER_CITIES" effect="EFFECT_CITY_ADJUST_CONSTRUCTIBLE_YIELD">
+        <Argument name="ConstructibleType">BUILDING_PALACE</Argument>
+        <Argument name="YieldType">YIELD_GOLD</Argument>
+        <Argument name="Amount">15</Argument>
+        <Argument name="Tooltip">LOC_EMIG_POLICY_CONSULAR_NAME</Argument>
     </Modifier>
 
     <!-- Attraction cards: the yield scales with each city's population, the game's own
          EFFECT_CITY_ADJUST_YIELD_PER_POPULATION (as the Quipu tradition uses it), so every immigrant the card draws
          adds to it for as long as they stay, itemized in the city's yield breakdown. Replaced the carried dividend
-         that faded 30% a turn (2026-10-25): players couldn't tell what "fading" meant. 1 per 5 Population in
-         Exploration, 1 per 4 in Modern. Cultural Magnetism and Commercial Draw are retired but a save may still
+         that faded 30% a turn (2026-10-25): players couldn't tell what "fading" meant. 1 per 10 Population in
+         Exploration, 1 per 8 in Modern since 2026-10-28 (it was 5 and 4; roadmap section 75), about the game's own
+         Science cards. Urban-only would have balanced the same, but urban population comes from buildings, and
+         newcomers land on rural tiles, so it would have stopped paying for immigrants. Cultural Magnetism and Commercial Draw are retired but a save may still
          hold one, so they get the same shape. -->
     <Modifier id="MOD_EMIG_TALENT_YIELD_EX" collection="COLLECTION_PLAYER_CITIES" effect="EFFECT_CITY_ADJUST_YIELD_PER_POPULATION">
         <Argument name="YieldType">YIELD_SCIENCE</Argument>
         <Argument name="Amount">1</Argument>
-        <Argument name="Divisor">5</Argument>
+        <Argument name="Divisor">10</Argument>
         <Argument name="Rural">true</Argument>
         <Argument name="Urban">true</Argument>
         <Argument name="Tooltip">LOC_EMIG_POLICY_TALENT_NAME</Argument>
@@ -212,15 +232,15 @@
     <Modifier id="MOD_EMIG_TALENT_YIELD_MO" collection="COLLECTION_PLAYER_CITIES" effect="EFFECT_CITY_ADJUST_YIELD_PER_POPULATION">
         <Argument name="YieldType">YIELD_SCIENCE</Argument>
         <Argument name="Amount">1</Argument>
-        <Argument name="Divisor">4</Argument>
+        <Argument name="Divisor">8</Argument>
         <Argument name="Rural">true</Argument>
         <Argument name="Urban">true</Argument>
         <Argument name="Tooltip">LOC_EMIG_POLICY_TALENT_NAME</Argument>
         <String context="Description">LOC_EMIG_POLICY_TALENT_DESC_MO</String>
     </Modifier>
-    <!-- Talent Attraction's upkeep: Gold per settlement, so the card is a trade and not free Science (every AI slotted
-         it within ten turns of Inspiration, 2026-10-26). An eight-settlement civilization weighs +16 Science against
-         -16 Gold in Exploration. The same shape as the Science, so it shows in each settlement's yield breakdown. -->
+    <!-- Talent Attraction's old upkeep, Gold per settlement. No card attaches it since the Science was halved
+         (2026-10-28): at half the Science it cost every Modern AI more than it paid. Kept so a save that attached it
+         still resolves. -->
     <Modifier id="MOD_EMIG_TALENT_UPKEEP_EX" collection="COLLECTION_PLAYER_CITIES" effect="EFFECT_CITY_ADJUST_YIELD">
         <Argument name="YieldType">YIELD_GOLD</Argument>
         <Argument name="Amount">-2</Argument>

@@ -273,7 +273,7 @@ function chargePerTurnCosts(who, local) {
   // Raid: the op's cost/duration/grievance are native (Diplomacy Extended); Emigration just
   // reads the active action each turn during the pass (raidTilt), nothing to charge here.
   // Carried dividend: grant the per-turn attraction bonus (the assimilation mirror).
-  tickConsular(who); // Consular Protection: Influence for enclaves of this civ's people abroad
+  tickConsular(who); // Consular Protection: Gold for this civ's people abroad
   const d = tickAttractionDividend(who);
   if (who === local) {
     for (const yk of Object.keys(d)) {

@@ -172,7 +172,38 @@ const fresh = () => borders.resetBorderCache();
   }
 }
 
-// Consular Protection: +1 Influence per recognised enclave abroad, capped, once per turn
+// Consular Protection: Gold per person of yours living in another major civ's settlements, once per turn
+{
+  const comp = await import("/emigration/ui/emigration-composition.js");
+  comp.__test.reset();
+  const cities = comp.__test.state().cities;
+  const city = (owner, byCiv) => ({ owner, byCiv, total: Object.values(byCiv).reduce((x, y) => x + y, 0), name: "c", seenTurn: 0 });
+  cities["1,0"] = city(1, { 1: 10, 5: 6.6 });
+  cities["2,0"] = city(2, { 2: 8, 5: 4.5, 3: 2 });
+  cities["9,0"] = city(9, { 9: 3, 5: 10 }); // a city-state's settlement: doesn't count
+  cities["5,0"] = city(5, { 5: 20, 1: 4 }); // home: doesn't count
+  slot(5, C_EX);
+  fresh();
+  assert.equal(consular.peopleAbroad(5), 11, "6.6 + 4.5 abroad, rounded down; home and city-states left out");
+  assert.equal(consular.peopleAbroad(1), 4, "civ 1's people in civ 5's settlement");
+  assert.equal(consular.consularGold(5), 11, "1 Gold a person outside the Modern Age");
+  GRANTS.length = 0;
+  assert.equal(consular.tickConsular(5), 11);
+  assert.deepEqual(GRANTS, [{ pid: 5, yt: "YG", amount: 11 }], "granted as Gold through grantYield");
+  assert.equal(consular.tickConsular(5), 0, "a second tick in the same turn pays nothing");
+  Game.turn += 1;
+  globalThis.GameInfo = { Ages: { lookup: () => ({ AgeType: "AGE_MODERN" }) } };
+  assert.equal(consular.consularGold(5), 22, "2 Gold a person in the Modern Age");
+  assert.equal(consular.tickConsular(5), 22, "the next turn pays again");
+  delete globalThis.GameInfo;
+  slot(5);
+  fresh();
+  assert.equal(consular.consularGold(5), 0, "without the card it pays nothing");
+  assert.equal(consular.tickConsular(5), 0);
+  comp.__test.reset();
+}
+
+// Consular grievances: once per host per age, only against a host with a suspicion card
 {
   const rec = (civ, owner, extra) => ({ civ, owner, optionId: "ignore", turn: 1, applied: {}, contested: false,
     contestedTurn: -999, recognized: true, ...extra });
@@ -183,24 +214,6 @@ const fresh = () => borders.resetBorderCache();
   stateMod.putQuarter("6,0", rec(5, 6));
   stateMod.putQuarter("7,0", rec(5, 1, { recognized: false }));
   stateMod.putQuarter("8,0", rec(5, 5));
-  slot(5, C_EX);
-  fresh();
-  assert.equal(consular.enclavesAbroad(5), 5, "unrecognised and home enclaves don't count");
-  assert.equal(consular.consularInfluence(5), consular.CONSULAR_INFLUENCE_CAP, "capped at +4");
-  GRANTS.length = 0;
-  assert.equal(consular.tickConsular(5), 4);
-  assert.deepEqual(GRANTS, [{ pid: 5, yt: "YD", amount: 4 }], "granted as Influence through grantYield");
-  assert.equal(consular.tickConsular(5), 0, "a second tick in the same turn pays nothing");
-  Game.turn += 1;
-  assert.equal(consular.tickConsular(5), 4, "the next turn pays again");
-  slot(5);
-  fresh();
-  assert.equal(consular.consularInfluence(5), 0, "without the card it pays nothing");
-  assert.equal(consular.tickConsular(5), 0);
-}
-
-// Consular grievances: once per host per age, only against a host with a suspicion card
-{
   slot(5, C_EX);
   slot(1, S_AQ); // host 1 watches the enclave at 1,0 (and the unrecognised one at 7,0)
   slot(2, P_AQ);

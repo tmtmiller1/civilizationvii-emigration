@@ -61,8 +61,9 @@ Your saves and settings carry over from 3.6.
   difficulty, 20% at Deity.
 - **Unhappiness that matters.** Happiness counts by the settlement's own stage. Unhappy settlements lose people faster
   the unhappier they are, as long as there's somewhere better to go.
-- **Policy cards with a cost.** Talent Attraction now costs 2 Gold per settlement (3 in Modern) for its Science,
-  and Consular Protection gives +3 Influence a turn (+5 in Modern).
+- **Policy cards the AI plays too.** Talent Attraction gives +1 Science per 10 Population (per 8 in Modern), and
+  Consular Protection gives +4 Influence and +10 Gold in your Capital (+6 and +15 in Modern) plus Gold for your
+  people abroad.
 - **A first-loss explainer** for new players, off by default: one page the first time a settlement loses a tile.
 - **All twelve languages**, the new screen included.
 
@@ -99,9 +100,9 @@ Full notes: [CHANGELOG.md](CHANGELOG.md).
   while you're at war with its homeland is paid in full. The suspicion cards (Watched Quarters, Oaths of Loyalty,
   Registration of Residents) give Production in every city, but every enclave you recognize pays half and fewer
   immigrants arrive.
-- Consular Protection, in the Exploration and Modern Ages: Influence each turn for every recognized enclave of your
-  people in another civilization's cities. When a host slots a suspicion card, you hold grievances against it, once per
-  host per age.
+- Consular Protection, in the Exploration and Modern Ages: Influence and Gold each turn in your Capital, and Gold for
+  each of your people living in another civilization's settlements. When a host slots a suspicion card, you hold
+  grievances against it, once per host per age.
 - City Details names an enclave's stage, Foothold, Established or Recognized, then says what the next step takes and
   what's holding it back. The enclave tooltip, the map marker and the Diversity table use the same names, and a new
   Civilopedia page, How an Enclave Grows, walks through them.
@@ -252,10 +253,10 @@ Compatible with Civilization VII 1.5.0.
 - **Open Borders:** increases cross-civilization migration
 - **Ten cards in all:** the two stances in every age, Talent Attraction and Consular Protection from the Exploration
   Age
-- **Talent Attraction:** +1 Science per 5 Population in every settlement (per 4 in Modern) for 2 Gold per settlement
-  (3 in Modern), so the people you draw keep adding Science, and a wide civilization pays more for it
-- **Consular Protection:** +3 Influence a turn (+5 in Modern) plus Influence for your people's enclaves abroad, and
-  grievances against a host that slots a suspicion card over them
+- **Talent Attraction:** +1 Science per 10 Population in every settlement (per 8 in Modern), so the people you draw
+  keep adding Science for as long as they stay
+- **Consular Protection:** +4 Influence and +10 Gold a turn in your Capital (+6 and +15 in Modern), +1 Gold a turn
+  for each of your people abroad (+2 in Modern), and grievances against a host that slots a suspicion card over them
 
 ### Identity and culture
 
@@ -925,7 +926,7 @@ Migration, retention, the refugee tilt and the enclave payout are custom UI-VM m
 Food are native `TraditionModifier`s from `data/emigration-policies-gameeffects.xml`.
 
 The cards are ten in all: the two stances in every age, **Talent Attraction** (Exploration at Inspiration, Modern at
-Modernization: +1 Science per 5 Population in every settlement, per 4 in the Modern Age, through the game's own
+Modernization: +1 Science per 10 Population in every settlement, per 8 in the Modern Age, through the game's own
 per-population yield) and
 **Consular Protection** (below). The 3.5.0 cards they replaced (Guest Right, Charter of Communities, Equal Protection,
 Watched Quarters, Oaths of Loyalty, Registration of Residents, Cultural Magnetism, Commercial Draw, Selective Asylum,
@@ -943,9 +944,10 @@ reads `"protect"`, an Anti-Immigration Stance `"suspect"`, both or neither `null
 - **Suspect** (the Anti-Immigration Stance; the retired suspicion cards still count): every recognized enclave's
   payout is halved at payout time (×0.5, so ×0.25 at war). A retired suspicion card on its own also cuts inbound
   migration ×0.75 after the stance (`SUSPECT_OPENNESS`); the Anti-Immigration Stance already throttles, so it doesn't.
-- **Consular Protection** (Exploration at Diplomatic Service, Modern at Political Theory; script-only): +1 Influence per
-  turn per recognized enclave of this civ's people in another civ's cities, capped at +4, granted on that civ's turn
-  through `Players.grantYield`. Once per host per age, a host with a suspicion card slotted while this civ's people hold
+- **Consular Protection** (Exploration at Diplomatic Service, Modern at Political Theory): +4 Influence and +10 Gold
+  on the Palace (+6 and +15 in Modern) as native modifiers, and in the script +1 Gold per turn for each of this civ's
+  people living in other major civs' settlements (+2 in Modern), granted on that civ's turn through
+  `Players.grantYield`. Once per host per age, a host with a suspicion card slotted while this civ's people hold
   an enclave there receives 30 grievances from the consular civ. The engine books a grievance on the civ that did the
   wrong, so the write is `Players.get(host).Diplomacy.changeNumGrievances(consular, 30000)`, and the history entry
   reads as triggered by the host. The stamps are saved under `EmigrationConsular_v1`.
@@ -978,7 +980,7 @@ Exploration:
 | Selective Asylum (Piety) | +1 Influence/turn; refugee pull tilt |
 | Charter of Communities (Economics) | +2 Influence/turn; enclave payout kept whole in wartime |
 | Oaths of Loyalty (Economics) | +2 Production/city; enclave payout ×0.5, inbound ×0.75 |
-| Consular Protection (Diplomatic Service) | +1 Influence/turn per recognized enclave abroad (max +4); grievances vs. a suspicious host |
+| Consular Protection (Diplomatic Service) | +4 Influence and +10 Gold/turn in the Capital, +1 Gold/turn per person abroad; grievances vs. a suspicious host |
 
 Modern:
 
@@ -992,7 +994,7 @@ Modern:
 | Refugee Compact (Political Theory) | +2 Influence/turn, +1 Culture/turn; refugee pull tilt |
 | Equal Protection (Social Question) | +3 Influence/turn; enclave payout kept whole in wartime |
 | Registration of Residents (Social Question) | +3 Production/city; enclave payout ×0.5, inbound ×0.75 |
-| Consular Protection (Political Theory) | +1 Influence/turn per recognized enclave abroad (max +4); grievances vs. a suspicious host |
+| Consular Protection (Political Theory) | +6 Influence and +15 Gold/turn in the Capital, +2 Gold/turn per person abroad; grievances vs. a suspicious host |
 
 Internal IDs: `OPEN_BORDERS` = Pro-Immigration, `CLOSED_BORDERS` = Anti-Immigration, `TALENT` = Talent Attraction,
 `CULTPULL` = Cultural Magnetism, `TRADEPULL` = Commercial Draw, `ASYLUM` = Selective Asylum / Refugee Compact, `PROTECT`
@@ -1705,12 +1707,12 @@ buildings carry (`data/emigration-ai-strategy.sql`).
 pull, so the stance carries Food in every city (+2/+2/+3 by age). That's what makes the AI slot it.
 
 **Native yields on Talent Attraction and Consular Protection.** Talent Attraction pays its Science through the
-game's own per-population yield (`EFFECT_CITY_ADJUST_YIELD_PER_POPULATION`) and costs 2 Gold per settlement in
-Exploration and 3 in Modern (`EFFECT_CITY_ADJUST_YIELD`). While it was free, the planner slotted it within ten turns
-of Inspiration in every AI civilization; with the Gold it weighs the card and sometimes drops it. Consular
-Protection carries a flat +3 Influence a turn in Exploration and +5 in Modern (`EFFECT_PLAYER_ADJUST_YIELD`) on top
-of its Influence per enclave, which stays in the script. Both give the planner something it can see when it weighs
-the card.
+game's own per-population yield (`EFFECT_CITY_ADJUST_YIELD_PER_POPULATION`), +1 per 10 Population in Exploration
+and per 8 in Modern; the planner slots it in one or two AI civilizations at a time. Consular Protection is built like
+Divine Right: +4 Influence and +10 Gold on the Palace in Exploration, +6 and +15 in Modern
+(`EFFECT_CITY_ADJUST_CONSTRUCTIBLE_YIELD`), with the Gold per person abroad in the script. The planner weighs
+Influence low: alone, the card was never slotted below +8 Influence; with the Gold, five of six AI civilizations took
+it (roadmap section 75).
 
 ### 11.5 What the game's AI already does
 
@@ -1767,7 +1769,7 @@ From the 30 lab games in 11.2, with a usual set of other mods, unless a row says
 | Stance notices | Yes (2026-10-25, an Exploration lab game): four Chronicle lines over 54 turns (Abbasid closes its borders, Đại Việt opens, drops its stance, closes), each with a notice beside End Turn the same turn |
 | The "hold your people" strategy | Yes (2026-10-26, Exploration, seed 4242, Deity, 110 turns): the game's `AI_CityStrategy.csv` shows it switching on in a Goryeo city from turn 56 to 76, a Persian city from 64 to 93, and a third from 105. Its first condition, Food under 2, never switched it on in 138 and 110 turns |
 | An AI civilization closing a settlement to newcomers | Not yet: in the same game no AI reached its congestion bar (the highest headwind was 0.46 against 1) and its cities ran +6 to +106 happiness, so the rule had nothing to act on |
-| Talent Attraction and Consular Protection taken by an AI | Talent, yes (2026-10-26, Exploration, seed 4242, 110 turns): with its Gold cost, four of five AIs slotted it 10 to 40 turns after Inspiration, and two dropped it and took it back; at turn 100 three held it. Consular, no: no AI slotted it in 139 turns at +1 or 111 turns at +3 |
+| Talent Attraction and Consular Protection taken by an AI | Both, yes (2026-10-28/29, Exploration, seed 4242, 110 turns): Talent at a tenth a person is held by one or two AIs at a time; Consular with +4 Influence and +10 Gold was slotted by five of six AIs (never at +1, +3 or +4 Influence alone) |
 | Refugees avoiding a settlement under attack | Yes (2026-10-26, Exploration, seed 4242): one arrival into a settlement in crisis in 110 turns, against 46 in 138 turns before the rule. On the WashingtonAnt130 save, besieged New York took no refugees once its siege began |
 | The AI's free homecoming | Yes (2026-10-25, WashingtonAnt130 save driven ten turns): AI civilizations' displaced people came home on the same schedule as the player's |
 

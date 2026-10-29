@@ -3961,3 +3961,219 @@ of the 23:32 autosave in a lab game, build both scenes without painting, then cl
 
 Both runs could also have reached the 4.0.1 tab-speed and 4.0.2 plus/minus items on WATCH_LIST.md (same save, same
 mod set); they weren't run, since the owner asked for the crash.
+
+## 75. Talent Attraction and Consular Protection, modelled before testing (2026-10-28)
+
+The owner read +98 Science from Talent Attraction in their Modern game (turn 27, 18 settlements) and asked for the two
+non-stance cards to be balanced against each other, their use cases and the game's own cards, on paper first. The
+model is `devtools/card-balance-model.mjs`; run it with `node`.
+
+**How a card is scored.** A card is worth the share of income it adds: +20 Science on 200 is 10%, -36 Gold on 1,146
+is -3%. A yield's value falls as you hold more of it, so this puts Science, Gold and Influence on one scale without
+an exchange rate, and it's why a flat Gold upkeep stings an AI and barely touches a rich player. Happiness and Food
+costs on the game's own cards aren't scored, so the specialist cards read higher than they are.
+
+**The empires.** Read: WashingtonExp106 (section 66), the strongest AI of that game, and the owner's Modern game
+(live read: urban and rural counted per settlement, 46 specialists not counted). Estimated, and marked in the
+script: the middle and poorest AIs from the section 66 ranges, every Modern AI (scaled by the player's own
+Exploration-to-Modern change), and the player's Modern Influence (120, not read).
+
+**What the game's own cards are worth on those empires.** Enlightenment 12 to 27% (and a Happiness a specialist),
+Rationalism about 11%, Social Science 12 to 25% (and a Food and a Happiness a specialist). Flat Influence: Divine
+Right +4 (and +10 Happiness on the Palace), Ambassadors +6. That's 5% of a rich player's Influence and most of a poor
+AI's.
+
+**Talent Attraction now (T0)** is 4 to 26%. That's the top of the Science band, with no Happiness cost, and it's
+uneven: it pays most to civilizations with a lot of people and little Science per head. The -2/-3 Gold a settlement
+is 3 to 5% of a rich player's Gold but 10 to 17% of a poor AI's.
+
+**Consular Protection now (C0)** shows the AI +3/+5 Influence. Neither the enclave part nor its cap is visible to
+the planner, and the game's own Influence cards show it +4 with +10 Happiness or +6. That fits it never being
+slotted in 250 AI turns. For a player it's 4 to 8%, and the flat Influence is a large share only for poor
+civilizations.
+
+**The use cases the two should split.** Talent pays a civilization that gathers people (receivers, wide or
+growing). Consular pays one whose people left (senders, usually poorer and smaller, where flat Influence is a big
+share). Balanced means: each near the game's band (about 10%) for its own holder, Talent ahead for a big receiver,
+Consular ahead for a sender with enclaves abroad, and neither ahead everywhere. Today Talent leads for every
+empire modelled, and Consular never reaches an AI's slot.
+
+| Talent variant | Share of income across the eight empires | Raw for the owner's Modern game |
+| --- | --- | --- |
+| T0 now: all/5 Ex, all/4 Mo, -2/-3 Gold | 4 to 26% | +98 Science, -54 Gold |
+| T1 urban only, Gold kept (section 66's pick) | -4 to 7% | +47, -54 |
+| T2 all/10 Ex, all/8 Mo, Gold kept | -3 to 8% | +49, -54 |
+| T5 urban only, no Gold | 7 to 17% | +47 |
+| T6 urban only, -1 Gold a settlement | 3 to 12% | +47, -18 |
+| T4 +10% Science (reference only) | 10% | +55 |
+
+T1 and T2 halve the Science but keep an upkeep sized for the old card, which turns them negative for every Modern
+AI, so the planner would drop the card. Halving the Science means halving or dropping the upkeep with it.
+
+| Consular variant | AI sees | Player, 0 to 4 enclaves | Poor AI, 0 to 4 enclaves |
+| --- | --- | --- | --- |
+| C0 now: +3/+5, +1 an enclave to +4 | 3 / 5 | 4 to 8% | 60 to 140% |
+| C1 +4/+6, +1 an enclave to +4 | 4 / 6 | 5 to 9% | 80 to 160% |
+| C2 +4/+6, +2 an enclave to +6 | 4 / 6 | 5 to 12% | 80 to 200% |
+| C3 +2/+3 per 5 settlements, +2 an enclave to +6 | 2 to 12 | 9 to 16% | 40 to 160% |
+
+**Open before any lab run, all reads on saves that exist (no turns played):** the owner's Modern Influence and
+Happiness income; Happiness income on WashingtonExp106, so the specialist cards can be scored with their cost; and
+how many recognised enclaves each civilization holds abroad at Exploration 100 and Modern 30, which sets
+Consular's real value (the model assumes 0 to 4; a host takes at most 3 an age).
+
+**To test, in this order:**
+
+1. Pair A: T5 with C1. Talent urban only, no upkeep; Consular's floor raised to match Divine Right and
+   Ambassadors. One AI-only Exploration game on seed 4242 against section 64's run: how many of the AIs slot each
+   card, and which. Target: Talent held by some AIs, not all; Consular taken at least once, by a civilization
+   with enclaves abroad or thin Influence.
+2. If Talent is still taken by every AI within ten turns, Pair B: T6 with C2 (the -1 Gold upkeep back; Consular's
+   enclave part doubled for players).
+3. If Consular is still never slotted at +4/+6, its floor needs a second yield the planner weighs, as Divine
+   Right carries +10 Happiness; that's a new variant to model before it's tested.
+
+Either Talent variant changes the card text to "urban Population" (and the Civilopedia lines in section 66's
+places); that waits until the numbers are watched. Not built: everything above is model output.
+
+### Consular as Talent's mirror (the owner's direction, same day)
+
+The owner's direction: pay Consular on the number of your people living abroad, the inverse of Talent paying on the
+people at home. The count is already kept: the composition ledger's `byCiv` for your civilization, summed over
+settlements you don't own (`compositionForOwner` in `ui/emigration-composition.js` does the same sum for one owner).
+It shrinks on its own as your people integrate into their host, so it pays for a living diaspora, not a historic one.
+
+Modelled with 0 to 40 people abroad (section 66's AI groups abroad ran 6 to 20), the Influence floor kept at +4/+6
+for the planner:
+
+| Variant | Poor AI, 10 abroad | Poor AI, 20 abroad | Owner's Modern game, 10 abroad |
+| --- | --- | --- | --- |
+| K1 +1 Influence per 5 abroad | +2 Influence | +4 | +2 (2% of the guessed Influence) |
+| K2 +1 Gold a person abroad (2 in Modern) | +10 Gold, 12% of its Gold | +20, 23% | +20 Gold, 2% |
+| K3 both, Influence per 10 | +1 and +10 | +2 and +20 | +1 and +20 |
+
+K2 is the clean mirror: Talent turns people at home into Science and costs Gold, and Consular turns people abroad into
+Gold (remittances). It's worth a tenth to a quarter of a poor sender's Gold and about nothing to a big receiver,
+the split the two cards should have. The enclave Influence (+1 each, to +4) can go, since the people count already
+covers it more smoothly; the grievances stay.
+
+Open: how many people a civilization really has abroad (read it on WashingtonExp106 and an AI game at Exploration
+100 before sizing); whether a city lost in a war counts (its people stay yours in the ledger, so losing a 20-person
+city would pay 20 Gold a turn); and whether people in a city-state's or an independent's settlement count.
+
+### Built (same day)
+
+- **Talent Attraction:** +1 Science per 10 Population in Exploration, per 8 in Modern, urban and rural (T7 in the
+  model, 7 to 19% across the empires). The Gold upkeep is no longer attached; its modifiers stay defined so a save
+  that attached them still resolves. Urban-only (T5) balanced the same, but urban population comes from buildings
+  and newcomers land on rural tiles or as specialists, so it would have stopped paying for immigration.
+- **Consular Protection:** the native Influence is +4 in Exploration and +6 in Modern, and the script pays Gold each
+  turn: 1 a person of yours living in another major civilization's settlements, 2 in Modern (`peopleAbroad` and
+  `consularGold` in `ui/emigration-consular.js`). The per-enclave Influence is gone; the grievances are unchanged.
+- English card and Civilopedia text updated; the eight changed keys were dropped from `i18n/<locale>.json` and the
+  other languages carry the English until retranslated. Unit tests updated (`tests/treatment.mjs`,
+  `tests/treatment-policies-data.mjs`); the full suite, tsc and eslint pass. Deployed to Mods/emigration. Not seen
+  in a game: see WATCH_LIST.md.
+
+### Seen in a game (2026-10-28, lab, the owner's WashingtonMod28)
+
+The save was loaded inside a seed 4242 lab game with the owner's mod set, Mods/emigration in place of the Workshop
+copy. A first try with only Strategic Resources and Emigration on crashed the game on an AsyncWorker thread during the
+load (`CivilizationVII-2026-10-28-163516.ips`, signature `+0x13552c0`); the same save with the owner's set loaded
+clean, so load a save with the mods it was made with.
+
+- **A save keeps the card it slotted.** The compiled data had Divisor 8 and no upkeep row, but the slotted Talent still
+  paid the old rate (its node read 25, a quarter a person) and the old 3 Gold a settlement (54 in all) until the card
+  was taken out and put back in the swap window five turns on. A player who has Talent slotted when they update keeps
+  the old card until they swap it; the release note should say so.
+- **Talent after the swap:** each settlement's Talent Attraction line read its urban plus rural people ÷ 8 (28 people,
+  3.5 Science), 401 people for 50.1 in all, and the Gold line was gone. Toggling it moved Science 463.9 ↔ 535.1 and
+  Gold 1161.2 ↔ 1186.7. The rest of that swing is the government's "For Slotted Policies" Happiness (6 a policy in
+  each city): two cities sat just under zero without the fourth card and lost yields to the unhappiness penalty. Any
+  card in the slot does the same, so it isn't Talent's.
+- **Consular in Modern:** +6 Influence (122.3 with the slot empty, 133.0 with Consular, the same 4.7 slotted-policy
+  share as Civil Engineering). `hasConsular(0)` read true. It held through a turn with no errors in UI.log.
+- **People abroad, live:** Washington 0, Genghis Khan 9, Ibn Battuta 6, Confucius 4, Hatshepsut 2, Pachacuti and
+  Catherine 1, the rest 0. At Modern's 2 Gold a person that's 18 Gold at most, against the 0 to 40 the model ran. The
+  Gold grant itself wasn't seen: the owner's civ has nobody abroad, and `unlockTradition` doesn't unlock a card for
+  an AI, so no civ with people abroad could hold the card.
+
+### The AI run (2026-10-28, evening)
+
+Exploration, seed 4242, the owner's usual set with Mods/emigration, 110 turns driven at 7.0 s a turn, a reading
+every ten (each major's two cards, people abroad, yields). The same six civs as section 64. No crash.
+
+| turn | Heian | Persia | Abbasid | Hawaii | Goryeo | Dai Viet |
+| ---- | ----- | ------ | ------- | ------ | ------ | -------- |
+| 41   | c     | ·      | c       | t      | c      | t        |
+| 61   | tc    | ·      | **T**c  | tc     | c      | tc       |
+| 81   | tc a3 | tc     | **T**c  | tc     | tc     | tc       |
+| 91   | tc a2 | tc     | **T**c  | tc     | tc     | **T**c   |
+| 101  | tc a1 | tc     | **T**c  | **T**c | tc     | tc       |
+| 111  | tc a6 | tc     | tc      | **T**c | tc a1  | tc a5    |
+
+T slotted, t/c unlocked, aN people abroad (0 where not shown).
+
+- **Talent is still a choice.** Abbasid held it 61 to 101, Dai Viet at 91, Hawaii from 101; Persia, Goryeo and Heian
+  had it unlocked and never took it. One or two held it at a time, against three at turn 100 in section 64's run with
+  the old card. The node read 10 in every holder's city (the Exploration rate, a tenth a person), worth 4 to 9 Science,
+  5 to 6% of the holder's Science.
+- **Consular is still never slotted.** Unlocked by Heian, Abbasid and Goryeo from turn 41 and by all six by 81; no AI
+  took it in 110 turns. +4 Influence didn't move the planner any more than +3 did, so "match Divine Right" is
+  disproved as the reason it's skipped.
+- **Nobody is abroad.** People abroad read 0 for every civ until turn 81 and 6 at most by 111 (counters: 13 settled
+  arrivals, 24% of moves across borders). In this game the Gold half would have paid 0 to 6 Gold a turn. The model
+  ran 0 to 40.
+- Not seen: the Consular Gold landing and the +4 Influence (no civ held the card). Readings in the session scratchpad
+  (`card-ai-drive.out`).
+
+### Why the AI skips Consular: the arms (2026-10-28, night)
+
+`Logs/Game_Gossip.csv` records every AI card pick (GOSSIP_TRADITION_ACTIVATED / DEACTIVATED, by civ and turn), so
+one run gives the whole table's ranking without a relaunch. AI-only play on seed 4242 is deterministic: two runs with
+different Consular data and the card never slotted produced the same 108 picks, the same Talent holders and the same
+people-abroad counts, so a run with a changed Consular is a clean comparison; only its score differs.
+
+The Exploration pool over 110 turns: Conscription 15 picks, Renaissance 8, Divine Punishment 6, Talent Attraction,
+Levies, Divine Right and De Facto 4 each, De Jure, Rites and Rituals and Anti-Immigration Stance 3, Patronage 2,
+Pro-Immigration Stance and Trade Winds 1, Consular 0, among about twenty other cards the AIs never took (Rationalism
+and Enlightenment among them). Divine Right's picks were Machiavelli, Himiko and Alexander, then Rizal at 110; the AI
+does take Influence when a card carries it with something else.
+
+- **Arm A, shape.** Hypothesis: the planner doesn't score a player-level yield modifier (Consular was the only card in
+  the pool whose whole effect is COLLECTION_OWNER / EFFECT_PLAYER_ADJUST_YIELD). Test: the same +4/+6 Influence in
+  Divine Right's own shape, a Palace yield over COLLECTION_PLAYER_CITIES. Result: never slotted in 110 turns, with
+  Divine Right (that shape plus +10 Happiness) taken four times in the same game. Shape disproved.
+- **Arm B, weight.** Hypothesis: the planner weighs Influence so low that +4 on its own never beats the third-best
+  card in any slot. Test: +12/+18 Influence, still alone. Result: slotted five times by five civs: Abbasid 39 to 46
+  and 90 to 97, Himiko 44 to 45 and 69 to 82, Goryeo 55 to 77, Hawai'i 58 to 111, Đại Việt at 87; five picks, level
+  with De Jure and Anti-Immigration Stance in that game. The +12 showed in the holders' Influence against the base
+  run (Abbasid 23 to 35, Goryeo 37 to 49, Heian 27 to 39, every other civ unchanged until the games diverged near
+  turn 81). The planner weighs Influence; +4 just never beat the third-best card.
+- **Arm C, threshold.** +8/+12 alone. Result: one pick, Hawai'i 88 to 93; the rest of the game ran as the base.
+
+So the planner weighs Influence at something like a third of what it gives Divine Right's package, and the card
+only turns live between +8 and +12 Influence on its own. Nothing a script pays (the Gold per person abroad) counts
+for the planner at all. The working copy is back on the shipped +4/+6 player-level form until the owner picks:
+- +12/+18 Influence alone: AI-live (five of six civs took it), but the strongest Influence card in the pool for a
+  human, on top of the Gold mirror;
+- +8/+12: on the edge (one pick in 110 turns);
+- keep +4/+6 and accept Consular as a human card, with Divine Right the AI's Influence card;
+- a second native yield next to a smaller Influence number, which would need its own run.
+
+### Built as a Divine Right with Gold (2026-10-29)
+
+The owner chose the second yield: Divine Right's shape (a Palace yield over the player's cities) with Gold where
+Divine Right has Happiness, Influence at +4/+6. Happiness would have made a second Divine Right; Gold matches the
+Gold per person abroad the script already pays, so the card reads as one idea. Two runs on the same seed and script:
+
+| Gold on the Palace | picks | holders |
+| ------------------ | ----- | ------- |
+| 6 (Modern 9)       | 2     | Himiko 44 to 45, Hawai'i 58 to 111 (Gold 10 to 17 on the first reading) |
+| 10 (Modern 15)     | 6     | Abbasid 39 to 46 (Gold 75 to 86), Himiko 44 to 45 and 69 to 82, Goryeo 55 to 73, Hawai'i 58 to 111, Đại Việt at 84 |
+
+Ten Gold is the number: five of six civs, the same pattern as +12 Influence alone, and the same magnitude as Divine
+Right's +4 Influence and +10 Happiness. The card is now `MOD_EMIG_CONSULAR_INFLUENCE_EX/MO` and
+`MOD_EMIG_CONSULAR_GOLD_EX/MO`, both on BUILDING_PALACE, attached in the Exploration and Modern tradition tables;
+the description reads "+4 Influence and +10 Gold per turn in your Capital (+6 and +15 in the Modern Age)" ahead of
+the per-person Gold. Still to see: the card's yields in a human game and the per-person Gold landing (WATCH_LIST).

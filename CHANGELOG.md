@@ -7,6 +7,20 @@ section below by `release.sh`.
 
 ## [Unreleased]
 
+## [4.0.4] - 2026-10-29
+
+### Changed
+- Talent Attraction gives +1 Science per 10 Population in every settlement (per 8 in the Modern Age) and no longer
+  costs Gold. The old rate, per 5 with 2 Gold a settlement, came to about 100 Science in a wide empire, far more than
+  the game's own Science cards; the new one lands around the same as those cards. A save that already has the card
+  slotted keeps the old rate until the card is swapped out and back in.
+- Consular Protection is built like Divine Right: +4 Influence and +10 Gold a turn in your Capital (+6 and +15 in
+  the Modern Age), plus +1 Gold a turn for each of your people living in another civilization's settlements (+2 in
+  Modern). Its Influence per enclave abroad is gone. The AI slots it now; it never took the old card, because the
+  game's planner weighs Influence low and can't see what the script pays.
+- The two cards' descriptions and Civilopedia lines say the new numbers in English; the other languages follow in a
+  later release.
+
 ## [4.0.3] - 2026-10-28
 
 ### Fixed

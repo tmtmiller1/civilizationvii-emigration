@@ -26,10 +26,10 @@ const CARDS = [
   ["CLOSED_BORDERS", "ANTIQUITY", "NODE_CIVIC_AQ_MAIN_CITIZENSHIP", ["MOD_EMIG_CLOSED_BORDERS_INFLUENCE_AQ", "MOD_EMIG_CLOSED_BORDERS_PRODUCTION_AQ"], "CLOSED_BORDERS", "DESC"],
   ["CLOSED_BORDERS", "EXPLORATION", "NODE_CIVIC_EX_MAIN_ECONOMICS", ["MOD_EMIG_CLOSED_BORDERS_INFLUENCE_EX", "MOD_EMIG_CLOSED_BORDERS_PRODUCTION_EX"], "CLOSED_BORDERS", "DESC_EX"],
   ["CLOSED_BORDERS", "MODERN", "NODE_CIVIC_MO_MAIN_SOCIAL_QUESTION", ["MOD_EMIG_CLOSED_BORDERS_INFLUENCE_MO", "MOD_EMIG_CLOSED_BORDERS_PRODUCTION_MO"], "CLOSED_BORDERS", "DESC_MO"],
-  ["TALENT", "EXPLORATION", "NODE_CIVIC_EX_MAIN_INSPIRATION", ["MOD_EMIG_TALENT_YIELD_EX", "MOD_EMIG_TALENT_UPKEEP_EX"], "TALENT", "DESC"],
-  ["TALENT", "MODERN", "NODE_CIVIC_MO_MAIN_MODERNIZATION", ["MOD_EMIG_TALENT_YIELD_MO", "MOD_EMIG_TALENT_UPKEEP_MO"], "TALENT", "DESC_MO"],
-  ["CONSULAR", "EXPLORATION", "NODE_CIVIC_EX_MAIN_DIPLOMATIC_SERVICE", ["MOD_EMIG_CONSULAR_INFLUENCE_EX"], "CONSULAR", "DESC"],
-  ["CONSULAR", "MODERN", "NODE_CIVIC_MO_MAIN_POLITICAL_THEORY", ["MOD_EMIG_CONSULAR_INFLUENCE_MO"], "CONSULAR", "DESC"]
+  ["TALENT", "EXPLORATION", "NODE_CIVIC_EX_MAIN_INSPIRATION", ["MOD_EMIG_TALENT_YIELD_EX"], "TALENT", "DESC"],
+  ["TALENT", "MODERN", "NODE_CIVIC_MO_MAIN_MODERNIZATION", ["MOD_EMIG_TALENT_YIELD_MO"], "TALENT", "DESC_MO"],
+  ["CONSULAR", "EXPLORATION", "NODE_CIVIC_EX_MAIN_DIPLOMATIC_SERVICE", ["MOD_EMIG_CONSULAR_INFLUENCE_EX", "MOD_EMIG_CONSULAR_GOLD_EX"], "CONSULAR", "DESC"],
+  ["CONSULAR", "MODERN", "NODE_CIVIC_MO_MAIN_POLITICAL_THEORY", ["MOD_EMIG_CONSULAR_INFLUENCE_MO", "MOD_EMIG_CONSULAR_GOLD_MO"], "CONSULAR", "DESC"]
 ];
 
 /** The retired families and the ages they existed in; their rows stay, their unlocks don't. */
@@ -116,7 +116,8 @@ for (const mine of ["OPEN", "CLOSED"]) {
 }
 
 // The native amounts match the card text.
-const amount = (id) => Number(effects.match(new RegExp(`<Modifier id="${id}"[\\s\\S]*?<Argument name="Amount">(-?\\d+)</Argument>`))[1]);
+const arg = (id, name) => Number(effects.match(new RegExp(`<Modifier id="${id}"[\\s\\S]*?<Argument name="${name}">(-?\\d+)</Argument>`))[1]);
+const amount = (id) => arg(id, "Amount");
 const text = (k) => en.match(new RegExp(`Tag="${k}"><Text>([^<]*)</Text>`))[1];
 for (const [age, suffix] of [["AQ", "DESC"], ["EX", "DESC_EX"], ["MO", "DESC_MO"]]) {
   const inf = amount(`MOD_EMIG_OPEN_BORDERS_INFLUENCE_${age}`);
@@ -134,18 +135,26 @@ for (const [age, suffix] of [["AQ", "DESC"], ["EX", "DESC_EX"], ["MO", "DESC_MO"
 for (const [age, suffix] of [["EX", "DESC"], ["MO", "DESC_MO"]]) {
   const n = amount(`MOD_EMIG_TALENT_YIELD_${age}`);
   assert.ok(text(`LOC_EMIG_POLICY_TALENT_${suffix}`).startsWith(`+${n} [icon:YIELD_SCIENCE]`), `talent ${age} text says +${n}`);
-  // The upkeep (2026-10-26): Gold per settlement, negative, named in the text so the trade is visible.
-  const up = amount(`MOD_EMIG_TALENT_UPKEEP_${age}`);
-  assert.ok(up < 0, `talent ${age} upkeep is a cost (${up})`);
-  assert.ok(text(`LOC_EMIG_POLICY_TALENT_${suffix}`).includes(`${up} [icon:YIELD_GOLD]`), `talent ${age} text says ${up} Gold`);
+  // The divisor the card names (10 and 8 since 2026-10-28, roadmap section 75), and no Gold upkeep any more.
+  const per = arg(`MOD_EMIG_TALENT_YIELD_${age}`, "Divisor");
+  assert.ok(text(`LOC_EMIG_POLICY_TALENT_${suffix}`).includes(`per ${per} [icon:YIELD_POPULATION]`), `talent ${age} text says per ${per}`);
+  assert.ok(!text(`LOC_EMIG_POLICY_TALENT_${suffix}`).includes("YIELD_GOLD"), `talent ${age} text names no Gold cost`);
 }
-// Consular Protection's visible floor: the Exploration number leads the one description, the Modern one follows.
+// Consular Protection is a Divine Right with Gold: Influence and Gold on the Palace, both rising by age, and the one
+// description leads with the Exploration pair and names the Modern pair.
 {
   const ex = amount("MOD_EMIG_CONSULAR_INFLUENCE_EX");
   const mo = amount("MOD_EMIG_CONSULAR_INFLUENCE_MO");
-  assert.ok(ex >= 3 && mo > ex, `consular floor rises by age (${ex}, ${mo})`);
-  assert.ok(text("LOC_EMIG_POLICY_CONSULAR_DESC").startsWith(`+${ex} [icon:YIELD_DIPLOMACY]`), "consular text leads with the Exploration floor");
-  assert.ok(text("LOC_EMIG_POLICY_CONSULAR_DESC").includes(`(+${mo} in the Modern Age)`), "and names the Modern one");
+  const gEx = amount("MOD_EMIG_CONSULAR_GOLD_EX");
+  const gMo = amount("MOD_EMIG_CONSULAR_GOLD_MO");
+  assert.ok(ex >= 3 && mo > ex, `consular Influence rises by age (${ex}, ${mo})`);
+  assert.ok(gEx >= 6 && gMo > gEx, `consular Gold rises by age (${gEx}, ${gMo})`);
+  for (const id of ["MOD_EMIG_CONSULAR_INFLUENCE_EX", "MOD_EMIG_CONSULAR_GOLD_EX", "MOD_EMIG_CONSULAR_INFLUENCE_MO", "MOD_EMIG_CONSULAR_GOLD_MO"]) {
+    assert.ok(new RegExp(`<Modifier id="${id}"[\\s\\S]*?<Argument name="ConstructibleType">BUILDING_PALACE</Argument>`).test(effects), `${id} sits on the Palace`);
+  }
+  const desc = text("LOC_EMIG_POLICY_CONSULAR_DESC");
+  assert.ok(desc.startsWith(`+${ex} [icon:YIELD_DIPLOMACY] Influence and +${gEx} [icon:YIELD_GOLD] Gold per turn in your Capital`), "consular text leads with the Exploration pair");
+  assert.ok(desc.includes(`(+${mo} and +${gMo} in the Modern Age)`), "and names the Modern pair");
 }
 
 console.log(`treatment-policies-data: ${CARDS.length} cards declared, linked, unlocked, iconed and named; ${RETIRED.length} families retired`);
