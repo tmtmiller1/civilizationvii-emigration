@@ -172,6 +172,9 @@ still wins over a hover readout.
 Not watched in game. The cheap confirmation, when the game is next up: turn on the Ethnicity lens and hover a unit
 flag on an owned tile, the unit-flag tooltip and the lens panel should both be legible, with the panel on top.
 
+Watched on game 1.5.1 (2026-11-10, the owner, real mouse): with the Prosperity lens on, hovering a tile shows the
+mod's panel and the game's plot tooltip stays hidden. The remount case below is still unwatched.
+
 ## Outstanding risk, not fixed
 
 `setBasePlotTooltipHidden()` latches on a module-level `_hidden` flag and only acts on a transition.
