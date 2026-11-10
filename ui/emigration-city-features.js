@@ -4,6 +4,8 @@
 // mountain, granary, temple, market, walls), so the Migration Chronicle can say where a diaspora
 // settled without inventing a feature. Every engine read is guarded; an unreadable plot adds no key.
 
+import { isTowerMarker } from "/emigration/ui/emigration-tower-marker.js";
+
 // Substring tests against a constructible's ConstructibleType string (e.g. "BUILDING_GRANARY"). A
 // city is credited with a building key only when it actually holds a matching constructible.
 const BUILDING_KEYS = [
@@ -68,7 +70,7 @@ function addBuildingKeys(x, y, out) {
     if (!cids) return;
     for (const cid of cids) {
       const name = constructibleTypeName(cid);
-      if (!name) continue;
+      if (!name || isTowerMarker(name)) continue; // a Tower marker isn't a building the settlement has
       for (const b of BUILDING_KEYS) {
         if (name.includes(b.match)) out.add(b.key);
       }

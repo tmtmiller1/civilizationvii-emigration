@@ -6,6 +6,7 @@
 
 import { CONFIG } from "/emigration/ui/emigration-config.js";
 import { noteDamage, firstSeenDamaged } from "/emigration/ui/emigration-damage-age.js";
+import { withoutTowerMarkers } from "/emigration/ui/emigration-tower-marker.js";
 
 /**
  * Whether a live District has been overrun, its controlling player differs from its owner (the
@@ -140,7 +141,7 @@ function plotHasPillage(loc) {
   try {
     const cids = MapConstructibles?.getConstructibles?.(loc.x, loc.y);
     if (!cids) return false;
-    for (const cid of cids) {
+    for (const cid of withoutTowerMarkers(cids)) {
       if (Constructibles?.getByComponentID?.(cid)?.damaged) return true;
     }
   } catch (_) {

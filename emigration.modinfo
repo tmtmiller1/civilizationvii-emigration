@@ -166,6 +166,7 @@
                     <Item>ui/emigration-lens-hover-panel.js</Item>
                     <Item>ui/emigration-enclave-tooltip-data.js</Item>
                     <Item>ui/emigration-tile-score.js</Item>
+                    <Item>ui/emigration-tower-marker.js</Item>
                     <Item>ui/emigration-city-readout-data.js</Item>
                     <Item>ui/emigration-city-readout.js</Item>
                     <Item>ui/emigration-city-panel-data.js</Item>

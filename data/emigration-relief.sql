@@ -22,6 +22,10 @@ INSERT INTO Buildings (ConstructibleType, Movable, Purchasable, Town, TraitType)
 SELECT ConstructibleType, 0, 0, 1, 'TRAIT_EMIG_RELIEF_NONE' FROM Constructibles WHERE ConstructibleType LIKE 'BUILDING_EMIG_RELIEF_%';
 INSERT INTO TypeTags (Type, Tag)
 SELECT ConstructibleType, 'IGNORE_DISTRICT_PLACEMENT_CAP' FROM Constructibles WHERE ConstructibleType LIKE 'BUILDING_EMIG_RELIEF_%';
+-- TOWER_MARKER is shared by every Tower mod's script-placed marker building, so their screens and rules can skip them.
+INSERT OR IGNORE INTO Tags (Tag, Category) VALUES ('TOWER_MARKER', 'CONSTRUCTIBLE_TAG');
+INSERT OR IGNORE INTO TypeTags (Type, Tag)
+SELECT Type, 'TOWER_MARKER' FROM Types WHERE Type LIKE 'BUILDING_EMIG_RELIEF_%';
 INSERT INTO Constructible_ValidDistricts (ConstructibleType, DistrictType)
 SELECT ConstructibleType, 'DISTRICT_CITY_CENTER' FROM Constructibles WHERE ConstructibleType LIKE 'BUILDING_EMIG_RELIEF_%';
 

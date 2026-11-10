@@ -12,6 +12,7 @@ import { CONFIG } from "/emigration/ui/emigration-config.js";
 import { bestDestination } from "/emigration/ui/emigration-pull.js";
 import { fieldContext, prosperity, unhappyPressure } from "/emigration/ui/emigration-prosperity.js";
 import { speedBar, speedDecay } from "/emigration/ui/emigration-game-speed.js";
+import { isTowerMarker } from "/emigration/ui/emigration-tower-marker.js";
 
 /** The yields a settlement can be told to raise, in the order they are offered. */
 export const FIX_YIELDS = ["YIELD_FOOD", "YIELD_PRODUCTION", "YIELD_HAPPINESS"];
@@ -84,7 +85,7 @@ export function bestBuildingFor(yieldKey, ageType) {
  * @param {*} row A Constructible_YieldChanges row. @param {string} yieldKey @param {string} ageType @returns {*}
  */
 function buildingOfAge(row, yieldKey, ageType) {
-  if (row.YieldType !== yieldKey || !(row.YieldChange > 0)) return null;
+  if (row.YieldType !== yieldKey || !(row.YieldChange > 0) || isTowerMarker(row.ConstructibleType)) return null;
   const def = GameInfo.Constructibles.lookup(row.ConstructibleType);
   return def && def.ConstructibleClass === "BUILDING" && def.Age === ageType ? def : null;
 }

@@ -12,6 +12,7 @@ import { monoTurn } from "/emigration/ui/emigration-migration-stats.js";
 import { CONFIG } from "/emigration/ui/emigration-config.js";
 import { quarterSnapshotAt } from "/emigration/ui/emigration-quarter-state.js";
 import { enclaveStanding } from "/emigration/ui/emigration-enclave-place.js";
+import { withoutTowerMarkers } from "/emigration/ui/emigration-tower-marker.js";
 
 // Per-tile density weights by district class: urban districts hold more people. A tile's
 // final weight is its class weight times a build-up bonus (constructibles on the tile).
@@ -28,7 +29,7 @@ const BUILDUP_CAP = 4; // …capped, so a wonder-stacked tile doesn't dominate e
 
 /**
  * The number of constructibles on a tile (its build-up): a denser-built tile holds more
- * people.
+ * people. Tower markers aren't build-up.
  * @param {number} x @param {number} y
  * @returns {number}
  */
@@ -36,7 +37,7 @@ function constructibleCount(x, y) {
   try {
     const cs = typeof MapConstructibles !== "undefined" && MapConstructibles.getConstructibles
       ? MapConstructibles.getConstructibles(x, y) : null;
-    return Array.isArray(cs) ? cs.length : (cs && typeof cs.length === "number" ? cs.length : 0);
+    return cs && typeof cs.length === "number" ? withoutTowerMarkers(cs).length : 0;
   } catch (_) {
     return 0;
   }
@@ -229,3 +230,6 @@ function computeTiles(city, key) {
   for (const t of tiles) byKey.set(t.x + "," + t.y, t);
   return { tiles, byKey, comp };
 }
+
+/** Test seam: the per-tile build-up count. */
+export const __test = { constructibleCount };

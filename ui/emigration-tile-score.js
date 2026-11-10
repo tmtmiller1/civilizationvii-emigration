@@ -6,6 +6,8 @@
 // built terms dominate; every classification comes from the compiled database (ConstructibleClass,
 // Feature_NaturalWonders), never a list of names, and unbuilt water is not painted.
 
+import { withoutTowerMarkers } from "/emigration/ui/emigration-tower-marker.js";
+
 /** The points each term is worth. Exported so the panel and tests read the same table. */
 export const WEIGHTS = Object.freeze({
   wonder: 6, // the most expensive thing a settlement ever builds
@@ -180,7 +182,7 @@ export function scorable(x, y) {
     if (typeof GameplayMap === "undefined" || typeof GameplayMap.isWater !== "function") return true;
     if (!GameplayMap.isWater(x, y)) return true;
     const built = typeof MapConstructibles !== "undefined" ? MapConstructibles.getConstructibles(x, y) : null;
-    return !!(built && built.length);
+    return withoutTowerMarkers(built).length > 0;
   } catch (_) {
     return true;
   }
@@ -242,7 +244,7 @@ export function resetTileScoreCaches() {
 
 /**
  * The constructibles standing on a plot, classified: class, display-name LOC key, and whether pillaged. Unreadable
- * instances are skipped.
+ * instances and Tower markers are skipped.
  * @param {number} x Plot x. @param {number} y Plot y.
  * @returns {{cls:string, name:string, damaged:boolean}[]} What stands here.
  */
@@ -251,7 +253,7 @@ function constructiblesOn(x, y) {
   const out = [];
   if (typeof MapConstructibles === "undefined" || typeof Constructibles === "undefined"
     || typeof GameInfo === "undefined" || !GameInfo.Constructibles) return out;
-  for (const cid of safe(() => MapConstructibles.getConstructibles(x, y) || [], [])) {
+  for (const cid of withoutTowerMarkers(safe(() => MapConstructibles.getConstructibles(x, y), null))) {
     const inst = safe(() => Constructibles.getByComponentID(cid), null);
     const def = inst ? safe(() => GameInfo.Constructibles.lookup(inst.type), null) : null;
     if (!def || typeof def.ConstructibleClass !== "string") continue;

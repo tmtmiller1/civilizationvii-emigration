@@ -7,6 +7,10 @@ section below by `release.sh`.
 
 ## [Unreleased]
 
+- The hidden buildings Tower mods place in a City Center (Emigration's own, and the ones Economics, Partisans and
+  Cultural Diffusion use so the computer players can read their effects) no longer show up in Emigration's screens or
+  count toward a tile's build-up, its yields or its score. They all carry one shared tag, so a new one from any Tower
+  mod is left out too.
 - Works with the Civilization VII 1.5.1 update. The update renamed three kinds of city-state leader, and the mod's
   list of leaders now has the new names. The list only decides which leaders show up as untuned in the tuning
   tools, so nothing changes in play.

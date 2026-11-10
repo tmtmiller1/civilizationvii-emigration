@@ -16,6 +16,7 @@
 
 import { CONFIG } from "/emigration/ui/emigration-config.js";
 import { registerCacheReset, resetCachesOnNewGame } from "/emigration/ui/emigration-cache-reset.js";
+import { isTowerMarker } from "/emigration/ui/emigration-tower-marker.js";
 
 /**
  * Ordered role tests: the first match names the building, so each one is credited for its most
@@ -147,6 +148,19 @@ function roleFor(def, bld, ys) {
 }
 
 /**
+ * Whether a Constructibles row is something a settlement built: a building or wonder that isn't a marker.
+ * @param {*} def @returns {boolean}
+ */
+function indexable(def) {
+  if (!def || !def.ConstructibleType) return false;
+  const cls = def.ConstructibleClass;
+  if (cls !== "BUILDING" && cls !== "WONDER") return false;
+  // A hidden marker (this mod's People who left tiers, Cultural Diffusion's and Partisans' markers) isn't
+  // something the settlement built, and neither is any Tower marker, hidden or not.
+  return !truthy(def.CanBeHidden) && !isTowerMarker(def.ConstructibleType);
+}
+
+/**
  * Build (once) the ConstructibleType → kind index from the compiled database. IMPROVEMENTs are left
  * out: a farm is a worked tile, already fully represented by the yields it produces.
  * @returns {Map<string, BuiltKind>} The index (empty off-engine, which makes the whole term 0).
@@ -159,17 +173,12 @@ function index() {
   /** @type {Map<string, BuiltKind>} */
   const idx = new Map();
   for (const def of rows("Constructibles")) {
-    const type = def && def.ConstructibleType;
-    if (!type) continue;
-    const cls = def.ConstructibleClass;
-    if (cls !== "BUILDING" && cls !== "WONDER") continue;
-    // A hidden marker (this mod's People who left tiers, Cultural Diffusion's and Partisans' markers) isn't
-    // something the settlement built.
-    if (truthy(def.CanBeHidden)) continue;
+    if (!indexable(def)) continue;
+    const type = def.ConstructibleType;
     idx.set(type, {
       role: roleFor(def, blds.get(type), ys.get(type) || new Set()),
       name: typeof def.Name === "string" ? def.Name : "",
-      wonder: cls === "WONDER"
+      wonder: def.ConstructibleClass === "WONDER"
     });
   }
   _index = idx;
