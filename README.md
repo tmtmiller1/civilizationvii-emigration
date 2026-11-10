@@ -12,7 +12,7 @@
 <p align="center">
   <a href="https://github.com/tmtmiller1/civilizationvii-emigration/releases/latest"><img src="https://img.shields.io/github/v/release/tmtmiller1/civilizationvii-emigration?label=release&amp;color=c9a24a" alt="Latest release"></a>
   <a href="https://steamcommunity.com/sharedfiles/filedetails/?id=3750554030"><img src="https://img.shields.io/badge/Steam%20Workshop-subscribe-1b2838?logo=steam" alt="Steam Workshop"></a>
-  <img src="https://img.shields.io/badge/Civilization%20VII-1.5.0-1f2a44" alt="Civilization VII 1.5.0">
+  <img src="https://img.shields.io/badge/Civilization%20VII-1.5.1-1f2a44" alt="Civilization VII 1.5.1">
   <img src="https://img.shields.io/badge/languages-12-2e7d32" alt="12 languages">
   <a href="LICENSE"><img src="https://img.shields.io/badge/license-Tower%20Mod%201.0-555555" alt="Tower Mod License 1.0"></a>
 </p>
@@ -196,7 +196,7 @@ please consider supporting UNHCR, the IRC, MSF, IRAP, or local refugee and mutua
 
 ## Features
 
-Compatible with Civilization VII 1.5.0.
+Compatible with Civilization VII 1.5.1.
 
 ### Migration
 
@@ -2025,6 +2025,11 @@ The only dependency is `base-standard`. Shared surfaces are handled additively:
   rising at or within 3 tiles is labelled as fleeing "the {name} Uprising" (the figures stay under the war cause), and a
   settlement Partisans reports burned closes its enclave with its own Chronicle line. Without the global, nothing
   changes. Emigration never loads or touches Partisans' files.
+- **Tower marker buildings:** the hidden City Center buildings the Tower mods place by script (Emigration's relief
+  tiers, and the markers Economics, Partisans and Cultural Diffusion use so the AI can read their effects) carry the
+  shared `TOWER_MARKER` tag. Emigration reads that tag from `GameInfo.TypeTags` and leaves every tagged building out
+  of its screens and of a tile's build-up, yields and score, so a marker from any Tower mod is skipped without a list
+  ([ui/emigration-tower-marker.js](ui/emigration-tower-marker.js)).
 - **Adaptive reads:** prosperity uses live yields, happiness, and Influence each turn, so balance mods feed into the
   model naturally. Population/yield changes from other mods stack with Emigration. Game-speed scaling uses the active
   `GameSpeed` row, including custom speeds with a `CostMultiplier`.

@@ -11,7 +11,7 @@ People leave settlements that fail them and move to ones that thrive, inside you
 Your saves and settings carry over from 3.6.
 [h2]How it works[/h2]
 [list]
-[*][b]Compatible with 1.5.0.[/b]
+[*][b]Compatible with 1.5.1.[/b]
 [*][b]Prosperity.[/b] Settlements are scored on yields, happiness, war weariness and government, and people move toward stronger ones nearby.
 [*][b]Refugees[/b] flee fighting, sieges, starvation, unrest and disasters, sheltering in their own civilization first.
 [*][b]Cultural enclaves.[/b] A foreign community that lasts puts down roots as a tile themed after its own people.
