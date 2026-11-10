@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-09-16T11:01:39.802Z",
-  "sourceRoot": "../../../../../Library/Application Support/Steam/steamapps/common/Sid Meier's Civilization VII/CivilizationVII.app/Contents",
+  "generatedAt": "2026-11-10T19:48:12.651Z",
+  "sourceRoot": "../../civilization_vii_1.5.1_game_files",
   "leaderCount": 47,
   "civCount": 50,
   "mementoCount": 133,
@@ -1769,7 +1769,29 @@
       "civPriorities": []
     },
     {
-      "id": "LEADER_MINOR_CIV_INDUSTRIAL",
+      "id": "LEADER_MINOR_CIV_DIPLOMATIC",
+      "tuned": false,
+      "traits": [],
+      "modifiers": [],
+      "channels": [],
+      "risk": "unknown",
+      "mementoCount": 0,
+      "mementos": [],
+      "civPriorities": []
+    },
+    {
+      "id": "LEADER_MINOR_CIV_ECONOMIC",
+      "tuned": false,
+      "traits": [],
+      "modifiers": [],
+      "channels": [],
+      "risk": "unknown",
+      "mementoCount": 0,
+      "mementos": [],
+      "civPriorities": []
+    },
+    {
+      "id": "LEADER_MINOR_CIV_EXPANSIONIST",
       "tuned": false,
       "traits": [],
       "modifiers": [],
@@ -1791,29 +1813,7 @@
       "civPriorities": []
     },
     {
-      "id": "LEADER_MINOR_CIV_RELIGIOUS",
-      "tuned": false,
-      "traits": [],
-      "modifiers": [],
-      "channels": [],
-      "risk": "unknown",
-      "mementoCount": 0,
-      "mementos": [],
-      "civPriorities": []
-    },
-    {
       "id": "LEADER_MINOR_CIV_SCIENTIFIC",
-      "tuned": false,
-      "traits": [],
-      "modifiers": [],
-      "channels": [],
-      "risk": "unknown",
-      "mementoCount": 0,
-      "mementos": [],
-      "civPriorities": []
-    },
-    {
-      "id": "LEADER_MINOR_CIV_TRADE",
       "tuned": false,
       "traits": [],
       "modifiers": [],

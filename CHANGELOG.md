@@ -7,6 +7,10 @@ section below by `release.sh`.
 
 ## [Unreleased]
 
+- Works with the Civilization VII 1.5.1 update. The update renamed three kinds of city-state leader, and the mod's
+  list of leaders now has the new names. The list only decides which leaders show up as untuned in the tuning
+  tools, so nothing changes in play.
+
 ## [4.0.4] - 2026-10-29
 
 ### Changed
