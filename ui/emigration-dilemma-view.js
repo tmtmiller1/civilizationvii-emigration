@@ -212,6 +212,21 @@ function insertQuote(root, quote) {
 }
 
 /**
+ * A button's caption element. Up to game 1.5.0 the label carried data-l10n-id and the engine stylized it;
+ * from 1.5.1 a caption that isn't a LOC_ key is written into a bare child div as plain text, so the
+ * [icon:] tags showed literally on every choice.
+ * @param {*} button An fxs-button. @returns {*} The label element, or null.
+ */
+function captionLabel(button) {
+  const tagged = button.querySelector("[data-l10n-id]");
+  if (tagged) return tagged;
+  for (const child of Array.from(button.children || [])) {
+    if (String(/** @type {*} */ (child).textContent || "").includes("[icon:")) return child;
+  }
+  return null;
+}
+
+/**
  * Make sure every [icon:] tag in a button caption is drawn as an icon: a label still showing the literal
  * tag is re-rendered through Locale.stylize, the same call the dialog body goes through. The engine's own
  * pass normally stylizes captions itself, so this is insurance.
@@ -225,7 +240,7 @@ function stylizeCaptions(root) {
   for (const button of root.querySelectorAll("fxs-button")) {
     const caption = button.getAttribute("caption-nol10n") || button.getAttribute("caption") || "";
     if (!caption.includes("[icon:")) continue;
-    const label = button.querySelector("[data-l10n-id]");
+    const label = captionLabel(button);
     if (!label) continue;
     if (String(label.textContent).includes("[icon:")) {
       label.innerHTML = Locale.stylize(caption);

@@ -7,6 +7,14 @@ section below by `release.sh`.
 
 ## [Unreleased]
 
+## [4.0.6] - 2026-11-22
+
+The choice buttons on Emigration's pop-ups show their yield icons again on game 1.5.1.
+
+### Fixed
+- On game 1.5.1 the choice buttons on Emigration's pop-ups showed raw text like `[icon:YIELD_GOLD] -50` instead
+  of the yield icons. The icons are back.
+
 ## [4.0.5] - 2026-11-10
 
 Works with the Civilization VII 1.5.1 update, and the hidden buildings the Tower mods place stay out of Emigration's

@@ -4177,3 +4177,35 @@ Right's +4 Influence and +10 Happiness. The card is now `MOD_EMIG_CONSULAR_INFLU
 `MOD_EMIG_CONSULAR_GOLD_EX/MO`, both on BUILDING_PALACE, attached in the Exploration and Modern tradition tables;
 the description reads "+4 Influence and +10 Gold per turn in your Capital (+6 and +15 in the Modern Age)" ahead of
 the per-person Gold. Still to see: the card's yields in a human game and the per-person Gold landing (WATCH_LIST).
+
+## 76. The night watch run on game 1.5.1 (2026-11-12)
+
+Three lab games from the workspace's `tools/plans/night-2026-11-11/RESULTS.md` (emig-1, emig-5, emig-4), the 4.0.5
+code. What's still owed stays on WATCH_LIST.md.
+
+- emig-1 (Antiquity seed 4242, usual set): `CITY_STRATEGY_EMIG_KEEP_THEM_HAPPY` with HasHappinessLessThan 5, the
+  YIELD_HAPPINESS bias at 40, and the Food modifier linked to the Antiquity Pro-Immigration card. With the card
+  slotted the capital's Food stayed 3 before and after a turn, though the card reads "+2 Food in every city"; that's
+  on the watch list as a possible bug. "How an Enclave Grows" and "Treatment of Communities" open in the
+  Civilopedia, and Coming Home reads Left pane, On Their Own, Hasten, Call from Abroad, Prices, in that order. The
+  About page reads "Version 4.0.0, for Civilization VII 1.5.0" (a bug: the mod is 4.0.5 on 1.5.1). The
+  Pro-Immigration Stance took a normal slot with no slot added (0 before and after), and its English text opens "+2
+  Food in every city" with no slot line.
+- emig-5 (WashingtonAnt130, turns 130-139): homecoming for the player in the Chronicle, "The Road Home: Cornstalk's
+  Town is safe again. 4 people who fled it are coming home, and 4 have settled where they went", then "Home At
+  Last", "The Call Goes Unanswered" and "The Shawnee Return".
+- emig-4 (WashingtonExp106): `liveSettlementModels(0)` took 280-332 ms for 18 cities (4.0.0 took 3.1 s). On the
+  Settlements cards a closed Prosperity row shows the plus (122 buttons); the scripted click didn't open the row. The
+  Network tab opens with live data.
+
+## 77. Icons on the pop-up buttons, game 1.5.1 (watched 2026-11-22)
+
+On 1.5.1 every Emigration pop-up showed its choice costs as raw text (`[icon:YIELD_GOLD] -30`). The game's button
+used to send a caption through the text system, which drew the icons; from 1.5.1 a caption that isn't a `LOC_` key is
+written into a bare child `div` as plain text. The fallback in `ui/emigration-dilemma-view.js` only looked for the
+`data-l10n-id` label, so it skipped every button. `captionLabel` now takes either label.
+
+Watched in lab run 2026-11-22T11-22-28 (Antiquity, seed 4242, local copy live): `fireRealDilemmaForTest()` raised
+Refugees at the Border; the UI log read "re-rendered 3 label(s)" and the three buttons drew the population, Gold,
+happiness and influence icons. Capture: `working_screenshots/emigration-popup-icons-2026-11-22/01-refugee-popup-buttons.png`
+at the workspace root.
